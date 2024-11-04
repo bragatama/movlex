@@ -1,0 +1,131 @@
+.card {
+    height: 100%;
+    padding: 32px;
+    background-size: cover;
+    background-position: center;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.child:first-child {
+    padding-bottom: 10px;
+}
+
+.content {
+    width: 50vw;
+    padding: 32px;
+    bottom: 32px;
+}
+
+.image {
+    padding: 6px;
+    width: 60vh;
+    /* height: 50%; */
+}
+
+.title {
+    font-family: Poppins, sans-serif;
+    font-weight: 900;
+    color: var(--mantine-color-white);
+    line-height: 1.2;
+    font-size: 3rem;
+}
+
+.category {
+    color: var(--mantine-color-white);
+    opacity: 0.7;
+    font-weight: 700;
+    text-transform: capitalize;
+    font-size: 1.5rem;
+    width: fit-content;
+    padding: 4px 8px 4px 0px;
+    border-radius: var(--mantine-radius-sm);
+    -webkit-border-radius: var(--mantine-radius-sm);
+    -moz-border-radius: var(--mantine-radius-sm);
+    -ms-border-radius: var(--mantine-radius-sm);
+    -o-border-radius: var(--mantine-radius-sm);
+}
+
+.description {
+    color: var(--mantine-color-white);
+    font-weight: 300;
+    height: auto;
+    line-height: normal;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: wrap;
+}
+
+.logo {
+    margin-bottom: 20px;
+    height: fit-content;
+    width: 50%;
+}
+
+/* phone */
+@media (max-width: 480px) {
+    .card {
+        padding: 20px;
+    }
+
+    .content {
+        width: 100vw;
+        padding: 10px;
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .image {
+        width: 60vw;
+    }
+
+    .title {
+        font-size: x-large;
+    }
+
+    .category {
+        font-size: large;
+    }
+
+    .description {
+        display: -webkit-box;
+        -webkit-line-clamp: 4;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
+    }
+}
+
+/* tablet */
+@media (max-width: 1025px) {
+    .content {
+        width: 100%;
+        padding: 10px;
+        bottom: 20px;
+        left: 20px;
+    }
+
+    .image {
+        width: 50vw;
+    }
+
+    .title {
+        font-size: xx-large;
+    }
+
+    .category {
+        font-size: x-large;
+    }
+
+    .description {
+        overflow-wrap: break-word;
+    }
+}
+
+/* laptop */
+@media (max-width: 1281px) {
+    .content {
+        width: 100%;
+    }
+}

@@ -1,9 +1,13 @@
-import { Button } from "@mantine/core"
+import { Outlet } from "react-router-dom"
+import Layout from "./components/Layout"
+import './index.css'
 function App() {
 
   return (
     <>
-      <Button variant="light" color="green">Button</Button>
+      <Layout>
+        <Outlet />
+      </Layout>
     </>
   )
 }
