@@ -1,6 +1,8 @@
 import { Carousel } from '@mantine/carousel'
 import { Image, Paper, Text, Title } from '@mantine/core';
 import classes from '../css/CarouselCard.module.css'
+import { useRef } from 'react';
+import Autoplay from 'embla-carousel-autoplay';
 
 const Home = () => {
     const slides = data.map((item) => (
@@ -8,6 +10,7 @@ const Home = () => {
             <Card {...item} />
         </Carousel.Slide>
     ));
+    const autoplay = useRef(Autoplay({ delay: 5000 }));
 
     return (
         <>
@@ -16,15 +19,38 @@ const Home = () => {
                     height={'100%'}
                     slideSize={{ base: '100%', sm: '50%' }}
                     slideGap={{ base: '6px', sm: 'xl' }}
-                    withIndicators
                     style={{ width: '100%' }}
                     align='start'
+                    withIndicators
                     loop
+                    classNames={classes}
+                    plugins={[autoplay.current]}
+                    onMouseEnter={autoplay.current.stop}
+                    onMouseLeave={autoplay.current.reset}
                 >
                     {slides}
                 </Carousel>
             </div>
-            test
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
+            <h1>test</h1>
         </>
     );
 }
@@ -57,7 +83,7 @@ const Card = ({ image, logo, title, category, year, overview }: CarouselProps) =
                         {category}
                     </Text>
                     <Title className={classes.title}>
-                        {title} (<span style={{ color: 'white', opacity: 0.7 }}>{year}</span>)
+                        {title} - (<span style={{ color: 'white', opacity: 0.7 }}>{year}</span>)
                     </Title>
                     <Text className={classes.description}>
                         {overview}

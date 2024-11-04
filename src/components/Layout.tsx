@@ -4,7 +4,7 @@ const Layout = ({ children }: Props) => {
     return (
         <>
             <Navbar />
-            <main>
+            <main style={{ paddingTop: '55px' }}>
                 {children}
             </main>
         </>
