@@ -10,7 +10,13 @@ const Home = () => {
             <Card {...item} />
         </Carousel.Slide>
     ));
-    const autoplay = useRef(Autoplay({ delay: 5000 }));
+    const autoplay = useRef(Autoplay({
+        playOnInit: true,
+        delay: 5000,
+        stopOnMouseEnter: true,
+        stopOnFocusIn: false,
+        stopOnInteraction: false
+    }));
 
     return (
         <>
@@ -25,8 +31,6 @@ const Home = () => {
                     loop
                     classNames={classes}
                     plugins={[autoplay.current]}
-                    onMouseEnter={autoplay.current.stop}
-                    onMouseLeave={autoplay.current.reset}
                 >
                     {slides}
                 </Carousel>

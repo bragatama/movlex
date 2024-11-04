@@ -5,7 +5,7 @@ import { Anchor, Box, Burger, Container, Group } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import '../css/Navbar.css'
+import classes from '../css/Navbar.module.css'
 
 // const Navbar = () => {
 //     return (
@@ -49,26 +49,31 @@ const links = [
     { link: '/movies', label: 'Movies' },
     { link: '/series', label: 'TV Series' },
     { link: '/browse', label: 'Browse' },
+
 ]
 
 const Navbar = () => {
     const [opened, { toggle }] = useDisclosure(false)
-    const [active, setActive] = useState(links[0].link);
-    // const clickHandler =()=>{
-        
+    const [active, setActive] = useState('');
+    // const handleSubmit = (e, url: string, active:string) => {
+    //     e.preventDefault();
+    //     setActive(active);
+    //     window.location.href = url;
     // }
+    console.log(active);
 
-    const items = links?.map((link) => {
+    const items = links.map((link) => {
         return (
             <Anchor
                 component={Link}
+                key={link.label}
                 to={link.link}
-                className="link "
+                p={'6px'}
+                fw={'bolder'}
+                td={'none'}
+                className={classes.link}
                 data-active={active === link.link || undefined}
-                onClick={(e) => {
-                    e.preventDefault();
-                    setActive(link.link);
-                }}
+                onClick={() => setActive(link.link)}
             >
                 {link.label}
             </Anchor>
@@ -80,17 +85,21 @@ const Navbar = () => {
 
 
     return (
-        <header className="header">
-            <Container size="md" className="inner">
+        <header className={classes.header}>
+            <Container size="md" className={classes.inner}>
                 <Anchor
                     underline="never"
                     component={Link}
-                    to={'/'}>
-                    <Box>
+                    to={'/'}
+                    onClick={() => {
+                        setActive('')
+                    }}
+                >
+                    <Box className={classes.title}>
                         MovieTIME
                     </Box>
                 </Anchor>
-                <Group gap={20} visibleFrom="xs">
+                <Group gap={20} visibleFrom="xs" className={classes.menu}>
                     {items}
                 </Group>
                 <Burger opened={opened} onClick={toggle} hiddenFrom="xs" size="sm" />
