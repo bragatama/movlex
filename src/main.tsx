@@ -4,7 +4,7 @@ import App from './App.tsx'
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import './index.css'
-import { Container, createTheme, MantineProvider, rem } from '@mantine/core';
+import { ColorSchemeScript, Container, createTheme, MantineProvider, rem } from '@mantine/core';
 import { NavigationProgress } from '@mantine/nprogress'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home.tsx';
@@ -65,6 +65,7 @@ const router = createBrowserRouter([
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
+    <ColorSchemeScript />
     <MantineProvider theme={theme} defaultColorScheme='dark'>
       <NavigationProgress />
       <RouterProvider router={router} />

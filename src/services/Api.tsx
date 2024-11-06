@@ -2,7 +2,10 @@ import axios from 'axios'
 const baseUrl = 'https://api.themoviedb.org/3'
 export const imageUrl = 'https://image.tmdb.org/t/p/w500'
 export const imageOriginalUrl = 'https://image.tmdb.org/t/p/original'
+export const genreUrl = 'https://api.themoviedb.org/3/genre'
+// Movie URL
 export const movieUrl = 'https://api.themoviedb.org/3/movie'
+// Series URL
 export const serieURL = 'https://api.themoviedb.org/3/tv'
 // const apiKey = import.meta.env.VITE_API_KEY
 const appKey = import.meta.env.VITE_APP_TOKEN
@@ -44,9 +47,18 @@ export const getLogo = async (id: number, type: string, params = {}) => {
 }
 
 // Get popular movies
-export const homeList = async (list: string, params = {}) => {
-    const movieRes = await axios.get(
-        `${movieUrl}/${list}?language=en-US`, config(params)
+export const homeList = async (list: string, type: string, params = {}) => {
+    const res = await axios.get(
+        type === "movie"
+            ? `${movieUrl}/${list}?language=en-US`
+            : `${serieURL}/${list}?language=en-US`
+        , config(params)
     )
-    return movieRes
+    return res
+}
+
+export const getGenre = async (type: string, paramms = {}) => {
+    const res = await axios.get(`${genreUrl}/${type}/list?language=en`, config(paramms)
+    )
+    return res
 }

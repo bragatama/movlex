@@ -7,7 +7,7 @@ const Home = () => {
     return (
         <>
             <MainCarousel />
-            <Box pt={'md'}>
+            <Box pt={'xl'}>
                 <Container size={'mainXl'}
                 // right={'0px'}
                 >
@@ -15,18 +15,13 @@ const Home = () => {
                         direction={'column'}
                         gap={'xs'}
                     >
-                        <MainCard type='popular' label='Popular Movies'/>
-                        <MainCard type='top_rated' label='Top Rated Movies'/>
-                        <h1>test pertama</h1>
-                        <h1>test Kedua</h1>
-                        <h1>test Ketiga</h1>
+                        <MainCard type='movie' sort='popular' label='Popular Movies'/>
+                        <MainCard type='movie' sort='top_rated' label='Top Rated Movies'/>
+                        <MainCard type='tv' sort='popular' label='Popular TV Series'/>
+                        <MainCard type='tv' sort='top_rated' label='Top Rated TV Series'/>
                     </Flex>
                 </Container>
             </Box>
-            <h1>test</h1>
-            <h1>test</h1>
-            <h1>test</h1>
-            <h1>test</h1>
         </>
     );
 }

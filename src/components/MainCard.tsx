@@ -1,70 +1,58 @@
 import { Carousel } from "@mantine/carousel";
-import { AspectRatio, Box, Divider, Flex, HoverCard, Image, Paper } from "@mantine/core";
-import { MovieList } from "../types/types";
-import { homeList, imageOriginalUrl, moviesList } from "../services/Api";
+import { AspectRatio, Box, Divider, Flex, Image, Paper, Text, Title } from "@mantine/core";
+import { genreAll, List } from "../types/types";
+import { homeList, imageOriginalUrl } from "../services/Api";
 import classes from '../css/CarouselCard.module.css'
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
+import moment from 'moment'
 
-const Card = (item: MovieList) => {
-    // const [hover, setHover] = useState(false);
-    // const timerRef = useRef()
-    // const changeHoverActive = () => {
-    //     timerRef.current = setTimeout(() => {
-    //         setHover(true)
-    //     }, 500);
-    // }
-    // const changeHoverDeactive = () => {
-    //     if (timerRef.current) {
-    //         setTimeout(() => {
-    //             setHover(false)
-    //         }, 500);
-    //         clearTimeout(timerRef.current)
-    //     }
-    // }
+const Card = (item: List) => {
+
+    const matchGenres = (genres: { id: number, name: string }[], genreList: { id: number, name: string }) => genres
+        .filter(genre => genreList.includes(genre.id))
+        .slice(0, 1)
+        .map((genre) => (
+            <div key={genre.id}>
+                <Text
+                    size="sm"
+                    fw={500}
+                >{genre.name}</Text>
+            </div>
+        ));
     return (
         <Paper
-        // onMouseEnter={changeHoverActive}
-        // onMouseLeave={changeHoverDeactive}
-        className={classes.poster}
-        shadow="xl"
+            // onMouseEnter={changeHoverActive}
+            // onMouseLeave={changeHoverDeactive}
+            className={classes.poster}
         >
-            <HoverCard
-                shadow="md"
-                openDelay={150}
-
+            <AspectRatio ratio={2 / 3}>
+                <Image
+                    src={`${imageOriginalUrl}/${item.poster_path}`}
+                    radius={'md'}
+                />
+            </AspectRatio>
+            <Flex
+                justify={'flex-start'}
+                direction={'column'}
             >
-                <HoverCard.Target>
-                    <AspectRatio ratio={2 / 3}>
-                        <Image
-                            src={`${imageOriginalUrl}/${item.poster_path}`}
-                            radius={'md'}
-                        />
-                    </AspectRatio>
-                </HoverCard.Target>
-                <HoverCard.Dropdown>
-                    <Flex
-                        justify={'flex-start'}
-                        direction={'column'}
-                    >
-                        <h2>{item.title}</h2>
-                    </Flex>
-                </HoverCard.Dropdown>
-            </HoverCard>
+                <Title order={4} pt={"1vh"} fw={1000}>{item.title ? item.title : item.name}</Title>
+                {matchGenres(genreAll, item.genre_ids)}
+            </Flex>
         </Paper>
     )
 }
 
-const MainCard = ({ type, label }: { type: string, label: string }) => {
+const MainCard = ({ sort, type, label }: { sort: string, type: string, label: string }) => {
     const [data, setData] = useState([]);
     useEffect(() => {
-        homeList(type)
+        homeList(sort, type)
             .then((res) => {
                 setData(res.data.results)
             })
             .catch((err) => {
                 console.log(err, 'error');
             })
-    }, [type]);
+    }, [sort, type]);
 
     const slides = data && data.map((item) => (
         <Carousel.Slide key={item.id}>
@@ -77,11 +65,10 @@ const MainCard = ({ type, label }: { type: string, label: string }) => {
             <Box
                 h={'100%'}
                 display={'flex'}
-            // w={'94vw'}
             >
                 <Carousel
-                    slideSize={{ base: '40%', sm: '30%', md: '15%' }}
-                    slideGap={'sm'}
+                    slideSize={{ base: '40%', sm: '30%', md: '18%' }}
+                    slideGap={'xl'}
                     style={{
                         marginLeft: 'calc((-100vw + 100%) / 2)',
                         marginRight: 'calc((-100vw + 100%) / 2)',
@@ -96,7 +83,6 @@ const MainCard = ({ type, label }: { type: string, label: string }) => {
                 </Carousel>
             </Box >
             <Divider mt={'5vh'} />
-
         </>
     );
 }

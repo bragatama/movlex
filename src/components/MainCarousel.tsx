@@ -1,10 +1,11 @@
 import { Carousel } from "@mantine/carousel";
-import { Image, Paper, Text, Title } from "@mantine/core";
+import { Flex, Image, Paper, Text, Title } from "@mantine/core";
 import { useEffect, useRef, useState } from "react";
 import classes from '../css/CarouselCard.module.css'
 import Autoplay from "embla-carousel-autoplay";
 import { fetchTrendingCarousel, getLogo, imageOriginalUrl } from "../services/Api";
-import { TrendingAll } from "../types/types";
+import { genreAll, TrendingAll } from "../types/types";
+import moment from "moment";
 
 const Card = (item: TrendingAll) => {
     const [logo, setLogo] = useState('');
@@ -17,7 +18,25 @@ const Card = (item: TrendingAll) => {
                 console.log(error, 'error');
             })
     }, [item.id, item.media_type]);
-
+    // genre
+    const matchGenres = (genres: [{ id: number, name: string }], genreList: [{ id: number, name: string }]) => genres
+        .filter(genre => genreList.includes(genre.id))
+        .map((genre) => (
+            <div key={genre.id}>
+                <Paper
+                    radius={'md'}
+                    withBorder
+                    px={'sm'}
+                >
+                    <Text
+                        className={classes.genre}
+                        fw={900}
+                    >{genre.name}</Text>
+                </Paper>
+            </div>
+        ));
+    // console.log(genre);
+    const releaseDate = moment(item.release_date ? item.release_date : item.first_air_date).format("YYYY")
     return (
         <Paper
             shadow='md'
@@ -31,12 +50,21 @@ const Card = (item: TrendingAll) => {
                 </div>
                 <div>
                     <Text className={classes.category} size='xs'>
-                        {item.media_type}
+                        {item.media_type} | {releaseDate}
                     </Text>
-                    <Title className={classes.title}>
+                    <Title className={classes.title}
+                        mb={'1vh'}>
                         {item.title ? item.title : item.name}
                     </Title>
-                    <Text className={classes.description}>
+                    <Flex
+                        justify={'flex-start'}
+                        direction={'row'}
+                        wrap={'wrap'}
+                        gap={{ base: 'xs', md: 'md' }}
+                    >
+                        {matchGenres(genreAll, item.genre_ids)}
+                    </Flex>
+                    <Text className={classes.description} lineClamp={4}>
                         {item.overview}
                     </Text>
                 </div>

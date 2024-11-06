@@ -61,14 +61,6 @@
     -o-transition: transform 0.5s;
 }
 
-.poster:hover {
-    transform: scale(1.2);
-    position: absolute;
-    -webkit-transform: scale(1.2);
-    -moz-transform: scale(1.2);
-    -ms-transform: scale(1.2);
-    -o-transform: scale(1.2);
-}
 
 .child:first-child {
     padding-bottom: 10px;
@@ -109,10 +101,15 @@
     -o-border-radius: var(--mantine-radius-sm);
 }
 
+.genre {
+    font-size: large;
+}
+
 .description {
     color: var(--mantine-color-white);
-    font-weight: 300;
+    font-weight: 500;
     height: auto;
+    margin-top: 3vw;
     line-height: normal;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -159,6 +156,12 @@
         -webkit-line-clamp: 4;
         -webkit-box-orient: vertical;
         overflow: hidden;
+    }
+}
+
+@media (max-width:781px){
+    .genre {
+        font-size: small;
     }
 }
 
