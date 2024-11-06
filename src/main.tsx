@@ -4,15 +4,39 @@ import App from './App.tsx'
 import '@mantine/core/styles.css';
 import '@mantine/carousel/styles.css';
 import './index.css'
-import { createTheme, MantineProvider } from '@mantine/core';
+import { Container, createTheme, MantineProvider, rem } from '@mantine/core';
 import { NavigationProgress } from '@mantine/nprogress'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home.tsx';
 import '@mantine/nprogress/styles.css';
 
+const CONTAINER_SIZES: Record<string, string> = {
+  xxs: rem(300),
+  xs: rem(400),
+  sm: rem(500),
+  md: rem(600),
+  lg: rem(700),
+  xl: rem(1200),
+  xxl: rem(1700),
+  mainXl: '90vw',
+}
+
 const theme = createTheme({
   fontFamily: 'Poppins, sans-serif',
-})
+  components: {
+    Container: Container.extend({
+      vars: (_, { size, fluid }) => ({
+        root: {
+          '--container-size': fluid
+            ? '100%'
+            : size !== undefined && size in CONTAINER_SIZES
+              ? CONTAINER_SIZES[size]
+              : rem(size)
+        }
+      })
+    })
+  }
+});
 
 const router = createBrowserRouter([
   {

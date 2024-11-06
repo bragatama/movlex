@@ -1,3 +1,14 @@
+export interface TrendingAll {
+    id: number,
+    backdrop_path: string,
+    name?: string,
+    title?: string,
+    media_type: string,
+    release_date?: string,
+    first_air_date?: string,
+    overview: string,
+}
+
 export interface Movies {
     adult: boolean,
     backdrop_path: string,
@@ -21,6 +32,23 @@ export interface Movies {
     spoken_language: [],
     status: string,
     tagline: string,
+    title: string,
+    video: boolean,
+    vote_average: number,
+    vote_count: number
+}
+
+export interface MovieList {
+    adult: boolean,
+    backdrop_path: string,
+    genre_ids: [],
+    id: number,
+    original_language: string,
+    original_title: string,
+    overview: string,
+    popularity: number,
+    poster_path: string,
+    release_date: string,
     title: string,
     video: boolean,
     vote_average: number,

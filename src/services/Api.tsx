@@ -28,24 +28,25 @@ export const fetchTrendingCarousel = async (timeWindow = 'day', params = {}) => 
     return res;
 }
 
-export const getMovieLogo = async (movieId: number, params = {}) => {
-    const movieRes = await axios.get(
-        `${movieUrl}/${movieId}/images?include_image_language=en`, config(params)
-    )
-    // const result = res.data.logos ? res : ''
-    return movieRes
-}
-
+// Get LOGO movie or serie
 export const getLogo = async (id: number, type: string, params = {}) => {
     if (type === 'movie') {
         const movieRes = await axios.get(
-            `${movieUrl}/${id}/images?include_image_language=en`, config(params)
+            `${movieUrl}/${id}/images?include_image_language=en,null`, config(params)
         )
         return movieRes
     } else {
         const seriesRes = await axios.get(
-            `${serieURL}/${id}/images?include_image_language=en`, config(params)
+            `${serieURL}/${id}/images?include_image_language=en,null`, config(params)
         )
         return seriesRes
     }
+}
+
+// Get popular movies
+export const homeList = async (list: string, params = {}) => {
+    const movieRes = await axios.get(
+        `${movieUrl}/${list}?language=en-US`, config(params)
+    )
+    return movieRes
 }

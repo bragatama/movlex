@@ -4,23 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import classes from '../css/CarouselCard.module.css'
 import Autoplay from "embla-carousel-autoplay";
 import { fetchTrendingCarousel, getLogo, imageOriginalUrl } from "../services/Api";
+import { TrendingAll } from "../types/types";
 
-
-
-interface CarouselProps {
-    'id': number;
-    'backdrop_path': string;
-    'poster_path': string;
-    'name': string,
-    'title': string;
-    'media_type': string;
-    'release_date': string;
-    'first_air_date': string,
-    'overview': string;
-    'logo': string,
-
-}
-const Card = (item: CarouselProps) => {
+const Card = (item: TrendingAll) => {
     const [logo, setLogo] = useState('');
     useEffect(() => {
         getLogo(item.id, item.media_type === 'movie' ? item.media_type : 'tv')
@@ -38,7 +24,6 @@ const Card = (item: CarouselProps) => {
             // p="xl"
             style={{ backgroundImage: `linear-gradient(45deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.5) 45%, rgba(0,0,0,0) 100%),url(${imageOriginalUrl}/${item.backdrop_path})` }}
             className={classes.card}>
-            {/* Isi card */}
             <div></div>
             <div className={classes.content}>
                 <div className={classes.image}>
@@ -49,7 +34,7 @@ const Card = (item: CarouselProps) => {
                         {item.media_type}
                     </Text>
                     <Title className={classes.title}>
-                        {item.title ? item.title : item.name} - (<span style={{ color: 'white', opacity: 0.7 }}>{item.release_date ? item.release_date : item.first_air_date}</span>)
+                        {item.title ? item.title : item.name}
                     </Title>
                     <Text className={classes.description}>
                         {item.overview}
@@ -61,7 +46,7 @@ const Card = (item: CarouselProps) => {
 }
 
 const MainCarousel = () => {
-    const [data1, setData1] = useState([]);
+    const [data, setData1] = useState([]);
     useEffect(() => {
         fetchTrendingCarousel('day')
             .then((res) => {
@@ -72,11 +57,7 @@ const MainCarousel = () => {
             })
     }, []);
 
-    // console.log(getMovieLogo(933260));
-    // console.log(data1);
-
-
-    const slides = data1 && data1.map((item) => (
+    const slides = data && data.slice(0, 10).map((item) => (
         <Carousel.Slide key={item.id}>
             <Card {...item} />
         </Carousel.Slide>
@@ -90,7 +71,7 @@ const MainCarousel = () => {
     }));
 
     return (
-        <div>
+        <>
             <div style={{ height: '70dvh', display: 'flex', width: '100%' }}>
                 <Carousel
                     height={'100%'}
@@ -106,7 +87,7 @@ const MainCarousel = () => {
                     {slides}
                 </Carousel>
             </div>
-        </div>
+        </>
     );
 }
 

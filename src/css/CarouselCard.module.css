@@ -1,7 +1,12 @@
 .indicator {
     width: 12px;
     height: 4px;
-    transition: width 250ms ease;
+    transition: all 250ms ease;
+    -webkit-transition: all 250ms ease;
+    -moz-transition: all 250ms ease;
+    -ms-transition: all 250ms ease;
+    -o-transition: all 250ms ease;
+    opacity: 0;
 
     &[data-active] {
         width: 40px;
@@ -11,11 +16,24 @@
 .controls {
     transition: opacity 150ms ease;
     opacity: 0;
+    -webkit-transition: opacity 150ms ease;
+    -moz-transition: opacity 150ms ease;
+    -ms-transition: opacity 150ms ease;
+    -o-transition: opacity 150ms ease;
+}
+
+.slide {
+    outline: px solid red;
+    outline-offset: -2px;
+    width: fit-content;
 }
 
 .root {
     &:hover {
         .controls {
+            opacity: 1;
+        }
+        .indicator {
             opacity: 1;
         }
     }
@@ -30,6 +48,26 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+}
+
+.poster {
+    height: 100%;
+    transition: transform 0.5s;
+    box-shadow: 4px black;
+    z-index: 100000;
+    -webkit-transition: transform 0.5s;
+    -moz-transition: transform 0.5s;
+    -ms-transition: transform 0.5s;
+    -o-transition: transform 0.5s;
+}
+
+.poster:hover {
+    transform: scale(1.2);
+    position: absolute;
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
 }
 
 .child:first-child {
@@ -92,7 +130,7 @@
     .indicator {
         width: 6px;
     }
-    
+
     .card {
         padding: 20px;
     }
