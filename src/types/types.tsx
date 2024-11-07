@@ -8,6 +8,21 @@ export interface TrendingAll {
     release_date?: string,
     first_air_date?: string,
     overview: string,
+    vote_average: number,
+}
+
+export interface TrendingMovie {
+    backdrop_path: string,
+    id: number,
+    title: string,
+    poster_path: string,
+    original_language: string,
+    genre_ids: Genre,
+    popularity: number,
+    release_date: string,
+    vote_average: number,
+    vote_count: number,
+    overview: string,
 }
 
 interface Genre {
@@ -168,8 +183,10 @@ export interface List {
     original_title: string,
     origin_country?: string,
     overview: string,
+    media_type: string,
     popularity: number,
     poster_path: string,
+    is_loading: boolean,
     release_date?: string,
     first_air_date?: string
     title?: string,

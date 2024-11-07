@@ -6,7 +6,7 @@ const Home = () => {
 
     return (
         <>
-            <MainCarousel />
+            <MainCarousel type='all' time_window='week'/>
             <Box pt={'xl'}>
                 <Container size={'mainXl'}
                 // right={'0px'}

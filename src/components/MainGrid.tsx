@@ -1,14 +1,12 @@
-import { Carousel } from "@mantine/carousel";
-import { Anchor, AspectRatio, Box, Divider, Flex, Image, Paper, Skeleton, Text, Title } from "@mantine/core";
-import { genreAll, List } from "../types/types";
-import { homeList, imageOriginalUrl } from "../services/Api";
+import { Anchor, AspectRatio, Box, Container, Divider, Flex, Grid, Image, Paper, Skeleton, Text, Title } from '@mantine/core';
+import { useEffect, useState } from 'react';
+import { genreAll, TrendingMovie } from '../types/types';
 import classes from '../css/CarouselCard.module.css'
-import { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
-import moment from "moment";
+import { Link } from 'react-router-dom';
+import { fetchTrending, imageOriginalUrl } from '../services/Api';
+import moment from 'moment';
 
-const Card = (item: List) => {
-
+const Card = (item: TrendingMovie) => {
     const releaseDate = moment(item?.release_date || item?.first_air_date).format("YYYY")
     const matchGenres = (genres: { id: number, name: string }[], genreList: { id: number, name: string }) => genres
         .filter(genre => genreList.includes(genre.id))
@@ -23,7 +21,8 @@ const Card = (item: List) => {
                 >{genre.name} • {releaseDate} • {item.vote_average.toFixed(1)}★</Text>
             </div>
         ));
-    return (
+
+    return (<>
         <Anchor
             component={Link}
             to={'/'}
@@ -46,25 +45,33 @@ const Card = (item: List) => {
                         direction={'column'}
                         justify={'flex-end'}
                         h={'100%'}
+                        px={'10%'}
                     >
                         <Title style={{ textAlign: 'center' }} order={4} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
                         {matchGenres(genreAll, item.genre_ids)}
+                        <Text
+                            size='xs'
+                            lineClamp={2}
+                            c={'white'}
+                            pt={'1vw'}
+                        >
+                            {item.overview}
+                        </Text>
                     </Flex>
                 </Box>
                 {/* <Title style={{ textAlign: 'center' }} order={4} pt={"1vh"} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
                 {matchGenres(genreAll, item.genre_ids)} */}
             </Paper>
         </Anchor>
-    )
+    </>)
 }
 
-const MainCard = ({ sort, type, label }: { sort: string, type: string, label: string }) => {
+const MainGrid = ({ type, time_window }: { type: string, time_window: string }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
-    console.log(loading, 'in maincard');
 
     useEffect(() => {
-        homeList(sort, type)
+        fetchTrending(type, time_window)
             .then((res) => {
                 setData(res.data.results)
             })
@@ -73,48 +80,38 @@ const MainCard = ({ sort, type, label }: { sort: string, type: string, label: st
             }).finally(() => {
                 setLoading(false)
             })
-    }, [sort, type]);
+        return () => {
+        };
+    }, [time_window, type]);
 
-    data.map((element: string) => {
-        element['media_type'] = type
-        return element
-    })
-
-
-
-    const slides = data && data?.map((item, i) => (
-        <Carousel.Slide key={item.id}>
+    const gridChild = data && data.map((item, i) => (
+        <Grid.Col key={item.id} span={{ base: 20, sm: 10, md: 5, lg: 4 }}>
             {loading ?
                 <Skeleton key={i} height={400} />
-                : <Card {...item} isLoading={loading} />
+                : <Card {...item} />
             }
-        </Carousel.Slide>
+
+        </Grid.Col>
     ))
+
     return (
         <>
-            <h2 style={{ margin: '0px' }}>{label}</h2>
-            <Box
-                h={'100%'}
-                display={'flex'}
-            >
-                <Carousel
-                    slideSize={{ base: '40%', sm: '30%', md: '18%' }}
-                    slideGap={'xl'}
-                    style={{
-                        marginLeft: 'calc((-100vw + 100%) / 2)',
-                        marginRight: 'calc((-100vw + 100%) / 2)',
-                        flex: 1,
-                        width: '100%',
-                    }}
-                    classNames={classes}
-                    slidesToScroll={'auto'}
-                >
-                    {slides}
-                </Carousel>
-            </Box >
-            <Divider mt={'5vh'} />
+            <Box pt={'xl'}>
+                <Container size={'mainXl'}>
+                    <Title order={2} style={{ textTransform: 'uppercase' }}>{type === 'movie' ? 'movies' : 'tv series'}</Title>
+                    <Divider />
+                    <Grid
+                        columns={20}
+                        p={'8vh 0 10vh'}
+                        gutter={{ base: 'lg', md: 'xl' }}
+                        justify='center'
+                    >
+                        {gridChild}
+                    </Grid>
+                </Container>
+            </Box>
         </>
     );
 }
 
-export default MainCard;
+export default MainGrid;

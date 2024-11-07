@@ -9,6 +9,9 @@ import { NavigationProgress } from '@mantine/nprogress'
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import Home from './pages/Home.tsx';
 import '@mantine/nprogress/styles.css';
+import Movies from './pages/movies/Movies.tsx';
+import Series from './pages/series/Series.tsx';
+import MovieDetail from './pages/movies/MovieDetail.tsx';
 
 const CONTAINER_SIZES: Record<string, string> = {
   xxs: rem(300),
@@ -49,15 +52,19 @@ const router = createBrowserRouter([
       },
       {
         path: "/movies",
-        element: <h1>This is a movie</h1>
+        element: <Movies />
       },
       {
         path: "/series",
-        element: <h1>This is a tv serie</h1>
+        element: <Series />
       },
       {
         path: "/browse",
         element: <h1>This is a browse</h1>
+      },
+      {
+        path: "/:type/:id",
+        element: <MovieDetail />
       }
     ]
   },

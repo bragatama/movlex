@@ -51,16 +51,56 @@
 }
 
 .poster {
-    height: 100%;
-    transition: transform 0.5s;
+    position: relative;
+    margin: 0 auto;
+    height: fit-content;
+    overflow: hidden;
+    display: block;
+    width: fit-content;
     box-shadow: 4px black;
-    z-index: 100000;
+}
+
+.poster:hover img {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+    -o-transform: scale(1.2);
+}
+
+.poster img {
+    transition: transform 0.5s;
     -webkit-transition: transform 0.5s;
     -moz-transition: transform 0.5s;
     -ms-transition: transform 0.5s;
     -o-transition: transform 0.5s;
 }
 
+.poster:hover {
+    .overlay_card {
+        opacity: 1;
+    }
+}
+
+.overlay_card {
+    position: absolute;
+    clear: both;
+    border-radius: var(--mantine-radius-xs);
+    bottom: 0%;
+    width: 100%;
+    height: 50%;
+    background: linear-gradient(        0deg,        rgba(0, 0, 0, 1) 0%,        rgba(0, 0, 0, 0.75) 50%,        rgba(0, 0, 0, 0) 100%    );
+    opacity: 0;
+    transition: opacity 0.5s;
+    -webkit-transition: opacity 0.5s;
+    -moz-transition: opacity 0.5s;
+    -ms-transition: opacity 0.5s;
+    -o-transition: opacity 0.5s;
+    -webkit-border-radius: var(--mantine-radius-xs);
+    -moz-border-radius: var(--mantine-radius-xs);
+    -ms-border-radius: var(--mantine-radius-xs);
+    -o-border-radius: var(--mantine-radius-xs);
+}
 
 .child:first-child {
     padding-bottom: 10px;
@@ -74,8 +114,11 @@
 
 .image {
     padding: 6px;
-    width: 60vh;
-    /* height: 50%; */
+    max-width: 60vh;
+}
+
+.images {
+    max-height: cover;
 }
 
 .title {
@@ -159,7 +202,7 @@
     }
 }
 
-@media (max-width:781px){
+@media (max-width: 781px) {
     .genre {
         font-size: small;
     }
