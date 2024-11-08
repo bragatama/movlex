@@ -136,7 +136,7 @@
     text-transform: uppercase;
     font-size: 1.5rem;
     width: fit-content;
-    padding: 4px 8px 4px 0px;
+    /* padding: 2px 2px; */
     border-radius: var(--mantine-radius-sm);
     -webkit-border-radius: var(--mantine-radius-sm);
     -moz-border-radius: var(--mantine-radius-sm);

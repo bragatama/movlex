@@ -17,7 +17,7 @@
     position: fixed;
     z-index: 100000;
     transition: ease-in-out 150ms;
-    background: rgba(0, 0, 0, 0.30);
+    background: rgba(0, 0, 0, 0.3);
     width: 100vw;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
     backdrop-filter: blur(11.8px);
@@ -33,7 +33,6 @@
     justify-content: space-between;
     align-items: center;
 }
-
 
 .title {
     font-weight: 900;

@@ -5,7 +5,7 @@ const Movies = () => {
         <>
             <MainGrid type="movie" time_window="week" />
         </>
-    )
-}
+    );
+};
 
 export default Movies;
