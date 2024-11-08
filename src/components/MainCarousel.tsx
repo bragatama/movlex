@@ -3,7 +3,6 @@ import {
     Anchor,
     Flex,
     Grid,
-    Image,
     Paper,
     Skeleton,
     Text,
@@ -18,25 +17,11 @@ import moment from "moment";
 import { Link } from "react-router-dom";
 import GetCertification from "./GetCertification";
 import FetchLogo from "./FetchLogo";
+import GetGenre from "./GetGenre";
 
 const Card = (item: TrendingAll) => {
     // console.log(certificate);
     // genre
-    const matchGenres = (
-        genres: [{ id: number; name: string }],
-        genreList: [{ id: number; name: string }]
-    ) =>
-        genres
-            .filter((genre) => genreList.includes(genre.id))
-            .map((genre) => (
-                <div key={genre.id}>
-                    <Paper radius={"md"} withBorder px={"sm"}>
-                        <Text className={classes.genre} c={"white"} fw={900}>
-                            {genre.name}
-                        </Text>
-                    </Paper>
-                </div>
-            ));
     const releaseDate = moment(
         item?.release_date || item?.first_air_date
     ).format("YYYY");
@@ -122,7 +107,29 @@ const Card = (item: TrendingAll) => {
                             wrap={"wrap"}
                             gap={{ base: "xs", md: "md" }}
                         >
-                            {matchGenres(genreAll, item.genre_ids)}
+                            <GetGenre
+                                genres={genreAll}
+                                genreList={item.genre_ids}
+                                renderItem={(genres: {
+                                    id: number;
+                                    name: string;
+                                }) => (
+                                    <Paper
+                                        key={genres.id}
+                                        radius={"md"}
+                                        withBorder
+                                        px={"sm"}
+                                    >
+                                        <Text
+                                            className={classes.genre}
+                                            c={"white"}
+                                            fw={900}
+                                        >
+                                            {genres.name}
+                                        </Text>
+                                    </Paper>
+                                )}
+                            />
                         </Flex>
                         <Text className={classes.description} lineClamp={2}>
                             {item.overview}

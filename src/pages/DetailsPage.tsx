@@ -1,31 +1,32 @@
 import {
     AspectRatio,
-    Blockquote,
     Box,
+    Button,
     Container,
     Flex,
     Grid,
     Image,
     LoadingOverlay,
     Paper,
+    Skeleton,
     Text,
     Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { getCertification, getDetail, imageOriginalUrl } from "../services/Api";
-import { Certification, Detail } from "../types/types";
+import { getDetail, imageOriginalUrl } from "../services/Api";
+import { Detail } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
 import FetchLogo from "../components/FetchLogo";
+import { IconCircleCheck, IconPlus } from "@tabler/icons-react";
+import GetCredit from "../components/GetCredit";
 
 const DetailsPage = () => {
     const router = useParams();
     const { type, id } = router;
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
-    const [check, setCheck] = useState<Certification>();
-    // console.log(check.);
 
     useEffect(() => {
         getDetail(type, id)
@@ -38,50 +39,46 @@ const DetailsPage = () => {
             .finally(() => {
                 setTimeout(() => {
                     setLoading(false);
-                }, 500);
+                }, 200);
             });
-        getCertification(type, id)
-            .then((res) => {
-                const region = res.find(
-                    (region: string) => region.iso_3166_1 === "US"
-                );
-                setCheck(region);
-            })
-            .catch((err) => {
-                console.log(err, "err");
-            });
+        window.scrollTo(0, 0);
     }, [type, id]);
 
-    if (loading) {
-        return (
-            <Flex justify={"center"}>
-                <LoadingOverlay
-                    visible={true}
-                    zIndex={1000}
-                    overlayProps={{ radius: "sm", blur: 2 }}
-                    loaderProps={{ type: "bars" }}
-                />
-            </Flex>
-        );
-    }
+    // useEffect(() => {
+    //     const fetchData = async () =>{
+    //         try {
+    //             const [detailsData, certificationData]=await Promise.all([
+    //                 getDetail(type, id)
+    //                 getCertification(type,id)
+    //             ])
+    //             setDetails(detailsData)
+    //             setC
+    //         } catch (error) {
+
+    //         }
+    //     }
+    //     return () => {
+
+    //     };
+    // }, []);
+
+    // if (loading) {
+    //     return (
+    //         <Flex justify={"center"}>
+    //             <LoadingOverlay
+    //                 visible={true}
+    //                 zIndex={1000}
+    //                 overlayProps={{ radius: "sm", blur: 2 }}
+    //                 loaderProps={{ type: "bars" }}
+    //             />
+    //         </Flex>
+    //     );
+    // }
 
     const title = details?.title || details?.name;
     const releaseDate = moment(
         details?.release_date || details?.first_air_date
     ).format("MMM Do, YYYY");
-    const ratingCheck = (type: string) => {
-        if (type === "movie") {
-            for (let i = 0; i <= check?.release_dates.length; i++) {
-                if (!check?.release_dates[i].certification) {
-                    continue;
-                } else {
-                    return check?.release_dates[i].certification;
-                }
-            }
-        } else {
-            return check.rating;
-        }
-    };
 
     return (
         <Box>
@@ -98,31 +95,48 @@ const DetailsPage = () => {
                     <Flex
                         gap={"5vw"}
                         direction={{ base: "column", md: "row" }}
-                        align={"flex-start"}
-                        maw={'100%'}
+                        align={"center"}
+                        maw={"100%"}
                     >
-                        <AspectRatio ratio={2 / 3} maw={'100%'} miw={'fit-content'}>
-                            <Image
-                                src={`${imageOriginalUrl}/${details?.poster_path}`}
-                                h={"70vh"}
-                                radius={"md"}
-                            />
-                        </AspectRatio>
-                        <Box
-                        h={'auto'}
+                        <AspectRatio
+                            ratio={2 / 3}
+                            maw={"100%"}
+                            miw={"fit-content"}
+                            mah={"100%"}
+                            mih={"fit-content"}
                         >
+                            {loading ? (
+                                <Skeleton height={"auto"}>
+                                    <Image
+                                        src={"https://placehold.co/800x1200"}
+                                        h={"70vh"}
+                                        radius={"md"}
+                                    />
+                                </Skeleton>
+                            ) : (
+                                <Image
+                                    src={`${imageOriginalUrl}/${details?.poster_path}`}
+                                    h={"70vh"}
+                                    radius={"md"}
+                                />
+                            )}
+                        </AspectRatio>
+                        <Box h={"auto"}>
+                            {/* <Image
+                                src={`${imageOriginalUrl}/${details?.production_companies[0].logo_path}`}
+                            /> */}
                             <FetchLogo
                                 id={id}
                                 type={type}
                                 style={{
                                     paddingBottom: "20px",
                                     height: "25vh",
-                                    width: "25vw",
+                                    maxWidth: "30vw",
                                     objectFit: "contain",
                                 }}
                             />
                             <Title order={1} c={"white"} fw={1000}>
-                                {title} 
+                                {title}
                             </Title>
                             <Text size="md" fw={700}>
                                 {details?.original_name === details?.name
@@ -136,7 +150,7 @@ const DetailsPage = () => {
                                 columns={20}
                                 gutter={"lg"}
                                 justify="flex-start"
-                                align="flex-start"
+                                align="center"
                                 pt={"2vh"}
                             >
                                 <Grid.Col span={"content"}>
@@ -184,14 +198,61 @@ const DetailsPage = () => {
                                         {details?.vote_average.toFixed(1)} ★
                                     </Text>
                                 </Grid.Col>
+                                <Grid.Col span={"content"}>
+                                    <Button
+                                        variant="outline"
+                                        color="green"
+                                        display={"none"}
+                                    >
+                                        <IconCircleCheck size={20} />
+                                        &nbsp; In watchlist
+                                    </Button>
+                                    <Button variant="outline" color="blue">
+                                        <IconPlus size={20} />
+                                        &nbsp; Add to watchlist
+                                    </Button>
+                                </Grid.Col>
                             </Grid>
-                            <Blockquote color="white" mt={'xl'}>
-                                        {details?.tagline}
-                            </Blockquote>
+                            <Text
+                                size="xl"
+                                fw={600}
+                                fs={"italic"}
+                                c="white"
+                                py={"5vh"}
+                                pl={"3vw"}
+                            >
+                                - {details?.tagline} -
+                            </Text>
+                            <Text fw={500}>{details?.overview}</Text>
+                            <Grid pt={"2vh"} align="center" gutter={"md"}>
+                                {details?.genres?.map((genre) => (
+                                    <Grid.Col key={genre.id} span={"content"}>
+                                        <Paper
+                                            radius={"sm"}
+                                            py={"2px"}
+                                            px={"8px"}
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(200,200,200, 0.5)",
+                                            }}
+                                        >
+                                            <Text
+                                                c={"black"}
+                                                fw={600}
+                                                size="sm"
+                                            >
+                                                {genre.name}
+                                            </Text>
+                                        </Paper>
+                                    </Grid.Col>
+                                ))}
+                            </Grid>
                         </Box>
                     </Flex>
                 </Container>
             </Box>
+            <GetCredit type={type} id={id} />
+            <Box h={"100vh"}>test</Box>
         </Box>
     );
 };

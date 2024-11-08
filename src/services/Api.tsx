@@ -55,7 +55,7 @@ export const getDetail = async (
     params = {}
 ) => {
     const res = await axios.get(
-        `${baseUrl}/${type}/${id}?language=en`,
+        `${baseUrl}/${type}/${id}?language=en-US`,
         config(params)
     );
     return res?.data;
@@ -78,4 +78,16 @@ export const getCertification = async (
         config(params)
     );
     return res?.data?.results;
+};
+
+export const getCredit = async (
+    type: string | undefined,
+    id: number | string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}/credits?language=en-US`,
+        config(params)
+    );
+    return res?.data;
 };

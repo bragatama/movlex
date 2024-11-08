@@ -158,11 +158,36 @@ interface movieCertification {
     iso_639_1: string;
 }
 
+export interface Credits {
+    id: number;
+    cast: castOrCrew;
+    crew: castOrCrew;
+}
+
+interface castOrCrew {
+    adult: boolean;
+    gender: number;
+    id: number;
+    know_for_departement: string;
+    name: string;
+    original_name: string;
+    popularity: number;
+    profile_path: string;
+    cast_id: number;
+    character: string;
+    credit_id: string;
+    order: number;
+    job: string;
+}
+
 export interface Detail {
     adult: boolean;
     backdrop_path: string;
     budget?: number;
-    genres: [];
+    genres: {
+        id: number;
+        name: string;
+    };
     homepage: string;
     imdb_id?: string;
     origin_country: [];
