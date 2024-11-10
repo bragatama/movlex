@@ -7,6 +7,7 @@ import {
     Flex,
     Grid,
     Image,
+    LoadingOverlay,
     Pagination,
     Paper,
     Skeleton,
@@ -137,6 +138,21 @@ const MainGrid = ({
                 )}
             </Grid.Col>
         ));
+
+    if (loading) {
+        return (
+            <Box h={"100vh"}>
+                <Flex justify={"center"} align={"center"} h={"90vh"}>
+                    <LoadingOverlay
+                        overlayProps={{'--overlay-bg':'black'}}
+                        zIndex={1000}
+                        visible={loading}
+                        loaderProps={{ color: "blue", type: "bars" }}
+                    />
+                </Flex>
+            </Box>
+        );
+    }
 
     return (
         <>

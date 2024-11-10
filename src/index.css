@@ -14,7 +14,10 @@
 }
 
 :root[data-mantine-color-scheme="dark"] {
-    --mantine-color-body: #000000!important;
+    --mantine-color-body: #000000 !important;
+    .mantine-LoadingOverlay-overlay {
+        background-color: #000000;
+    }
 }
 
 :root[data-mantine-color-scheme="light"] {
