@@ -1,4 +1,5 @@
 import {
+    Anchor,
     AspectRatio,
     Box,
     Button,
@@ -6,98 +7,85 @@ import {
     Flex,
     Grid,
     Image,
-    LoadingOverlay,
     Paper,
     Skeleton,
     Text,
     Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { getDetail, imageOriginalUrl } from "../services/Api";
-import { Detail } from "../types/types";
+import { Link, useParams } from "react-router-dom";
+import { getDetail, getVideos, imageOriginalUrl } from "../services/Api";
+import { Detail, Videos } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
 import FetchLogo from "../components/FetchLogo";
 import { IconCircleCheck, IconPlus } from "@tabler/icons-react";
 import GetCredit from "../components/GetCredit";
+import GetTrailer from "../components/GetTrailer";
 
 const DetailsPage = () => {
     const router = useParams();
     const { type, id } = router;
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
+    const [video, setVideo] = useState();
 
     useEffect(() => {
-        getDetail(type, id)
-            .then((res) => {
-                setDetails(res);
-            })
-            .catch((err) => {
-                console.log(err, "error");
-            })
-            .finally(() => {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);
-            });
+        const fetchData = async () => {
+            try {
+                const [detailsData, videosData] = await Promise.all([
+                    getDetail(type, id),
+                    getVideos(type, id),
+                ]);
+                setDetails(detailsData);
+
+                const trailer = videosData?.results.find(
+                    (video) => video.type === "Trailer"
+                );
+                setVideo(trailer);
+            } catch (error) {
+                console.log(error, "error");
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
         window.scrollTo(0, 0);
     }, [type, id]);
-
-    // useEffect(() => {
-    //     const fetchData = async () =>{
-    //         try {
-    //             const [detailsData, certificationData]=await Promise.all([
-    //                 getDetail(type, id)
-    //                 getCertification(type,id)
-    //             ])
-    //             setDetails(detailsData)
-    //             setC
-    //         } catch (error) {
-
-    //         }
-    //     }
-    //     return () => {
-
-    //     };
-    // }, []);
-
-    // if (loading) {
-    //     return (
-    //         <Flex justify={"center"}>
-    //             <LoadingOverlay
-    //                 visible={true}
-    //                 zIndex={1000}
-    //                 overlayProps={{ radius: "sm", blur: 2 }}
-    //                 loaderProps={{ type: "bars" }}
-    //             />
-    //         </Flex>
-    //     );
-    // }
+    console.log(video?.key);
 
     const title = details?.title || details?.name;
-    const releaseDate = moment(
-        details?.release_date || details?.first_air_date
-    ).format("MMM Do, YYYY");
+    const releaseDateMovie = moment(details?.release_date).format("YYYY");
+    const releaseDateTv =
+        details?.status === "Ended"
+            ? moment(details?.first_air_date).format("YYYY") ===
+              moment(details?.last_air_date).format("YYYY")
+                ? moment(details?.first_air_date).format("YYYY")
+                : moment(details?.first_air_date).format("YYYY") +
+                  " - " +
+                  moment(details?.last_air_date).format("YYYY")
+            : moment(details?.first_air_date).format("YYYY") + " - Present";
 
     return (
         <Box>
             <Box
+                // Background Images
                 style={{
-                    backgroundImage: `linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(0,0,0,0.7628279705436862) 30%, rgba(0,0,0,0) 100%),
+                    backgroundImage: `linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7628279705436862) 30%, rgba(0,0,0,0) 100%),
                     linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
                     url(${imageOriginalUrl}/${details?.backdrop_path})`,
                     backgroundSize: "cover",
                     backgroundPosition: "center",
                 }}
             >
-                <Container size={"mainXl"} style={{ zIndex: 1000 }} p={"4vh"}>
+                <Container size={"mainXl"} style={{ zIndex: 1000 }} py={"4vh"}>
                     <Flex
                         gap={"5vw"}
                         direction={{ base: "column", md: "row" }}
                         align={"center"}
                         maw={"100%"}
                     >
+                        {/* LOGO */}
                         <AspectRatio
                             ratio={2 / 3}
                             maw={"100%"}
@@ -122,9 +110,6 @@ const DetailsPage = () => {
                             )}
                         </AspectRatio>
                         <Box h={"auto"}>
-                            {/* <Image
-                                src={`${imageOriginalUrl}/${details?.production_companies[0].logo_path}`}
-                            /> */}
                             <FetchLogo
                                 id={id}
                                 type={type}
@@ -154,9 +139,32 @@ const DetailsPage = () => {
                                 pt={"2vh"}
                             >
                                 <Grid.Col span={"content"}>
-                                    <Text fw={600}>{releaseDate}</Text>
+                                    <Text fw={600}>
+                                        {details?.release_date
+                                            ? releaseDateMovie
+                                            : releaseDateTv}
+                                    </Text>
                                 </Grid.Col>
-                                {details?.runtime ? (
+                                {details?.number_of_seasons && (
+                                    <>
+                                        <Grid.Col span={"content"}>
+                                            <Text fw={600}>
+                                                {details.number_of_seasons}{" "}
+                                                season
+                                                {"(s)"}
+                                            </Text>
+                                        </Grid.Col>
+                                        <Grid.Col span={"content"}>
+                                            <Text fw={600}>
+                                                {details.number_of_episodes}{" "}
+                                                episode
+                                                {"(s)"}
+                                            </Text>
+                                        </Grid.Col>
+                                    </>
+                                )}
+
+                                {details?.runtime && (
                                     <Grid.Col span={"content"}>
                                         <Text fw={600}>
                                             {Math.floor(
@@ -170,8 +178,6 @@ const DetailsPage = () => {
                                             min
                                         </Text>
                                     </Grid.Col>
-                                ) : (
-                                    ""
                                 )}
 
                                 <Grid.Col span={"content"}>
@@ -199,6 +205,17 @@ const DetailsPage = () => {
                                     </Text>
                                 </Grid.Col>
                                 <Grid.Col span={"content"}>
+                                    <Button variant="outline">
+                                        <Anchor
+                                            component={Link}
+                                            to={details?.homepage}
+                                            underline="never"
+                                        >
+                                            Website
+                                        </Anchor>
+                                    </Button>
+                                </Grid.Col>
+                                <Grid.Col span={"content"}>
                                     <Button
                                         variant="outline"
                                         color="green"
@@ -213,19 +230,25 @@ const DetailsPage = () => {
                                     </Button>
                                 </Grid.Col>
                             </Grid>
-                            <Text
-                                size="xl"
-                                fw={600}
-                                fs={"italic"}
-                                c="white"
-                                py={"5vh"}
-                                pl={"3vw"}
-                            >
-                                - {details?.tagline} -
+                            {details?.tagline ? (
+                                <Text
+                                    size="xl"
+                                    fw={600}
+                                    fs={"italic"}
+                                    c="white"
+                                    py={"5vh"}
+                                    pl={"3vw"}
+                                >
+                                    {details?.tagline}
+                                </Text>
+                            ) : (
+                                ""
+                            )}
+                            <Text fw={500} py={details?.tagline ? "" : "5vh"}>
+                                {details?.overview}
                             </Text>
-                            <Text fw={500}>{details?.overview}</Text>
                             <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                {details?.genres?.map((genre) => (
+                                {details?.genres.map((genre) => (
                                     <Grid.Col key={genre.id} span={"content"}>
                                         <Paper
                                             radius={"sm"}
@@ -247,12 +270,76 @@ const DetailsPage = () => {
                                     </Grid.Col>
                                 ))}
                             </Grid>
+                            {details?.networks ? (
+                                <>
+                                    <Grid
+                                        pt={"2vh"}
+                                        align="center"
+                                        gutter={"md"}
+                                    >
+                                        {details?.networks.map((netowrk) => (
+                                            <Grid.Col
+                                                span={"content"}
+                                                key={netowrk.id}
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    p={"1vh"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200)",
+                                                    }}
+                                                >
+                                                    <Image
+                                                        src={`${imageOriginalUrl}/${netowrk.logo_path}`}
+                                                        h={"3vh"}
+                                                        title={netowrk.name}
+                                                    />
+                                                </Paper>
+                                            </Grid.Col>
+                                        ))}
+                                    </Grid>
+                                </>
+                            ) : (
+                                <Grid pt={"2vh"} align="center" gutter={"md"}>
+                                    {details?.production_companies
+                                        .slice(0, 1)
+                                        .map((production) => (
+                                            <Grid.Col
+                                                span={"content"}
+                                                key={production.id}
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    p={"1vh"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200)",
+                                                    }}
+                                                >
+                                                    <Image
+                                                        src={`${imageOriginalUrl}/${production.logo_path}`}
+                                                        h={"3vh"}
+                                                        title={production.name}
+                                                    />
+                                                </Paper>
+                                            </Grid.Col>
+                                        ))}
+                                </Grid>
+                            )}
                         </Box>
                     </Flex>
                 </Container>
             </Box>
-            <GetCredit type={type} id={id} />
-            <Box h={"100vh"}>test</Box>
+            <Container size={"mainXl"}>
+                <Flex direction={"column"} gap={"md"}>
+                    <AspectRatio ratio={16 / 9}
+                    w={'80%'}>
+                        <GetTrailer id={video?.key} />
+                    </AspectRatio>
+                    <GetCredit type={type} id={id} label="cast" />
+                </Flex>
+            </Container>
         </Box>
     );
 };

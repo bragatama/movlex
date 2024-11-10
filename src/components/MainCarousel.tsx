@@ -36,8 +36,8 @@ const Card = (item: TrendingAll) => {
                 shadow="md"
                 // p="xl"
                 style={{
-                    backgroundImage: `linear-gradient(0deg, rgba(19,19,19,1) 0%, rgba(0,0,0,0.7628279705436862) 20%, rgba(0,0,0,0) 100%)
-                    ,linear-gradient(50deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 20%, rgba(0,0,0,0) 100%),
+                    backgroundImage: `linear-gradient(0deg, rgba(0,0,0,1) 0%, rgba(0,0,0,0.7628279705436862) 20%, rgba(0,0,0,0) 60%)
+                    ,radial-gradient(at bottom left, rgba(0,0,0,1) 0%, rgba(0,0,0,0.8) 30%, rgba(0,0,0,0) 70%),
                     url(${imageOriginalUrl}/${item.backdrop_path})`,
                 }}
                 className={classes.card}
@@ -79,13 +79,26 @@ const Card = (item: TrendingAll) => {
                                 </Paper>
                             </Grid.Col>
                             <Grid.Col span={"content"}>
-                                <Text className={classes.category} size="xs">
-                                    <GetCertification
-                                        type={item.media_type}
-                                        id={item.id}
-                                        isOn={false}
-                                    />
-                                </Text>
+                                <Paper
+                                    radius={"sm"}
+                                    py={"2px"}
+                                    px={"8px"}
+                                    style={{
+                                        backgroundColor: "rgba(200,200,200)",
+                                    }}
+                                >
+                                    <Text
+                                        c={"black"}
+                                        fw={600}
+                                        className={classes.category}
+                                    >
+                                        <GetCertification
+                                            type={item.media_type}
+                                            id={item.id}
+                                            isOn={false}
+                                        />
+                                    </Text>
+                                </Paper>
                             </Grid.Col>
                             <Grid.Col span={"content"}>
                                 <Text className={classes.category} size="xs">
@@ -110,6 +123,7 @@ const Card = (item: TrendingAll) => {
                             <GetGenre
                                 genres={genreAll}
                                 genreList={item.genre_ids}
+                                single={false}
                                 renderItem={(genres: {
                                     id: number;
                                     name: string;
@@ -153,15 +167,13 @@ const MainCarousel = ({
     useEffect(() => {
         fetchTrending(type, time_window)
             .then((res) => {
-                setData(res.results);
+                setData(res?.data?.results);
             })
             .catch((err) => {
                 console.log(err, "error");
             })
             .finally(() => {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);
+                setLoading(false);
             });
     }, [time_window, type]);
 

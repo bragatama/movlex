@@ -7,6 +7,7 @@ import {
     Flex,
     Grid,
     Image,
+    Pagination,
     Paper,
     Skeleton,
     Text,
@@ -15,7 +16,7 @@ import {
 import { useEffect, useState } from "react";
 import { genreAll, TrendingMovie } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
-import { Link } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { fetchTrending, imageOriginalUrl } from "../services/Api";
 import moment from "moment";
 
@@ -100,38 +101,30 @@ const MainGrid = ({
     type: string;
     time_window: string;
 }) => {
+    const router = useParams();
+    const { page }: { page: number } = router;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
+    const activePage = parseInt(page) || 1;
+
+    console.log(page);
 
     useEffect(() => {
-        fetchTrending(type, time_window)
+        fetchTrending(type, time_window, page)
             .then((res) => {
-                setData(res.results);
+                setData(res?.data);
             })
             .catch((err) => {
                 console.log(err, "error");
             })
             .finally(() => {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);
+                setLoading(false);
             });
-    }, [time_window, type]);
-
-    // useEffect(() => {
-    //     if (null === data) {
-    //         return;
-    //     }
-    //     setTimeout(() => {
-    //         setLoading(false)
-    //     }, 500);
-    //     console.log(loading, 'check');
-
-    // }, [data, loading]);
+    }, [time_window, type, page]);
 
     const gridChild =
-        data &&
-        data.map((item, i) => (
+        data?.results &&
+        data?.results.map((item, i) => (
             <Grid.Col key={item.id} span={{ base: 20, sm: 10, md: 5, lg: 4 }}>
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
@@ -155,12 +148,26 @@ const MainGrid = ({
                     <Divider />
                     <Grid
                         columns={20}
-                        p={"8vh 0 10vh"}
+                        p={"8vh 0 4vh"}
                         gutter={{ base: "lg", md: "xl" }}
                         justify="center"
                     >
                         {gridChild}
                     </Grid>
+
+                    <Box ml={"auto"} maw={"fit-content"} pb={"xl"} mr={"auto"}>
+                        <Pagination
+                            total={data.total_pages}
+                            value={activePage}
+                            onChange={(e) => {
+                                window.location.href = `/${
+                                    type === "movie" ? "movies" : "series"
+                                }/${e}`;
+                            }}
+                            siblings={2}
+                            withEdges
+                        />
+                    </Box>
                 </Container>
             </Box>
         </>

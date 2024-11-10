@@ -22,13 +22,14 @@ const config = ({ ...params }) => {
 export const fetchTrending = async (
     type: string,
     timeWindow: string,
+    page = 1,
     params = {}
 ) => {
     const res = await axios.get(
-        `${baseUrl}/trending/${type}/${timeWindow}?language=en-US`,
+        `${baseUrl}/trending/${type}/${timeWindow}?language=en-US?&page=${page}`,
         config(params)
     );
-    return res?.data;
+    return res;
 };
 
 // Get LOGO movie or serie
@@ -87,6 +88,18 @@ export const getCredit = async (
 ) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${id}/credits?language=en-US`,
+        config(params)
+    );
+    return res?.data;
+};
+
+export const getVideos = async (
+    type: string | undefined,
+    id: number | string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}/videos?language=en-US`,
         config(params)
     );
     return res?.data;

@@ -164,7 +164,7 @@ export interface Credits {
     crew: castOrCrew;
 }
 
-interface castOrCrew {
+export interface castOrCrew {
     adult: boolean;
     gender: number;
     id: number;
@@ -177,7 +177,16 @@ interface castOrCrew {
     character: string;
     credit_id: string;
     order: number;
-    job: string;
+    job?: string;
+}
+
+export interface Videos {
+    id: number;
+    results: {
+        site: string;
+        type: string;
+        id: string;
+    };
 }
 
 export interface Detail {

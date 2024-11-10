@@ -30,21 +30,20 @@ const GetCertification = ({
             });
     }, [type, id]);
 
-    if (type === "movie") {
+    if (type === "movie" && certificate !== undefined) {
         for (let i = 0; i < certificate?.release_dates.length; i++) {
             if (!certificate?.release_dates[i].certification) {
                 continue;
             } else {
                 return (
                     <>
-                        {/* {certificate.iso_3166_1}:{" "} */}
                         {isOn ? `${certificate.iso_3166_1}:${" "}` : ""}
-                        {certificate.release_dates[i]?.certification}
+                        {certificate.release_dates[i].certification}
                     </>
                 );
             }
         }
-    } else {
+    } else if (type === "tv" && tvCertificate !== undefined) {
         return (
             <>
                 {isOn && tvCertificate
@@ -53,6 +52,8 @@ const GetCertification = ({
                 {tvCertificate && tvCertificate?.rating}
             </>
         );
+    } else {
+        return "NR";
     }
 };
 

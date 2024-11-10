@@ -96,9 +96,7 @@ const MainCard = ({
                 console.log(err, "error");
             })
             .finally(() => {
-                setTimeout(() => {
-                    setLoading(false);
-                }, 200);
+                setLoading(false);
             });
     }, [sort, type]);
 
@@ -124,7 +122,9 @@ const MainCard = ({
         ));
     return (
         <>
-            <h2 style={{ margin: "0px" }}>{label}</h2>
+            <Title order={2} style={{ margin: "0px" }}>
+                {label}
+            </Title>
             <Box h={"100%"} display={"flex"}>
                 <Carousel
                     slideSize={{ base: "40%", sm: "30%", md: "18%" }}
@@ -141,7 +141,7 @@ const MainCard = ({
                     {slides}
                 </Carousel>
             </Box>
-            <Divider mt={"5vh"} />
+            <Box mt={"5vh"}></Box>
         </>
     );
 };
