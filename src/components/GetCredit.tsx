@@ -29,7 +29,7 @@ const Card = (item: castOrCrew) => {
                     />
                 </AspectRatio>
             </Paper>
-            <Box pb={"xl"}>
+            <Box>
                 <Flex direction={"column"} justify={"flex-end"} h={"100%"}>
                     <Title
                         style={{ textAlign: "center" }}

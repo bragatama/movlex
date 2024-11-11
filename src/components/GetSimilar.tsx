@@ -53,7 +53,7 @@ const Card = (item: List) => {
                     />
                 </AspectRatio>
             </Paper>
-            <Box pb={"xl"}>
+            <Box>
                 <Flex direction={"column"} justify={"flex-end"} h={"100%"}>
                     <Title
                         style={{ textAlign: "center" }}

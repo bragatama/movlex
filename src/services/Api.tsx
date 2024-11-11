@@ -32,6 +32,23 @@ export const fetchTrending = async (
     return res;
 };
 
+// Discover movie or Series
+export const getDiscover = async (
+    type: string,
+    page = 1,
+    sortBy:string,
+    adult = false,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/discover/${type}?language=en-US&page=${page}&sort_by=${sortBy}&include_adult=${adult}&vote_count.gte=${
+            type === "movie" ? 200 : 100
+        }`,
+        config(params)
+    );
+    return res;
+};
+
 // Get LOGO movie or serie
 export const getLogo = async (id: number, type: string, params = {}) => {
     const res = await axios.get(

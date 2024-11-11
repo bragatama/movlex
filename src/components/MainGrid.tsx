@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { genreAll, TrendingMovie } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
-import { fetchTrending, imageOriginalUrl } from "../services/Api";
+import { getDiscover, imageOriginalUrl } from "../services/Api";
 import moment from "moment";
 
 const Card = (item: TrendingMovie) => {
@@ -92,23 +92,17 @@ const Card = (item: TrendingMovie) => {
     );
 };
 
-const MainGrid = ({
-    type,
-    time_window,
-}: {
-    type: string;
-    time_window: string;
-}) => {
+const MainGrid = ({ type, sortBy }: { type: string; sortBy: string }) => {
     const router = useParams();
-    const { page }: { page: number } = router;
+    const { page } = router;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const activePage = parseInt(page) || 1;
 
-    console.log(page);
+    console.log(data);
 
     useEffect(() => {
-        fetchTrending(type, time_window, page)
+        getDiscover(type, page, sortBy)
             .then((res) => {
                 setData(res?.data);
             })
@@ -118,7 +112,14 @@ const MainGrid = ({
             .finally(() => {
                 setLoading(false);
             });
-    }, [time_window, type, page]);
+    }, [type, page, sortBy]);
+
+    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
+    data?.results &&
+        data?.results.map((element: { [x: string]: string }) => {
+            element["media_type"] = type;
+            return element;
+        });
 
     const gridChild =
         data?.results &&
@@ -141,7 +142,7 @@ const MainGrid = ({
             <Box h={"100vh"}>
                 <Flex justify={"center"} align={"center"} h={"90vh"}>
                     <LoadingOverlay
-                        overlayProps={{'--overlay-bg':'black'}}
+                        overlayProps={{ "--overlay-bg": "black" }}
                         zIndex={1000}
                         visible={loading}
                         loaderProps={{ color: "blue", type: "bars" }}
@@ -155,10 +156,6 @@ const MainGrid = ({
         <>
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
-                    <Title order={2} style={{ textTransform: "uppercase" }}>
-                        {type === "movie" ? "movies" : "tv series"}
-                    </Title>
-                    <Divider />
                     <Grid
                         columns={20}
                         p={"8vh 0 4vh"}
@@ -175,7 +172,7 @@ const MainGrid = ({
                             onChange={(e) => {
                                 window.location.href = `/${
                                     type === "movie" ? "movies" : "series"
-                                }/${e}`;
+                                }/${e}${sortBy ? `&sort_by=${sortBy}` : ""}`;
                             }}
                             siblings={2}
                             withEdges

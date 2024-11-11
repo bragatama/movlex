@@ -14,6 +14,7 @@ import { seasonList } from "../types/types";
 import { imageOriginalUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
+import moment from "moment";
 
 const Card = (item: seasonList) => {
     const router = useParams();
@@ -53,6 +54,7 @@ const Card = (item: seasonList) => {
                             style={{ textAlign: "center" }}
                             c={"rgba(255,255,255,0.4)"}
                         >
+                            {moment(item.air_date).format("YYYY")} •{" "}
                             {item.episode_count} Episode{"(s) "} •{" "}
                             {item.vote_average.toFixed(1)}★
                         </Text>

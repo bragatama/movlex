@@ -60,6 +60,7 @@ const router = createBrowserRouter([
                 path: "/movies",
                 element: <Movies />,
             },
+            { path: "movies/:page&sort_by=:sort_by", element: <Movies /> },
             { path: "movies/:page", element: <Movies /> },
             {
                 path: "/series",

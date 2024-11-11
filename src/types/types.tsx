@@ -190,6 +190,7 @@ export interface Videos {
 }
 
 export interface seasonList {
+    air_date: string;
     id: number;
     name: string;
     episode_count: number;

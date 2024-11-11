@@ -51,10 +51,14 @@ const GetDetailsSeason = () => {
                                 align={"center"}
                                 gap={"xl"}
                             >
-                                <AspectRatio ratio={16 / 9} maw={"30%"}>
+                                <AspectRatio
+                                    ratio={16 / 9}
+                                    miw={"30%"}
+                                    maw={"30%"}
+                                >
                                     <Image
                                         src={`${imageOriginalUrl}/${item?.still_path}`}
-                                        mah={"100%"}
+                                        h={"100%"}
                                         radius={"md"}
                                     />
                                 </AspectRatio>
@@ -67,7 +71,7 @@ const GetDetailsSeason = () => {
                                         gutter={"lg"}
                                         justify="flex-start"
                                         align="center"
-                                        pb={'xl'}
+                                        pb={"xl"}
                                     >
                                         <Grid.Col span={"content"}>
                                             <Text fw={500}>
@@ -94,7 +98,9 @@ const GetDetailsSeason = () => {
                                             </Text>
                                         </Grid.Col>
                                     </Grid>
-                                    <Text fw={500}>{item.overview}</Text>
+                                    <Text fw={500} lineClamp={4}>
+                                        {item.overview}
+                                    </Text>
                                 </Flex>
                             </Flex>
                         </Paper>
