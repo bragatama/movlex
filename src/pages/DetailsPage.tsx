@@ -15,17 +15,20 @@ import {
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import { getDetail, getVideos, imageOriginalUrl } from "../services/Api";
-import { Detail, Videos } from "../types/types";
+import { Detail } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
 import FetchLogo from "../components/FetchLogo";
 import { IconCircleCheck, IconPlus } from "@tabler/icons-react";
 import GetCredit from "../components/GetCredit";
 import GetTrailer from "../components/GetTrailer";
+import GetSeason from "../components/GetSeason";
+import GetDetailsSeason from "../components/GetDetailsSeason";
+import GetSimilar from "../components/GetSimilar";
 
 const DetailsPage = () => {
     const router = useParams();
-    const { type, id } = router;
+    const { type, id, season } = router;
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
     const [video, setVideo] = useState();
@@ -85,7 +88,7 @@ const DetailsPage = () => {
                         align={"center"}
                         maw={"100%"}
                     >
-                        {/* LOGO */}
+                        {/* Poster */}
                         <AspectRatio
                             ratio={2 / 3}
                             maw={"100%"}
@@ -110,6 +113,7 @@ const DetailsPage = () => {
                             )}
                         </AspectRatio>
                         <Box h={"auto"}>
+                            {/* Logo */}
                             <FetchLogo
                                 id={id}
                                 type={type}
@@ -174,8 +178,7 @@ const DetailsPage = () => {
                                                 : Math.floor(
                                                       details?.runtime / 60
                                                   ) + "h "}
-                                            {details?.runtime % 60}
-                                            min
+                                            {details?.runtime % 60}m
                                         </Text>
                                     </Grid.Col>
                                 )}
@@ -331,13 +334,28 @@ const DetailsPage = () => {
                     </Flex>
                 </Container>
             </Box>
-            <Container size={"mainXl"}>
+            {/* Not main */}
+            <Container size={"mainXl"} py={"2vh"}>
                 <Flex direction={"column"} gap={"md"}>
-                    <AspectRatio ratio={16 / 9}
-                    w={'80%'}>
-                        <GetTrailer id={video?.key} />
-                    </AspectRatio>
+                    {season ? (
+                        <>
+                            <GetDetailsSeason />
+                        </>
+                    ) : (
+                        <>
+                            {type === "tv" && (
+                                <GetSeason
+                                    season={details?.seasons}
+                                    loading={loading}
+                                />
+                            )}
+                            <AspectRatio ratio={16 / 9} w={"80%"}>
+                                <GetTrailer id={video?.key} />
+                            </AspectRatio>
+                        </>
+                    )}
                     <GetCredit type={type} id={id} label="cast" />
+                    <GetSimilar type={type} id={id} />
                 </Flex>
             </Container>
         </Box>

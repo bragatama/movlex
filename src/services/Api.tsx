@@ -41,7 +41,7 @@ export const getLogo = async (id: number, type: string, params = {}) => {
     return res?.data.logos[0];
 };
 
-// Get popular movies
+// Get popular movies OR series
 export const homeList = async (list: string, type: string, params = {}) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${list}?language=en-US`,
@@ -50,6 +50,7 @@ export const homeList = async (list: string, type: string, params = {}) => {
     return res?.data;
 };
 
+// Get detail of a movie or a tv serie
 export const getDetail = async (
     type: string | undefined,
     id: number | string | undefined,
@@ -62,6 +63,7 @@ export const getDetail = async (
     return res?.data;
 };
 
+// Get certification
 export const getCertification = async (
     type: string | undefined,
     id: number | string | undefined,
@@ -81,6 +83,7 @@ export const getCertification = async (
     return res?.data?.results;
 };
 
+// Get cast or crew
 export const getCredit = async (
     type: string | undefined,
     id: number | string | undefined,
@@ -93,6 +96,7 @@ export const getCredit = async (
     return res?.data;
 };
 
+// Get videos
 export const getVideos = async (
     type: string | undefined,
     id: number | string | undefined,
@@ -100,6 +104,32 @@ export const getVideos = async (
 ) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${id}/videos?language=en-US`,
+        config(params)
+    );
+    return res?.data;
+};
+
+// Get Season Detail
+export const getDetailSeason = async (
+    id: number | string | undefined,
+    season: number | string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/tv/${id}/season/${season}?language=en-US`,
+        config(params)
+    );
+    return res?.data;
+};
+
+// Get Similar
+export const getSimilar = async (
+    type: string | undefined,
+    id: number | string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}/similar?language=en-US`,
         config(params)
     );
     return res?.data;

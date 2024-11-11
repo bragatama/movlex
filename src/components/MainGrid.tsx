@@ -58,7 +58,6 @@ const Card = (item: TrendingMovie) => {
                         <Image
                             src={`${imageOriginalUrl}/${item.poster_path}`}
                             radius={"md"}
-                            // onLoad={}
                         />
                     </AspectRatio>
                     <Box className={classes.overlay_card} pb={"xl"}>
@@ -87,8 +86,6 @@ const Card = (item: TrendingMovie) => {
                             </Text>
                         </Flex>
                     </Box>
-                    {/* <Title style={{ textAlign: 'center' }} order={4} pt={"1vh"} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
-                {matchGenres(genreAll, item.genre_ids)} */}
                 </Paper>
             </Anchor>
         </>

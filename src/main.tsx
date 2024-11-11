@@ -77,6 +77,10 @@ const router = createBrowserRouter([
                 path: "/:type/:id",
                 element: <DetailsPage />,
             },
+            {
+                path: "/:type/:id/season/:season",
+                element: <DetailsPage />,
+            },
         ],
     },
 ]);

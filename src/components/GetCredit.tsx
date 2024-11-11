@@ -4,7 +4,6 @@ import { getCredit, imageOriginalUrl } from "../services/Api";
 import {
     AspectRatio,
     Box,
-    Divider,
     Flex,
     Image,
     Paper,
@@ -18,7 +17,7 @@ import classes from "../css/CarouselCard.module.css";
 const Card = (item: castOrCrew) => {
     return (
         <>
-            <Paper>
+            <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
                         src={
@@ -29,29 +28,29 @@ const Card = (item: castOrCrew) => {
                         radius={"md"}
                     />
                 </AspectRatio>
-                <Box pb={"xl"}>
-                    <Flex direction={"column"} justify={"flex-end"} h={"100%"}>
-                        <Title
-                            style={{ textAlign: "center" }}
-                            order={4}
-                            fw={1000}
-                            c={"white"}
-                        >
-                            {item.name}
-                        </Title>
-                        <Text
-                            size="sm"
-                            fw={500}
-                            style={{ textAlign: "center" }}
-                            c={"rgba(255,255,255,0.4)"}
-                        >
-                            as {item.character}
-                        </Text>
-                    </Flex>
-                </Box>
-                {/* <Title style={{ textAlign: 'center' }} order={4} pt={"1vh"} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
-                {matchGenres(genreAll, item.genre_ids)} */}
             </Paper>
+            <Box pb={"xl"}>
+                <Flex direction={"column"} justify={"flex-end"} h={"100%"}>
+                    <Title
+                        style={{ textAlign: "center" }}
+                        order={4}
+                        fw={1000}
+                        c={"white"}
+                    >
+                        {item.name}
+                    </Title>
+                    <Text
+                        size="sm"
+                        fw={500}
+                        style={{ textAlign: "center" }}
+                        c={"rgba(255,255,255,0.4)"}
+                    >
+                        as {item.character}
+                    </Text>
+                </Flex>
+            </Box>
+            {/* <Title style={{ textAlign: 'center' }} order={4} pt={"1vh"} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
+                {matchGenres(genreAll, item.genre_ids)} */}
         </>
     );
 };
@@ -113,11 +112,19 @@ const GetCredit = ({
 
     return (
         <>
-            <Title order={2} style={{ margin: "0px" }} tt={'capitalize'}>{label}</Title>
+            <Title
+                c={"white"}
+                order={2}
+                style={{ margin: "0px" }}
+                tt={"capitalize"}
+            >
+                {label}
+            </Title>
             <Box h={"100%"} display={"flex"}>
                 <Carousel
                     slideSize={{ base: "40%", sm: "30%", md: "15%" }}
-                    slideGap={"xl"}
+                    slideGap={"sm"}
+                    includeGapInSize={false}
                     style={{
                         // marginLeft: "calc((-100vw + 100%) / 2)",
                         // marginRight: "calc((-100vw + 100%) / 2)",
@@ -126,12 +133,11 @@ const GetCredit = ({
                     }}
                     classNames={classes}
                     slidesToScroll={"auto"}
-                    align={'start'}
+                    align={"start"}
                 >
                     {label === "cast" ? slidesCast : slidesCrew}
                 </Carousel>
             </Box>
-            <Box mt={'5vh'}></Box>
         </>
     );
 };

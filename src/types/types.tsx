@@ -189,6 +189,14 @@ export interface Videos {
     };
 }
 
+export interface seasonList {
+    id: number;
+    name: string;
+    episode_count: number;
+    poster_path: string;
+    vote_average: number;
+}
+
 export interface Detail {
     adult: boolean;
     backdrop_path: string;
@@ -256,40 +264,6 @@ export interface List {
     vote_count: number;
 }
 
-// export interface Series {
-//     adult: boolean;
-//     backdrop_path: string;
-//     created_by: [];
-//     episode_run_time: [];
-//     first_air_date: string;
-//     genres: [];
-//     homepage: string;
-//     id: number;
-//     in_production: boolean;
-//     languages: [];
-//     last_air_date: [];
-//     last_episode_to_air: [];
-//     name: string;
-//     next_episode_to_air: [];
-//     networks: [];
-//     number_of_episodes: number;
-//     number_of_seasons: number;
-//     origin_country: [];
-//     original_language: string;
-//     original_name: string;
-//     overview: string;
-//     popularity: number;
-//     poster_path: string;
-//     production_companies: [];
-//     seasons: Seasons[];
-//     spoken_language: [];
-//     status: string;
-//     tagline: string;
-//     type: string;
-//     vote_average: number;
-//     vote_count: number;
-// }
-
 export interface Seasons {
     _id: string;
     air_date: string;
@@ -304,9 +278,9 @@ export interface Seasons {
 
 export interface Episodes {
     air_date: string;
-    crew: [];
+    crew: castOrCrew;
     episode_number: number;
-    guest_stars: [];
+    guest_stars: castOrCrew;
     name: string;
     overview: string;
     id: number;
