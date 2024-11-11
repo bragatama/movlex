@@ -191,31 +191,56 @@ const MainGrid = ({
                             </Title>
                         </Box>
                     )}
+                    {data?.results.length === 0 && !loading ? (
+                        <Flex
+                            w={"fit-content"}
+                            ml={"auto"}
+                            mr={"auto"}
+                            py={"xl"}
+                            justify={"center"}
+                            align={"center"}
+                        >
+                            <Title>No Results Found</Title>
+                        </Flex>
+                    ) : (
+                        <>
+                            <Grid
+                                columns={20}
+                                p={"8vh 0 4vh"}
+                                gutter={{ base: "lg", md: "xl" }}
+                                justify="center"
+                            >
+                                {gridChild}
+                            </Grid>
 
-                    <Grid
-                        columns={20}
-                        p={"8vh 0 4vh"}
-                        gutter={{ base: "lg", md: "xl" }}
-                        justify="center"
-                    >
-                        {gridChild}
-                    </Grid>
-
-                    <Box ml={"auto"} maw={"fit-content"} pb={"xl"} mr={"auto"}>
-                        <Pagination
-                            total={data.total_pages}
-                            value={activePage}
-                            onChange={(e) => {
-                                window.location.href = `/${
-                                    type === "movie" ? "movies" : "series"
-                                }/${e}${sortBy ? `?&sort_by=${sortBy}` : ``}${
-                                    searchQuery ? `?query=${searchQuery}` : ``
-                                }`;
-                            }}
-                            siblings={2}
-                            withEdges
-                        />
-                    </Box>
+                            <Box
+                                ml={"auto"}
+                                maw={"fit-content"}
+                                pb={"xl"}
+                                mr={"auto"}
+                            >
+                                <Pagination
+                                    total={data.total_pages}
+                                    value={activePage}
+                                    onChange={(e) => {
+                                        window.location.href = `/${
+                                            type === "movie"
+                                                ? "movies"
+                                                : "series"
+                                        }/${e}${
+                                            sortBy ? `?&sort_by=${sortBy}` : ``
+                                        }${
+                                            searchQuery
+                                                ? `?query=${searchQuery}`
+                                                : ``
+                                        }`;
+                                    }}
+                                    siblings={2}
+                                    withEdges
+                                />
+                            </Box>
+                        </>
+                    )}
                 </Container>
             </Box>
         </>
