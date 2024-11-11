@@ -18,6 +18,9 @@
     .mantine-LoadingOverlay-overlay {
         background-color: #000000;
     }
+    .mantine-Input-input {
+        background-color: #000000;
+    }
 }
 
 :root[data-mantine-color-scheme="light"] {

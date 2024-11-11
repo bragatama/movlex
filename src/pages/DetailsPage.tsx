@@ -55,7 +55,6 @@ const DetailsPage = () => {
         fetchData();
         window.scrollTo(0, 0);
     }, [type, id]);
-    console.log(video?.key);
 
     const title = details?.title || details?.name;
     const releaseDateMovie = moment(details?.release_date).format("YYYY");
@@ -280,27 +279,29 @@ const DetailsPage = () => {
                                         align="center"
                                         gutter={"md"}
                                     >
-                                        {details?.networks.map((netowrk) => (
-                                            <Grid.Col
-                                                span={"content"}
-                                                key={netowrk.id}
-                                            >
-                                                <Paper
-                                                    radius={"sm"}
-                                                    p={"1vh"}
-                                                    style={{
-                                                        backgroundColor:
-                                                            "rgba(200,200,200)",
-                                                    }}
+                                        {details?.networks
+                                            .slice(0, 4)
+                                            .map((netowrk) => (
+                                                <Grid.Col
+                                                    span={"content"}
+                                                    key={netowrk.id}
                                                 >
-                                                    <Image
-                                                        src={`${imageOriginalUrl}/${netowrk.logo_path}`}
-                                                        h={"3vh"}
-                                                        title={netowrk.name}
-                                                    />
-                                                </Paper>
-                                            </Grid.Col>
-                                        ))}
+                                                    <Paper
+                                                        radius={"sm"}
+                                                        p={"1vh"}
+                                                        style={{
+                                                            backgroundColor:
+                                                                "rgba(200,200,200)",
+                                                        }}
+                                                    >
+                                                        <Image
+                                                            src={`${imageOriginalUrl}/${netowrk.logo_path}`}
+                                                            h={"3vh"}
+                                                            title={netowrk.name}
+                                                        />
+                                                    </Paper>
+                                                </Grid.Col>
+                                            ))}
                                     </Grid>
                                 </>
                             ) : (

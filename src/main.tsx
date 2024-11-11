@@ -57,13 +57,16 @@ const router = createBrowserRouter([
                 element: <Home />,
             },
             {
-                path: "/movies",
+                path: "/movies/1",
                 element: <Movies />,
             },
-            { path: "movies/:page&sort_by=:sort_by", element: <Movies /> },
-            { path: "movies/:page", element: <Movies /> },
+            { path: "/movies/:page", element: <Movies /> },
+            { path: "/movies/:page?query=:search", element: <Movies /> },
+            { path: "/movies/:page?&sort_by=:sort_by", element: <Movies /> },
+            { path: "/series/:page?query=:search", element: <Movies /> },
+            { path: "/series/:page?&sort_by=:sort_by", element: <Movies /> },
             {
-                path: "/series",
+                path: "/series/1",
                 element: <Series />,
             },
             {

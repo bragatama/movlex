@@ -10,8 +10,8 @@ import classes from "../css/Navbar.module.css";
 // Second Iteration
 
 const links = [
-    { link: "/movies", label: "Movies" },
-    { link: "/series", label: "TV Series" },
+    { link: "/movies/1", label: "Movies" },
+    { link: "/series/1", label: "TV Series" },
     { link: "/browse", label: "Browse" },
 ];
 

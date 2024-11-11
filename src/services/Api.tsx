@@ -36,7 +36,7 @@ export const fetchTrending = async (
 export const getDiscover = async (
     type: string,
     page = 1,
-    sortBy:string,
+    sortBy: "popularity.desc",
     adult = false,
     params = {}
 ) => {
@@ -150,4 +150,18 @@ export const getSimilar = async (
         config(params)
     );
     return res?.data;
+};
+
+// Search
+export const getSearch = async (
+    type: string | undefined,
+    searchQuery: number | string | undefined,
+    page: 1,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/search/${type}?query=${searchQuery}&page=${page}`,
+        config(params)
+    );
+    return res;
 };

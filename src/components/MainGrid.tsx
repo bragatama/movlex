@@ -18,7 +18,7 @@ import { useEffect, useState } from "react";
 import { genreAll, TrendingMovie } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
-import { getDiscover, imageOriginalUrl } from "../services/Api";
+import { getDiscover, getSearch, imageOriginalUrl } from "../services/Api";
 import moment from "moment";
 
 const Card = (item: TrendingMovie) => {
@@ -92,27 +92,48 @@ const Card = (item: TrendingMovie) => {
     );
 };
 
-const MainGrid = ({ type, sortBy }: { type: string; sortBy: string }) => {
+const MainGrid = ({
+    type,
+    sortBy,
+    searchQuery,
+}: {
+    type: string;
+    sortBy: string;
+    searchQuery: string;
+}) => {
     const router = useParams();
-    const { page } = router;
+    const { page, sort_by } = router;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const activePage = parseInt(page) || 1;
 
-    console.log(data);
+    console.log(page, "legogego");
 
     useEffect(() => {
-        getDiscover(type, page, sortBy)
-            .then((res) => {
-                setData(res?.data);
-            })
-            .catch((err) => {
-                console.log(err, "error");
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [type, page, sortBy]);
+        if (searchQuery) {
+            getSearch(type, searchQuery, page || 1)
+                .then((res) => {
+                    setData(res?.data);
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        } else {
+            getDiscover(type, page, sortBy)
+                .then((res) => {
+                    setData(res?.data);
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        }
+    }, [type, page, sortBy, searchQuery]);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     data?.results &&
@@ -142,7 +163,6 @@ const MainGrid = ({ type, sortBy }: { type: string; sortBy: string }) => {
             <Box h={"100vh"}>
                 <Flex justify={"center"} align={"center"} h={"90vh"}>
                     <LoadingOverlay
-                        overlayProps={{ "--overlay-bg": "black" }}
                         zIndex={1000}
                         visible={loading}
                         loaderProps={{ color: "blue", type: "bars" }}
@@ -156,6 +176,22 @@ const MainGrid = ({ type, sortBy }: { type: string; sortBy: string }) => {
         <>
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
+                    {searchQuery && (
+                        <Box maw={"fit-content"} ml={"auto"} mr={"auto"}>
+                            <Title order={3}>
+                                Searching:{" "}
+                                <Title
+                                    order={3}
+                                    c={"blue"}
+                                    component="span"
+                                    fw={900}
+                                >
+                                    {searchQuery}
+                                </Title>
+                            </Title>
+                        </Box>
+                    )}
+
                     <Grid
                         columns={20}
                         p={"8vh 0 4vh"}
@@ -172,7 +208,9 @@ const MainGrid = ({ type, sortBy }: { type: string; sortBy: string }) => {
                             onChange={(e) => {
                                 window.location.href = `/${
                                     type === "movie" ? "movies" : "series"
-                                }/${e}${sortBy ? `&sort_by=${sortBy}` : ""}`;
+                                }/${e}${sortBy ? `?&sort_by=${sortBy}` : ``}${
+                                    searchQuery ? `?query=${searchQuery}` : ``
+                                }`;
                             }}
                             siblings={2}
                             withEdges
