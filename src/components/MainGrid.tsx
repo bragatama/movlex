@@ -177,7 +177,7 @@ const MainGrid = ({
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
                     {searchQuery && (
-                        <Box maw={"fit-content"} ml={"auto"} mr={"auto"}>
+                        <Box maw={"fit-content"} ml={"auto"} mr={"auto"} pb={'xl'}>
                             <Title order={3}>
                                 Searching:{" "}
                                 <Title
@@ -204,9 +204,35 @@ const MainGrid = ({
                         </Flex>
                     ) : (
                         <>
+                            <Box
+                                ml={"auto"}
+                                maw={"fit-content"}
+                                // pt={"xl"}
+                                mr={"auto"}
+                            >
+                                <Pagination
+                                    total={data.total_pages}
+                                    value={activePage}
+                                    onChange={(e) => {
+                                        window.location.href = `/${
+                                            type === "movie"
+                                                ? "movies"
+                                                : "series"
+                                        }/${e}${
+                                            sortBy ? `?&sort_by=${sortBy}` : ``
+                                        }${
+                                            searchQuery
+                                                ? `?query=${searchQuery}`
+                                                : ``
+                                        }`;
+                                    }}
+                                    siblings={2}
+                                    withEdges
+                                />
+                            </Box>
                             <Grid
                                 columns={20}
-                                p={"8vh 0 4vh"}
+                                p={"4vh 0"}
                                 gutter={{ base: "lg", md: "xl" }}
                                 justify="center"
                             >

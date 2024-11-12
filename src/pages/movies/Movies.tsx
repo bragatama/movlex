@@ -9,7 +9,7 @@ import {
     Title,
 } from "@mantine/core";
 import MainGrid from "../../components/MainGrid";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 const Movies = () => {
@@ -21,7 +21,9 @@ const Movies = () => {
     const sort = sortURL.get("sort_by");
     const search = searchURL.get("query");
     const [searchQuery, setSearchQuery] = useState(search || "");
-
+    useEffect(() => {
+        document.title = "Movies";
+    }, []);
     return (
         <>
             <Box pt={"xl"}>

@@ -1,8 +1,12 @@
+import { useEffect } from "react";
 import MainCard from "../components/MainCard";
 import MainCarousel from "../components/MainCarousel";
 import { Box, Container, Flex } from "@mantine/core";
 
 const Home = () => {
+    useEffect(() => {
+        document.title = 'Movlex'
+    }, []);
     return (
         <>
             <MainCarousel type="all" time_window="week" />

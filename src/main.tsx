@@ -18,6 +18,7 @@ import "@mantine/nprogress/styles.css";
 import Movies from "./pages/movies/Movies.tsx";
 import Series from "./pages/series/Series.tsx";
 import DetailsPage from "./pages/DetailsPage.tsx";
+import { AuthProvider } from "./context/AuthProvider.tsx";
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
@@ -94,7 +95,9 @@ createRoot(document.getElementById("root")!).render(
         <ColorSchemeScript />
         <MantineProvider theme={theme} defaultColorScheme="dark">
             <NavigationProgress />
-            <RouterProvider router={router} />
+            <AuthProvider>
+                <RouterProvider router={router} />
+            </AuthProvider>
         </MantineProvider>
     </StrictMode>
 );

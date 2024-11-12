@@ -139,10 +139,6 @@ export const genreAll = [
         id: 10768,
         name: "War & Politics",
     },
-    {
-        id: 37,
-        name: "Western",
-    },
 ];
 
 export interface Certification {

@@ -9,7 +9,7 @@ import {
 } from "@mantine/core";
 import MainGrid from "../../components/MainGrid";
 import { useParams, useSearchParams } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const Series = () => {
     const router = useParams();
@@ -20,6 +20,9 @@ const Series = () => {
     const sort = sortURL.get("sort_by");
     const search = searchURL.get("query");
     const [searchQuery, setSearchQuery] = useState(search || "");
+    useEffect(() => {
+        document.title = "TV Series";
+    }, []);
     return (
         <>
             <Box pt={"xl"}>

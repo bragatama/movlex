@@ -53,8 +53,9 @@ const DetailsPage = () => {
             }
         };
         fetchData();
+        document.title = details?.name || details?.title;
         window.scrollTo(0, 0);
-    }, [type, id]);
+    }, [type, id, details?.name, details?.title]);
 
     const title = details?.title || details?.name;
     const releaseDateMovie = moment(details?.release_date).format("YYYY");
