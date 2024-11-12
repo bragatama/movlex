@@ -6,32 +6,33 @@ import {
     Avatar,
     Box,
     Burger,
-    Button,
+    CloseButton,
     Container,
     Flex,
     Group,
     Menu,
     Text,
-    Title,
+    TextInput,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import classes from "../css/Navbar.module.css";
 import { useAuth } from "../context/UseAuth";
+import { IconSearch } from "@tabler/icons-react";
 
 // Second Iteration
 
 const links = [
     { link: "/movies/1", label: "Movies" },
     { link: "/series/1", label: "TV Series" },
-    { link: "/browse", label: "Browse" },
 ];
 
 const Navbar = () => {
     const [opened, { toggle }] = useDisclosure(false);
     const [active, setActive] = useState("");
     const [scroll, setScroll] = useState(false);
+    const [searchQuery, setSearchQuery] = useState("");
     const { user, signInWithGoogle, logout } = useAuth();
     const changeScroll = () => {
         // eslint-disable-next-line @typescript-eslint/no-unused-expressions
@@ -86,25 +87,63 @@ const Navbar = () => {
                 </Anchor>
                 <Group gap={20} visibleFrom="xs" className={classes.menu}>
                     {items}
+                    <TextInput
+                        placeholder="Search Movie or TV Series"
+                        w={"15vw"}
+                        classNames={classes}
+                        onChange={(e) => setSearchQuery(e.currentTarget.value)}
+                        onKeyDown={(e) => {
+                            if (e.key === "Enter") {
+                                setTimeout(() => {
+                                    window.location.href = `${
+                                        searchQuery
+                                            ? `/search/1?query=${searchQuery}`
+                                            : ``
+                                    }`;
+                                }, 100);
+                            }
+                        }}
+                        rightSectionPointerEvents="all"
+                        value={searchQuery}
+                        leftSection={<IconSearch color="white"  size={14}/>}
+                        rightSection={
+                            <CloseButton
+                                aria-label="Clear Input"
+                                onClick={() => {
+                                    setSearchQuery("");
+                                }}
+                                style={{
+                                    display: searchQuery ? undefined : "none",
+                                }}
+                            />
+                        }
+                    />
                     {user && (
-                        <Menu position="bottom-end">
+                        <Menu position="bottom-end" offset={10}>
                             <Menu.Target>
                                 <Anchor
+                                    component={Avatar}
+                                    src={user?.photoURL}
                                     underline="never"
-                                    className={classes.link}
-                                >
-                                    <Group>
-                                        <Text fw={500} c={"white"} fz={"sm"}>
-                                            {user?.displayName}
-                                        </Text>
-                                        <Avatar
-                                            size={"md"}
-                                            src={user?.photoURL}
-                                        />
-                                    </Group>
-                                </Anchor>
+                                />
                             </Menu.Target>
                             <Menu.Dropdown>
+                                <Menu.Item component={Text} fw={600}>
+                                    <Flex
+                                        direction={"row"}
+                                        gap={"md"}
+                                        align={"center"}
+                                    >
+                                        <Avatar src={user?.photoURL} />
+                                        <Box>
+                                            <Text fz={"sm"}>
+                                                {user?.displayName}
+                                            </Text>
+                                            <Text fz={"xs"}>{user?.email}</Text>
+                                        </Box>
+                                    </Flex>
+                                </Menu.Item>
+                                <Menu.Divider />
                                 <Menu.Item component={Link} to={"/"}>
                                     Watchlist
                                 </Menu.Item>

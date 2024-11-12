@@ -21,6 +21,11 @@
     .mantine-Input-input {
         background-color: #000000;
     }
+    .mantine-Menu-dropdown {
+        background: rgba(0, 0, 0, 0.6);
+        backdrop-filter: blur(11.8px);
+        -webkit-backdrop-filter: blur(11.8px);
+    }
 }
 
 :root[data-mantine-color-scheme="light"] {

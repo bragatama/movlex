@@ -3,17 +3,15 @@ import {
     CloseButton,
     Container,
     Flex,
-    Input,
     Select,
+    TextInput,
     Title,
 } from "@mantine/core";
 import MainGrid from "../../components/MainGrid";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 
 const Series = () => {
-    const router = useParams();
-    const { page } = router;
     const [sortURL, setSortURL] = useSearchParams();
     const [searchURL, setSearchURL] = useSearchParams();
     // setSortValue(sortURL.get("sort_by"));
@@ -29,14 +27,14 @@ const Series = () => {
                 <Container size={"mainXl"}>
                     <Flex direction={"row"} justify={"space-between"}>
                         <Title order={1} c={"white"}>
-                        TV Series
+                            TV Series
                         </Title>
                         <Flex
                             direction={"column"}
                             gap={"md"}
                             align={"flex-end"}
                         >
-                            <Input
+                            <TextInput
                                 placeholder="Search TV Series"
                                 w={"20vw"}
                                 onChange={(e) =>
@@ -60,7 +58,6 @@ const Series = () => {
                                         aria-label="Clear Input"
                                         onClick={() => {
                                             setSearchQuery("");
-                                            window.location.href = `/series/1`;
                                         }}
                                         style={{
                                             display: searchQuery

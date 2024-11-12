@@ -19,6 +19,7 @@ import Movies from "./pages/movies/Movies.tsx";
 import Series from "./pages/series/Series.tsx";
 import DetailsPage from "./pages/DetailsPage.tsx";
 import { AuthProvider } from "./context/AuthProvider.tsx";
+import Search from "./Search.tsx";
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
@@ -64,19 +65,19 @@ const router = createBrowserRouter([
             { path: "/movies/:page", element: <Movies /> },
             { path: "/movies/:page?query=:search", element: <Movies /> },
             { path: "/movies/:page?&sort_by=:sort_by", element: <Movies /> },
-            { path: "/series/:page?query=:search", element: <Movies /> },
-            { path: "/series/:page?&sort_by=:sort_by", element: <Movies /> },
+            { path: "/series/:page?query=:search", element: <Series /> },
+            { path: "/series/:page?&sort_by=:sort_by", element: <Series /> },
             {
-                path: "/series/1",
-                element: <Series />,
+                path: "/search/:page",
+                element: <Search />,
+            },
+            {
+                path: "/search/:page?query=:search",
+                element: <Search />,
             },
             {
                 path: "/series/:page",
                 element: <Series />,
-            },
-            {
-                path: "/browse",
-                element: <h1>This is a browse</h1>,
             },
             {
                 path: "/:type/:id",

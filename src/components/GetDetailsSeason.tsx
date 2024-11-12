@@ -64,7 +64,15 @@ const GetDetailsSeason = () => {
                                 </AspectRatio>
                                 <Flex direction={"column"}>
                                     <Title order={4} c={"white"}>
-                                        #{item.episode_number}. {item.name}
+                                        <Title
+                                            order={4}
+                                            component="span"
+                                            c={"dimmed"}
+                                        >
+                                            {item.episode_number}
+                                            &emsp;&mdash;&emsp;
+                                        </Title>
+                                        {item.name}
                                     </Title>
                                     <Grid
                                         columns={20}

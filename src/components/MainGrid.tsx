@@ -3,7 +3,6 @@ import {
     AspectRatio,
     Box,
     Container,
-    Divider,
     Flex,
     Grid,
     Image,
@@ -75,7 +74,8 @@ const Card = (item: TrendingMovie) => {
                             >
                                 {item?.title || item?.name}
                             </Title>
-                            {matchGenres(genreAll, item.genre_ids)}
+                            {item.genre_ids &&
+                                matchGenres(genreAll, item.genre_ids)}
                             <Text
                                 size="xs"
                                 lineClamp={2}
@@ -102,12 +102,10 @@ const MainGrid = ({
     searchQuery: string;
 }) => {
     const router = useParams();
-    const { page, sort_by } = router;
+    const { page } = router;
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const activePage = parseInt(page) || 1;
-
-    console.log(page, "legogego");
 
     useEffect(() => {
         if (searchQuery) {
@@ -136,7 +134,8 @@ const MainGrid = ({
     }, [type, page, sortBy, searchQuery]);
 
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
-    data?.results &&
+    type !== "multi" &&
+        data?.results &&
         data?.results.map((element: { [x: string]: string }) => {
             element["media_type"] = type;
             return element;
@@ -177,7 +176,12 @@ const MainGrid = ({
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
                     {searchQuery && (
-                        <Box maw={"fit-content"} ml={"auto"} mr={"auto"} pb={'xl'}>
+                        <Box
+                            maw={"fit-content"}
+                            ml={"auto"}
+                            mr={"auto"}
+                            pb={"xl"}
+                        >
                             <Title order={3}>
                                 Searching:{" "}
                                 <Title
@@ -217,7 +221,9 @@ const MainGrid = ({
                                         window.location.href = `/${
                                             type === "movie"
                                                 ? "movies"
-                                                : "series"
+                                                : type === "series"
+                                                ? "series"
+                                                : "search"
                                         }/${e}${
                                             sortBy ? `?&sort_by=${sortBy}` : ``
                                         }${
@@ -252,7 +258,9 @@ const MainGrid = ({
                                         window.location.href = `/${
                                             type === "movie"
                                                 ? "movies"
-                                                : "series"
+                                                : type === "series"
+                                                ? "series"
+                                                : "search"
                                         }/${e}${
                                             sortBy ? `?&sort_by=${sortBy}` : ``
                                         }${

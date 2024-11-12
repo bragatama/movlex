@@ -3,18 +3,15 @@ import {
     CloseButton,
     Container,
     Flex,
-    Input,
     Select,
-    Text,
+    TextInput,
     Title,
 } from "@mantine/core";
 import MainGrid from "../../components/MainGrid";
 import { useEffect, useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Movies = () => {
-    const router = useParams();
-    const { page } = router;
     const [sortURL, setSortURL] = useSearchParams();
     const [searchURL, setSearchURL] = useSearchParams();
     // setSortValue(sortURL.get("sort_by"));
@@ -37,7 +34,7 @@ const Movies = () => {
                             gap={"md"}
                             align={"flex-end"}
                         >
-                            <Input
+                            <TextInput
                                 placeholder="Search Movie"
                                 w={"20vw"}
                                 onChange={(e) =>
@@ -61,7 +58,6 @@ const Movies = () => {
                                         aria-label="Clear Input"
                                         onClick={() => {
                                             setSearchQuery("");
-                                            window.location.href = `/movies/1`;
                                         }}
                                         style={{
                                             display: searchQuery
@@ -99,7 +95,6 @@ const Movies = () => {
                     </Flex>
                 </Container>
             </Box>
-
             <MainGrid type="movie" sortBy={sort} searchQuery={search} />
         </>
     );

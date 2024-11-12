@@ -13,6 +13,11 @@ export interface TrendingAll {
 
 export interface TrendingMovie {
     backdrop_path: string;
+    first_air_date: string;
+    genres_id: [];
+    media_type: string;
+    name: string;
+    results: [];
     id: number;
     title: string;
     poster_path: string;
