@@ -36,7 +36,7 @@ const Card = (item: List) => {
                         size="sm"
                         fw={500}
                         style={{ textAlign: "center" }}
-                        c={"rgba(255,255,255,0.4)"}
+                        c={"dimmed"}
                     >
                         {genre.name} • {releaseDate} •{" "}
                         {item.vote_average.toFixed(1)}★
@@ -63,21 +63,20 @@ const Card = (item: List) => {
                     >
                         {item?.title || item?.name}
                     </Title>
-                    <Text
-                        size="sm"
-                        fw={500}
-                        style={{ textAlign: "center" }}
-                        c={"rgba(255,255,255,0.4)"}
-                    >
-                        {matchGenres(genreAll, item.genre_ids)}
-                    </Text>
+                    {matchGenres(genreAll, item.genre_ids)}
                 </Flex>
             </Box>
         </Anchor>
     );
 };
 
-const GetSimilar = ({ type, id }: { type: string; id: number }) => {
+const GetSimilar = ({
+    type,
+    id,
+}: {
+    type: string | undefined;
+    id: string | undefined;
+}) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 

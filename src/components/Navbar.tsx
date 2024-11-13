@@ -8,11 +8,13 @@ import {
     Burger,
     CloseButton,
     Container,
+    Drawer,
     Flex,
     Group,
     Menu,
     Text,
     TextInput,
+    Title,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useEffect, useState } from "react";
@@ -29,7 +31,7 @@ const links = [
 ];
 
 const Navbar = () => {
-    const [opened, { toggle }] = useDisclosure(false);
+    const [opened, { open, close }] = useDisclosure(false);
     const [active, setActive] = useState("");
     const [scroll, setScroll] = useState(false);
     const [searchQuery, setSearchQuery] = useState("");
@@ -75,6 +77,100 @@ const Navbar = () => {
     return (
         <header className={scroll ? classes.header_glass : classes.header}>
             <Container size="mainXl" className={classes.inner}>
+                <Drawer
+                    opened={opened}
+                    onClose={close}
+                    size={"sm"}
+                    shadow="xl"
+                    padding={"lg"}
+                    position="bottom"
+                    overlayProps={{ backgroundOpacity: 0.1, blur: 4 }}
+                >
+                    <Flex
+                        direction={"column"}
+                        justify={"space-between"}
+                        w={"90vw"}
+                        mih={"100%"}
+                    >
+                        <Flex direction={"column"}>
+                            {!user && (
+                                <Anchor
+                                    p={"6px"}
+                                    fw={"bolder"}
+                                    td={"none"}
+                                    fz={"h3"}
+                                    c={"white"}
+                                    onClick={handleGoogleLogin}
+                                >
+                                    Login
+                                </Anchor>
+                            )}
+                            {user && (
+                                <Flex direction={"row"} gap={'md'} align={'center'} pb={'md'} px={6}>
+                                    <Avatar src={user?.photoURL} />
+                                    <Title fz={"h3"}>{user?.displayName}</Title>
+                                </Flex>
+                            )}
+                            <Anchor
+                                component={Link}
+                                to={"/movies/1"}
+                                p={"6px"}
+                                fw={"bolder"}
+                                td={"none"}
+                                fz={"h3"}
+                                c={"white"}
+                            >
+                                Movies
+                            </Anchor>
+                            <Anchor
+                                component={Link}
+                                to={"/series/1"}
+                                p={"6px"}
+                                fw={"bolder"}
+                                td={"none"}
+                                fz={"h3"}
+                                c={"white"}
+                            >
+                                TV Series
+                            </Anchor>
+                        </Flex>
+                        <TextInput
+                            placeholder="Search Movie or TV Series"
+                            // w={"100vw"}
+                            classNames={classes}
+                            onChange={(e) =>
+                                setSearchQuery(e.currentTarget.value)
+                            }
+                            onKeyDown={(e) => {
+                                if (e.key === "Enter") {
+                                    setTimeout(() => {
+                                        window.location.href = `${
+                                            searchQuery
+                                                ? `/search/1?query=${searchQuery}`
+                                                : ``
+                                        }`;
+                                    }, 100);
+                                }
+                            }}
+                            rightSectionPointerEvents="all"
+                            value={searchQuery}
+                            leftSection={<IconSearch color="white" size={14} />}
+                            rightSection={
+                                <CloseButton
+                                    aria-label="Clear Input"
+                                    onClick={() => {
+                                        setSearchQuery("");
+                                    }}
+                                    style={{
+                                        display: searchQuery
+                                            ? undefined
+                                            : "none",
+                                    }}
+                                />
+                            }
+                        />
+                    </Flex>
+                </Drawer>
                 <Anchor
                     underline="never"
                     component={Link}
@@ -105,7 +201,7 @@ const Navbar = () => {
                         }}
                         rightSectionPointerEvents="all"
                         value={searchQuery}
-                        leftSection={<IconSearch color="white"  size={14}/>}
+                        leftSection={<IconSearch color="white" size={14} />}
                         rightSection={
                             <CloseButton
                                 aria-label="Clear Input"
@@ -144,7 +240,7 @@ const Navbar = () => {
                                     </Flex>
                                 </Menu.Item>
                                 <Menu.Divider />
-                                <Menu.Item component={Link} to={"/"}>
+                                <Menu.Item component={Link} to={"/watchlist"}>
                                     Watchlist
                                 </Menu.Item>
                                 <Menu.Item onClick={logout} c={"red"}>
@@ -168,8 +264,9 @@ const Navbar = () => {
                 </Group>
                 <Burger
                     opened={opened}
-                    onClick={toggle}
+                    onClick={opened ? close : open}
                     hiddenFrom="xs"
+                    style={opened ? { display: "none" } : { display: "block" }}
                     size="sm"
                 />
             </Container>

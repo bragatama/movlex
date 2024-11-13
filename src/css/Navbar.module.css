@@ -2,7 +2,7 @@
     height: rem(56px);
     background-color: var(--mantine-color-body);
     position: fixed;
-    z-index: 100000;
+    z-index: 100;
     transition: ease-in-out 50ms;
     width: 100vw;
     -webkit-transition: ease-in-out 50ms;
@@ -14,7 +14,7 @@
 .header_glass {
     height: rem(56px);
     position: fixed;
-    z-index: 100000;
+    z-index: 100;
     transition: ease-in-out 150ms;
     background: rgba(0, 0, 0, 0.3);
     width: 100vw;

@@ -19,6 +19,7 @@ import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
 import { getDiscover, getSearch, imageOriginalUrl } from "../services/Api";
 import moment from "moment";
+import GetCertification from "./GetCertification";
 
 const Card = (item: TrendingMovie) => {
     const releaseDate = moment(
@@ -44,7 +45,6 @@ const Card = (item: TrendingMovie) => {
                     </Text>
                 </div>
             ));
-
     return (
         <>
             <Anchor
@@ -68,7 +68,7 @@ const Card = (item: TrendingMovie) => {
                         >
                             <Title
                                 style={{ textAlign: "center" }}
-                                order={4}
+                                order={3}
                                 fw={1000}
                                 c={"white"}
                             >
@@ -76,11 +76,65 @@ const Card = (item: TrendingMovie) => {
                             </Title>
                             {item.genre_ids &&
                                 matchGenres(genreAll, item.genre_ids)}
+                            <Flex
+                                direction={"row"}
+                                justify={"center"}
+                                gap={"sm"}
+                            >
+                                {item?.condition && (
+                                    <Paper
+                                        w={"fit-content"}
+                                        mt={"0.5vw"}
+                                        radius={"sm"}
+                                        py={"2px"}
+                                        px={"8px"}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(200,200,200)",
+                                        }}
+                                    >
+                                        <Text
+                                            c={"black"}
+                                            fw={600}
+                                            fz={"sm"}
+                                            className={classes.category}
+                                            style={{ textAlign: "center" }}
+                                        >
+                                            {item?.media_type}
+                                        </Text>
+                                    </Paper>
+                                )}
+                                <Paper
+                                    w={"fit-content"}
+                                    mt={"0.5vw"}
+                                    radius={"sm"}
+                                    py={"2px"}
+                                    px={"8px"}
+                                    style={{
+                                        backgroundColor: "rgba(200,200,200)",
+                                    }}
+                                >
+                                    <Text
+                                        c={"black"}
+                                        fw={600}
+                                        fz={"sm"}
+                                        className={classes.category}
+                                        style={{ textAlign: "center" }}
+                                    >
+                                        <GetCertification
+                                            type={item.media_type}
+                                            id={item.id}
+                                            isOn={false}
+                                        />
+                                    </Text>
+                                </Paper>
+                            </Flex>
                             <Text
                                 size="xs"
                                 lineClamp={2}
                                 c={"white"}
-                                pt={"1vw"}
+                                pt={"0.5vw"}
+                                style={{ textAlign: "center" }}
                             >
                                 {item.overview}
                             </Text>
@@ -133,11 +187,19 @@ const MainGrid = ({
         }
     }, [type, page, sortBy, searchQuery]);
 
+    
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     type !== "multi" &&
         data?.results &&
         data?.results.map((element: { [x: string]: string }) => {
             element["media_type"] = type;
+            return element;
+        });
+
+    type === "multi" &&
+        data?.results &&
+        data?.results.map((element: { [x: string]: string }) => {
+            element["condition"] = "search";
             return element;
         });
 
@@ -221,7 +283,7 @@ const MainGrid = ({
                                         window.location.href = `/${
                                             type === "movie"
                                                 ? "movies"
-                                                : type === "series"
+                                                : type === "tv"
                                                 ? "series"
                                                 : "search"
                                         }/${e}${
@@ -258,7 +320,7 @@ const MainGrid = ({
                                         window.location.href = `/${
                                             type === "movie"
                                                 ? "movies"
-                                                : type === "series"
+                                                : type === "tv"
                                                 ? "series"
                                                 : "search"
                                         }/${e}${

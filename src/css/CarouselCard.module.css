@@ -84,12 +84,16 @@
 
 .overlay_card {
     position: absolute;
-    clear: both;
     border-radius: var(--mantine-radius-xs);
     bottom: 0%;
     width: 100%;
-    height: 50%;
-    background: linear-gradient(        0deg,        rgba(0, 0, 0, 1) 0%,        rgba(0, 0, 0, 0.75) 50%,        rgba(0, 0, 0, 0) 100%    );
+    height: 80%;
+    background: linear-gradient(
+        0deg,
+        rgba(0, 0, 0, 1) 0%,
+        rgba(0, 0, 0, 0.75) 50%,
+        rgba(0, 0, 0, 0) 100%
+    );
     opacity: 0;
     transition: opacity 0.5s;
     -webkit-transition: opacity 0.5s;
@@ -100,6 +104,18 @@
     -moz-border-radius: var(--mantine-radius-xs);
     -ms-border-radius: var(--mantine-radius-xs);
     -o-border-radius: var(--mantine-radius-xs);
+}
+
+.episode_card{
+    transform: all .1s ease;
+    -webkit-transform: all .1s ease;
+    -moz-transform: all .1s ease;
+    -ms-transform: all .1s ease;
+    -o-transform: all .1s ease;
+}
+
+.episode_card:hover{
+    background-color: rgba(255, 255, 255, 0.2);
 }
 
 .child:first-child {

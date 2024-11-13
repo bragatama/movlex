@@ -17,6 +17,7 @@ import classes from "../css/CarouselCard.module.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import moment from "moment";
+import GetCertification from "./GetCertification";
 
 const Card = (item: List) => {
     const releaseDate = moment(
@@ -59,13 +60,38 @@ const Card = (item: List) => {
                     <Flex direction={"column"} justify={"flex-end"} h={"100%"}>
                         <Title
                             style={{ textAlign: "center" }}
-                            order={4}
+                            order={3}
                             fw={1000}
                             c={"white"}
                         >
                             {item?.title || item?.name}
                         </Title>
                         {matchGenres(genreAll, item.genre_ids)}
+                        <Paper
+                            w={"fit-content"}
+                            mt={"0.5vw"}
+                            mx={'auto'}
+                            radius={"sm"}
+                            py={"2px"}
+                            px={"8px"}
+                            style={{
+                                backgroundColor: "rgba(200,200,200)",
+                            }}
+                        >
+                            <Text
+                                c={"black"}
+                                fw={600}
+                                fz={"sm"}
+                                className={classes.category}
+                                style={{ textAlign: "center" }}
+                            >
+                                <GetCertification
+                                    type={item.media_type}
+                                    id={item.id}
+                                    isOn={false}
+                                />
+                            </Text>
+                        </Paper>
                     </Flex>
                 </Box>
             </Paper>

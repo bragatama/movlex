@@ -3,7 +3,6 @@ import {
     Anchor,
     Flex,
     Grid,
-    LoadingOverlay,
     Paper,
     Skeleton,
     Text,
@@ -50,7 +49,6 @@ const Card = (item: TrendingAll) => {
                             type={item.media_type}
                             id={item.id}
                             className={classes.images}
-                            style={""}
                         />
                     </div>
                     <div>

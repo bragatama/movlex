@@ -20,6 +20,8 @@ import Series from "./pages/series/Series.tsx";
 import DetailsPage from "./pages/DetailsPage.tsx";
 import { AuthProvider } from "./context/AuthProvider.tsx";
 import Search from "./Search.tsx";
+import Watchlist from "./Watchlist.tsx";
+import Protected from "./components/routes/Protected.tsx";
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
@@ -86,6 +88,18 @@ const router = createBrowserRouter([
             {
                 path: "/:type/:id/season/:season",
                 element: <DetailsPage />,
+            },
+            {
+                path: "/:type/:id/season/:season/episode/:episode",
+                element: <DetailsPage />,
+            },
+            {
+                path: "/watchlist",
+                element: (
+                    <Protected>
+                        <Watchlist />
+                    </Protected>
+                ),
             },
         ],
     },

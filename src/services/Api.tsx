@@ -50,7 +50,11 @@ export const getDiscover = async (
 };
 
 // Get LOGO movie or serie
-export const getLogo = async (id: number, type: string, params = {}) => {
+export const getLogo = async (
+    id: number | string | undefined,
+    type: string | undefined,
+    params = {}
+) => {
     const res = await axios.get(
         `${baseUrl}/${type}/${id}/images?include_image_language=en,null`,
         config(params)
@@ -134,6 +138,20 @@ export const getDetailSeason = async (
 ) => {
     const res = await axios.get(
         `${baseUrl}/tv/${id}/season/${season}?language=en-US`,
+        config(params)
+    );
+    return res?.data;
+};
+
+// Get Episode Detail
+export const getDetailEpisode = async (
+    id: number | string | undefined,
+    season: number | string | undefined,
+    episode: number | string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/tv/${id}/season/${season}/episode/${episode}?language=en-US`,
         config(params)
     );
     return res?.data;

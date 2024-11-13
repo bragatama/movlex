@@ -10,7 +10,7 @@ import {
     Image,
     Anchor,
 } from "@mantine/core";
-import { seasonList } from "../types/types";
+import { seasonList, Seasons } from "../types/types";
 import { imageOriginalUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
@@ -52,7 +52,7 @@ const Card = (item: seasonList) => {
                             size="sm"
                             fw={500}
                             style={{ textAlign: "center" }}
-                            c={"rgba(255,255,255,0.4)"}
+                            c={'dimmed'}
                         >
                             {moment(item.air_date).format("YYYY")} •{" "}
                             {item.episode_count} Episode{"(s) "} •{" "}
@@ -65,7 +65,13 @@ const Card = (item: seasonList) => {
     );
 };
 
-const GetSeason = ({ season, loading }: { season: []; loading: boolean }) => {
+const GetSeason = ({
+    season,
+    loading,
+}: {
+    season: Seasons | undefined;
+    loading: boolean;
+}) => {
     const slides =
         season &&
         season.map((item, i) => (

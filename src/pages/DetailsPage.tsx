@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getDetail, getVideos, imageOriginalUrl } from "../services/Api";
+import { getDetail, getDetailEpisode, getVideos, imageOriginalUrl } from "../services/Api";
 import { Detail } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
@@ -25,10 +25,11 @@ import GetTrailer from "../components/GetTrailer";
 import GetSeason from "../components/GetSeason";
 import GetDetailsSeason from "../components/GetDetailsSeason";
 import GetSimilar from "../components/GetSimilar";
+import GetDetailsEpisode from "../components/GetDetailsEpisode";
 
 const DetailsPage = () => {
     const router = useParams();
-    const { type, id, season } = router;
+    const { type, id, season, episode } = router;
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
     const [video, setVideo] = useState();
@@ -58,7 +59,9 @@ const DetailsPage = () => {
     }, [type, id, details?.name, details?.title]);
 
     const title = details?.title || details?.name;
-    const releaseDateMovie = moment(details?.release_date).format("YYYY");
+    const releaseDateMovie = moment(details?.release_date).format(
+        "MMM Do, YYYY"
+    );
     const releaseDateTv =
         details?.status === "Ended"
             ? moment(details?.first_air_date).format("YYYY") ===
@@ -68,6 +71,16 @@ const DetailsPage = () => {
                   " - " +
                   moment(details?.last_air_date).format("YYYY")
             : moment(details?.first_air_date).format("YYYY") + " - Present";
+
+    const handleAddToWatchlist = () => {
+        const data = {
+            id: details?.id,
+            title: details?.title || details?.name,
+            overview: details?.overview,
+            certification: null,
+            type: type,
+        };
+    };
 
     return (
         <Box>
@@ -84,7 +97,7 @@ const DetailsPage = () => {
                 <Container size={"mainXl"} style={{ zIndex: 1000 }} py={"4vh"}>
                     <Flex
                         gap={"5vw"}
-                        direction={{ base: "column", md: "row" }}
+                        direction={{ base: "column", lg: "row" }}
                         align={"center"}
                         maw={"100%"}
                     >
@@ -107,12 +120,16 @@ const DetailsPage = () => {
                             ) : (
                                 <Image
                                     src={`${imageOriginalUrl}/${details?.poster_path}`}
-                                    h={"70vh"}
+                                    mah={"70vh"}
                                     radius={"md"}
                                 />
                             )}
                         </AspectRatio>
-                        <Box h={"auto"}>
+                        <Flex
+                            direction={"column"}
+                            align={{ base: "center", lg: "flex-start" }}
+                            h={"auto"}
+                        >
                             {/* Logo */}
                             <FetchLogo
                                 id={id}
@@ -120,9 +137,9 @@ const DetailsPage = () => {
                                 style={{
                                     paddingBottom: "20px",
                                     height: "25vh",
-                                    maxWidth: "30vw",
                                     objectFit: "contain",
                                 }}
+                                maw={{ sm: "40vw", lg: "25vw" }}
                             />
                             <Title order={1} c={"white"} fw={1000}>
                                 {title}
@@ -251,27 +268,32 @@ const DetailsPage = () => {
                                 {details?.overview}
                             </Text>
                             <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                {details?.genres.map((genre) => (
-                                    <Grid.Col key={genre.id} span={"content"}>
-                                        <Paper
-                                            radius={"sm"}
-                                            py={"2px"}
-                                            px={"8px"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200, 0.5)",
-                                            }}
+                                {details?.genres.map(
+                                    (genre: { id: number; name: string }) => (
+                                        <Grid.Col
+                                            key={genre.id}
+                                            span={"content"}
                                         >
-                                            <Text
-                                                c={"black"}
-                                                fw={600}
-                                                size="sm"
+                                            <Paper
+                                                radius={"sm"}
+                                                py={"2px"}
+                                                px={"8px"}
+                                                style={{
+                                                    backgroundColor:
+                                                        "rgba(200,200,200, 0.5)",
+                                                }}
                                             >
-                                                {genre.name}
-                                            </Text>
-                                        </Paper>
-                                    </Grid.Col>
-                                ))}
+                                                <Text
+                                                    c={"black"}
+                                                    fw={600}
+                                                    size="sm"
+                                                >
+                                                    {genre.name}
+                                                </Text>
+                                            </Paper>
+                                        </Grid.Col>
+                                    )
+                                )}
                             </Grid>
                             {details?.networks ? (
                                 <>
@@ -282,10 +304,50 @@ const DetailsPage = () => {
                                     >
                                         {details?.networks
                                             .slice(0, 4)
-                                            .map((netowrk) => (
+                                            .map(
+                                                (netowrk: {
+                                                    id: number;
+                                                    name: string;
+                                                    logo_path: string;
+                                                }) => (
+                                                    <Grid.Col
+                                                        span={"content"}
+                                                        key={netowrk.id}
+                                                    >
+                                                        <Paper
+                                                            radius={"sm"}
+                                                            p={"1vh"}
+                                                            style={{
+                                                                backgroundColor:
+                                                                    "rgba(200,200,200)",
+                                                            }}
+                                                        >
+                                                            <Image
+                                                                src={`${imageOriginalUrl}/${netowrk.logo_path}`}
+                                                                h={"3vh"}
+                                                                title={
+                                                                    netowrk.name
+                                                                }
+                                                            />
+                                                        </Paper>
+                                                    </Grid.Col>
+                                                )
+                                            )}
+                                    </Grid>
+                                </>
+                            ) : (
+                                <Grid pt={"2vh"} align="center" gutter={"md"}>
+                                    {details?.production_companies
+                                        .slice(0, 1)
+                                        .map(
+                                            (production: {
+                                                id: number;
+                                                name: string;
+                                                logo_path: string;
+                                            }) => (
                                                 <Grid.Col
                                                     span={"content"}
-                                                    key={netowrk.id}
+                                                    key={production.id}
                                                 >
                                                     <Paper
                                                         radius={"sm"}
@@ -296,52 +358,33 @@ const DetailsPage = () => {
                                                         }}
                                                     >
                                                         <Image
-                                                            src={`${imageOriginalUrl}/${netowrk.logo_path}`}
+                                                            src={`${imageOriginalUrl}/${production.logo_path}`}
                                                             h={"3vh"}
-                                                            title={netowrk.name}
+                                                            title={
+                                                                production.name
+                                                            }
                                                         />
                                                     </Paper>
                                                 </Grid.Col>
-                                            ))}
-                                    </Grid>
-                                </>
-                            ) : (
-                                <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                    {details?.production_companies
-                                        .slice(0, 1)
-                                        .map((production) => (
-                                            <Grid.Col
-                                                span={"content"}
-                                                key={production.id}
-                                            >
-                                                <Paper
-                                                    radius={"sm"}
-                                                    p={"1vh"}
-                                                    style={{
-                                                        backgroundColor:
-                                                            "rgba(200,200,200)",
-                                                    }}
-                                                >
-                                                    <Image
-                                                        src={`${imageOriginalUrl}/${production.logo_path}`}
-                                                        h={"3vh"}
-                                                        title={production.name}
-                                                    />
-                                                </Paper>
-                                            </Grid.Col>
-                                        ))}
+                                            )
+                                        )}
                                 </Grid>
                             )}
-                        </Box>
+                        </Flex>
                     </Flex>
                 </Container>
             </Box>
             {/* Not main */}
             <Container size={"mainXl"} py={"2vh"}>
                 <Flex direction={"column"} gap={"md"}>
-                    {season ? (
+                    {episode ? (
+                        <GetDetailsEpisode
+                            name={details?.name}
+                            seasonName={details?.seasons[season]?.name}
+                        />
+                    ) : !episode && season ? (
                         <>
-                            <GetDetailsSeason />
+                            <GetDetailsSeason name={details?.name} />
                         </>
                     ) : (
                         <>
@@ -351,7 +394,10 @@ const DetailsPage = () => {
                                     loading={loading}
                                 />
                             )}
-                            <AspectRatio ratio={16 / 9} w={"80%"}>
+                            <AspectRatio
+                                ratio={16 / 9}
+                                w={{ base: "100%", lg: "80%" }}
+                            >
                                 <GetTrailer id={video?.key} />
                             </AspectRatio>
                         </>

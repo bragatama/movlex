@@ -25,6 +25,23 @@
         background: rgba(0, 0, 0, 0.6);
         backdrop-filter: blur(11.8px);
         -webkit-backdrop-filter: blur(11.8px);
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+    }
+
+    .mantine-Drawer-content {
+        background: rgba(0, 0, 0, 0.8);
+        box-shadow: 8px 0 0 0 rgba(0, 0, 0, 0.8);
+    }
+
+    .mantine-Drawer-header {
+        background: rgba(0, 0, 0, 0);
+    }
+    .mantine-Drawer-body {
+        /* position: abs; */
+        height: 80%;
+    }
+    .mantine-Drawer-close {
+        margin-right: 10px;
     }
 }
 

@@ -7,8 +7,8 @@ const GetCertification = ({
     id,
     isOn,
 }: {
-    type: string;
-    id: number;
+    type: string | undefined;
+    id: number | string | undefined;
     isOn: boolean;
 }) => {
     const [certificate, setCertificate] = useState<Certification>();

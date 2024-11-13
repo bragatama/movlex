@@ -33,9 +33,9 @@ const Search = () => {
                                 onKeyDown={(e) => {
                                     if (e.key === "Enter") {
                                         setTimeout(() => {
-                                            window.location.href = `/1${
+                                            window.location.href = `${
                                                 searchQuery
-                                                    ? `?query=${searchQuery}`
+                                                    ? `/search/1?query=${searchQuery}`
                                                     : ``
                                             }`;
                                         }, 100);

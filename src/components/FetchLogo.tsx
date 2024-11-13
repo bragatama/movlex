@@ -6,11 +6,19 @@ const FetchLogo = ({
     type,
     style,
     className,
+    miw,
+    maw,
+    mih,
+    mah,
 }: {
-    id: number;
-    type: string;
-    style: {};
+    id: number | string | undefined;
+    type: string | undefined;
+    style: object;
     className: string;
+    miw: object;
+    maw: object;
+    mih: object;
+    mah: object;
 }) => {
     const [logo, setLogo] = useState("");
     useEffect(() => {
@@ -28,6 +36,10 @@ const FetchLogo = ({
             style={style}
             src={`${imageOriginalUrl}/${logo}`}
             alt=" "
+            mih={mih}
+            mah={mah}
+            maw={maw}
+            miw={miw}
             className={className}
         />
     );

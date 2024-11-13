@@ -43,14 +43,12 @@ const Card = (item: castOrCrew) => {
                         size="sm"
                         fw={500}
                         style={{ textAlign: "center" }}
-                        c={"rgba(255,255,255,0.4)"}
+                        c={"dimmed"}
                     >
                         as {item.character}
                     </Text>
                 </Flex>
             </Box>
-            {/* <Title style={{ textAlign: 'center' }} order={4} pt={"1vh"} fw={1000} c={'white'}>{item?.title || item?.name}</Title>
-                {matchGenres(genreAll, item.genre_ids)} */}
         </>
     );
 };
@@ -59,25 +57,38 @@ const GetCredit = ({
     type,
     id,
     label,
+    isGuestStar,
+    guestStars,
 }: {
-    type: string;
-    id: number;
+    type?: string | undefined;
+    id?: string | undefined;
     label: string;
+    isGuestStar?: boolean;
+    guestStars?: [];
 }) => {
     const [credits, setCredits] = useState<Credits>();
+    const [guestStar, setGuestStar] = useState<Credits>();
     const [loading, setLoading] = useState(true);
     useEffect(() => {
-        getCredit(type, id)
-            .then((res) => {
-                setCredits(res);
-            })
-            .catch((err) => {
-                console.log(err, "error");
-            })
-            .finally(() => {
-                setLoading(false);
-            });
-    }, [type, id]);
+        if (!isGuestStar) {
+            getCredit(type, id)
+                .then((res) => {
+                    setCredits(res);
+                })
+                .catch((err) => {
+                    console.log(err, "error");
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+        } else {
+            setGuestStar(guestStars);
+            setLoading(false);
+        }
+    }, [type, id, isGuestStar, guestStars]);
+
+    console.log(guestStars, "dari click");
+    console.log(guestStar, "usestate");
 
     const slidesCrew =
         credits &&
@@ -109,6 +120,21 @@ const GetCredit = ({
                 )}
             </Carousel.Slide>
         ));
+    const slidesGuestStars =
+        guestStar &&
+        guestStar.map((item, i) => (
+            <Carousel.Slide key={item.id}>
+                {loading ? (
+                    <Skeleton key={i} height={"auto"}>
+                        <AspectRatio ratio={2 / 3}>
+                            <Image src={"https://placehold.co/800x1200"} />
+                        </AspectRatio>
+                    </Skeleton>
+                ) : (
+                    <Card {...item} isLoading={loading} />
+                )}
+            </Carousel.Slide>
+        ));
 
     return (
         <>
@@ -118,7 +144,9 @@ const GetCredit = ({
                 style={{ margin: "0px" }}
                 tt={"capitalize"}
             >
-                {label}
+                {label === "cast" && "Main Cast"}
+                {label === "crew" && "Crew"}
+                {label === "guest star" && "Guest Stars on this Episode"}
             </Title>
             <Box h={"100%"} display={"flex"}>
                 <Carousel
@@ -135,7 +163,9 @@ const GetCredit = ({
                     slidesToScroll={"auto"}
                     align={"start"}
                 >
-                    {label === "cast" ? slidesCast : slidesCrew}
+                    {label === "cast" && slidesCast}
+                    {label === "crew" && slidesCrew}
+                    {label === "guest star" && slidesGuestStars}
                 </Carousel>
             </Box>
         </>
