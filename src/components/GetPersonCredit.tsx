@@ -11,7 +11,7 @@ import {
     Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { getSimilar, imageUrl } from "../services/Api";
+import { getPersonCredits, imageUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { genreAll, List } from "../types/types";
 import moment from "moment";
@@ -44,13 +44,13 @@ const Card = (item: List) => {
                 </div>
             ));
     return (
-        <Anchor component={Link} to={`/${type}/${item.id}`} underline="never">
+        <Anchor component={Link} to={`/${item.media_type}/${item.id}`} underline="never">
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
                         src={`${imageUrl}/${item.poster_path}`}
                         radius={"md"}
-                        alt="similar"
+                        alt="poster"
                         loading="lazy"
                         />
                 </AspectRatio>
@@ -66,33 +66,56 @@ const Card = (item: List) => {
                         {item?.title || item?.name}
                     </Title>
                     {matchGenres(genreAll, item.genre_ids)}
+                    <Text
+                        size="sm"
+                        fw={500}
+                        style={{ textAlign: "center" }}
+                        c={"dimmed"}
+                    >
+                        as
+                    </Text>
+                    <Text
+                        size="sm"
+                        fw={500}
+                        style={{ textAlign: "center" }}
+                        c={"white"}
+                    >
+                        {item.character}
+                    </Text>
                 </Flex>
             </Box>
         </Anchor>
     );
 };
 
-const GetSimilar = ({
+const GetPersonCredit = ({
     type,
     id,
 }: {
     type: string | undefined;
-    id: string | undefined;
+    id: number | string | undefined;
 }) => {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        getSimilar(type, id)
+        getPersonCredits(id, type)
             .then((res) => {
-                setData(res.results);
+                setData(res);
             })
             .catch((err) => {
-                console.log(err, "error");
+                console.log(err, "error set person credit");
             })
-            .finally(() => setLoading(false));
+            .finally(() => {
+                setLoading(false);
+            });
+        return () => {};
     }, [type, id]);
 
+    data.map((element: string) => {
+        element["media_type"] = type;
+        return element;
+    });
     const slides =
         data &&
         data?.map((item, i) => (
@@ -104,7 +127,7 @@ const GetSimilar = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                            />
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -121,7 +144,11 @@ const GetSimilar = ({
                 style={{ margin: "0px" }}
                 tt={"capitalize"}
             >
-                More Like This
+                {type === "movie"
+                    ? "Movies Credit"
+                    : type === "tv"
+                    ? "TV Series Credit"
+                    : ""}
             </Title>
             <Box h={"100%"} display={"flex"}>
                 <Carousel
@@ -143,4 +170,4 @@ const GetSimilar = ({
     );
 };
 
-export default GetSimilar;
+export default GetPersonCredit;

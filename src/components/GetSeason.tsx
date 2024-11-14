@@ -36,7 +36,8 @@ const Card = (item: seasonList) => {
                             }
                             radius={"md"}
                             alt="poster"
-                        />
+                            loading="lazy"
+                            />
                     </AspectRatio>
                 </Paper>
                 <Box pb={"xl"}>
@@ -83,7 +84,8 @@ const GetSeason = ({
                             <Image
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
-                            />
+                                loading="lazy"
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (

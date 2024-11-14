@@ -254,6 +254,7 @@ export interface Detail {
 
 export interface List {
     adult: boolean;
+    character: string;
     backdrop_path: string;
     genre_ids: Genre;
     id: number;
@@ -289,7 +290,7 @@ export interface Seasons {
 export interface Person {
     adult: boolean;
     also_known_as: [];
-    gender:number;
+    gender: number;
     biography: string;
     birthday: string;
     death_day: string;

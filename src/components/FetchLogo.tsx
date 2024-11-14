@@ -40,6 +40,7 @@ const FetchLogo = ({
             mah={mah}
             maw={maw}
             miw={miw}
+            loading="lazy"
             className={className}
         />
     );

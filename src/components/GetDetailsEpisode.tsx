@@ -118,7 +118,8 @@ const GetDetailsEpisode = ({
                     maw={"60vw"}
                     alt="still image"
                     radius={"md"}
-                />
+                    loading="lazy"
+                    />
             </AspectRatio>
             <GetCredit type={"tv"} id={id} label="cast" />
             <GetCredit

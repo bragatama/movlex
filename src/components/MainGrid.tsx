@@ -17,11 +17,7 @@ import { useEffect, useState } from "react";
 import { genreAll, TrendingMovie } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
-import {
-    getDiscover,
-    getSearch,
-    imageUrl,
-} from "../services/Api";
+import { getDiscover, getSearch, imageUrl } from "../services/Api";
 import moment from "moment";
 import GetCertification from "./GetCertification";
 
@@ -62,7 +58,8 @@ const Card = (item: TrendingMovie) => {
                             src={`${imageUrl}/${item.poster_path}`}
                             radius={"md"}
                             alt="poster"
-                        />
+                            loading="lazy"
+                            />
                     </AspectRatio>
                     <Box className={classes.overlay_card} pb={"xl"}>
                         <Flex
@@ -217,7 +214,8 @@ const MainGrid = ({
                             <Image
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
-                            />
+                                loading="lazy"
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -284,7 +282,11 @@ const MainGrid = ({
                                 mr={"auto"}
                             >
                                 <Pagination
-                                    total={data.total_pages}
+                                    total={
+                                        data.total_pages <= 500
+                                            ? data.total_pages
+                                            : 500
+                                    }
                                     value={activePage}
                                     onChange={(e) => {
                                         window.location.href = `/${
@@ -321,7 +323,11 @@ const MainGrid = ({
                                 mr={"auto"}
                             >
                                 <Pagination
-                                    total={data.total_pages}
+                                    total={
+                                        data.total_pages <= 500
+                                            ? data.total_pages
+                                            : 500
+                                    }
                                     value={activePage}
                                     onChange={(e) => {
                                         window.location.href = `/${

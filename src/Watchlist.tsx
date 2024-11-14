@@ -92,6 +92,7 @@ const Watchlist = () => {
                                             h={"50vh"}
                                             radius={"md"}
                                             alt="poster"
+                                            loading="lazy"
                                         />
                                     </AspectRatio>
                                     <Flex direction={"column"} gap={"md"}>

@@ -54,6 +54,7 @@ const Card = (item: List) => {
                         src={`${imageUrl}/${item.poster_path}`}
                         alt="poster"
                         radius={"md"}
+                        loading="lazy"
                     />
                 </AspectRatio>
                 <Box className={classes.overlay_card} pb={"xl"}>
@@ -136,7 +137,11 @@ const MainCard = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} alt="skeleton"/>
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                                loading="lazy"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (

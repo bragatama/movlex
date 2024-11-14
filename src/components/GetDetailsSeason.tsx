@@ -101,6 +101,7 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                                             h={"100%"}
                                             alt="still image"
                                             radius={"md"}
+                                            loading="lazy"
                                         />
                                     </AspectRatio>
                                     <Flex direction={"column"}>
@@ -173,7 +174,8 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                             h={"70vh"}
                             radius={"md"}
                             alt="skeleton"
-                        />
+                            loading="lazy"
+                            />
                     </Skeleton>
                 ) : (
                     <Image
@@ -181,7 +183,8 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                         mah={{ xs: "100vh", md: "70vh", lg: "60vh" }}
                         maw={{ xs: "40vw", md: "100vw", lg: "100%" }}
                         radius={"md"}
-                    />
+                        loading="lazy"
+                        />
                 )}
             </AspectRatio>
         </Flex>

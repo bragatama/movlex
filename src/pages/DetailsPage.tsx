@@ -167,6 +167,7 @@ const DetailsPage = () => {
                                         h={"70vh"}
                                         radius={"md"}
                                         alt="skeleton"
+                                        loading="lazy"
                                     />
                                 </Skeleton>
                             ) : (
@@ -175,6 +176,7 @@ const DetailsPage = () => {
                                     mah={"70vh"}
                                     radius={"md"}
                                     alt="poster"
+                                    loading="lazy"
                                 />
                             )}
                         </AspectRatio>
@@ -402,6 +404,7 @@ const DetailsPage = () => {
                                                                 title={
                                                                     netowrk.name
                                                                 }
+                                                                loading="lazy"
                                                             />
                                                         </Paper>
                                                     </Grid.Col>
@@ -438,6 +441,7 @@ const DetailsPage = () => {
                                                             title={
                                                                 production.name
                                                             }
+                                                            loading="lazy"
                                                         />
                                                     </Paper>
                                                 </Grid.Col>

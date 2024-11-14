@@ -1,6 +1,7 @@
 const GetTrailer = ({ id }: { id: string }) => {
     return (
         <iframe
+            key={id}
             src={`https://www.youtube.com/embed/${id}`}
             title="YouTube video player"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"

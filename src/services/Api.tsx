@@ -203,13 +203,19 @@ export const getPerson = async (
 
 // People Detail Credits
 export const getPersonCredits = async (
-    id: string | number | undefined,
-    type: string | number | undefined,
+    id?: string | number | undefined,
+    type?: string | number | undefined,
     params = {}
 ) => {
     const res = await axios.get(
-        `${baseUrl}/person/${id}/${type}`,
+        `${baseUrl}/person/${id}/${
+            type === "movie"
+                ? "movie_credits"
+                : type === "tv"
+                ? "tv_credits"
+                : ""
+        }?language=en-US`,
         config(params)
     );
-    return res?.data;
+    return res?.data.cast;
 };

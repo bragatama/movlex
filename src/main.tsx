@@ -25,6 +25,7 @@ import Protected from "./components/routes/Protected.tsx";
 import GetPerson from "./components/GetPerson.tsx";
 import { Notifications } from "@mantine/notifications";
 import "@mantine/notifications/styles.css";
+import ErrorPage from "./components/ErrorPage.tsx";
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
@@ -106,6 +107,7 @@ const router = createBrowserRouter([
                 ),
             },
         ],
+        errorElement: <ErrorPage />,
     },
 ]);
 

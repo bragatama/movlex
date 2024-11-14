@@ -29,7 +29,8 @@ const Card = (item: castOrCrew) => {
                         }
                         alt="photo"
                         radius={"md"}
-                    />
+                        loading="lazy"
+                        />
                 </AspectRatio>
             </Paper>
             <Box>
@@ -101,7 +102,8 @@ const GetCredit = ({
                             <Image
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
-                            />
+                                loading="lazy"
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -119,7 +121,8 @@ const GetCredit = ({
                             <Image
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
-                            />
+                                loading="lazy"
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -137,7 +140,8 @@ const GetCredit = ({
                             <Image
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
-                            />
+                                loading="lazy"
+                                />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
