@@ -116,6 +116,7 @@ const GetDetailsEpisode = ({
                     src={`${imageOriginalUrl}/${episodes?.still_path}`}
                     h={"100%"}
                     maw={"60vw"}
+                    alt="still image"
                     radius={"md"}
                 />
             </AspectRatio>

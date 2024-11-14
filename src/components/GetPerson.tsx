@@ -53,6 +53,7 @@ const GetPerson = () => {
                                 src={"https://placehold.co/800x1200"}
                                 h={"70vh"}
                                 radius={"md"}
+                                alt="skeleton"
                             />
                         </Skeleton>
                     ) : (
@@ -60,6 +61,7 @@ const GetPerson = () => {
                             src={`${imageOriginalUrl}/${personData?.profile_path}`}
                             mah={"70vh"}
                             radius={"md"}
+                            alt="photo"
                         />
                     )}
                 </AspectRatio>

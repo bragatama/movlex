@@ -13,7 +13,7 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getDetailSeason, imageOriginalUrl } from "../services/Api";
+import { getDetailSeason, imageOriginalUrl, imageUrl } from "../services/Api";
 import { Seasons } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
 import moment from "moment";
@@ -97,8 +97,9 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                                         maw={{ sm: "80vw", lg: "30%" }}
                                     >
                                         <Image
-                                            src={`${imageOriginalUrl}/${item?.still_path}`}
+                                            src={`${imageUrl}/${item?.still_path}`}
                                             h={"100%"}
+                                            alt="still image"
                                             radius={"md"}
                                         />
                                     </AspectRatio>
@@ -171,6 +172,7 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                             src={"https://placehold.co/800x1200"}
                             h={"70vh"}
                             radius={"md"}
+                            alt="skeleton"
                         />
                     </Skeleton>
                 ) : (

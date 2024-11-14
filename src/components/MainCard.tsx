@@ -3,7 +3,6 @@ import {
     Anchor,
     AspectRatio,
     Box,
-    Divider,
     Flex,
     Image,
     Paper,
@@ -12,7 +11,7 @@ import {
     Title,
 } from "@mantine/core";
 import { genreAll, List } from "../types/types";
-import { homeList, imageOriginalUrl } from "../services/Api";
+import { homeList, imageUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
@@ -52,7 +51,8 @@ const Card = (item: List) => {
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
-                        src={`${imageOriginalUrl}/${item.poster_path}`}
+                        src={`${imageUrl}/${item.poster_path}`}
+                        alt="poster"
                         radius={"md"}
                     />
                 </AspectRatio>
@@ -70,7 +70,7 @@ const Card = (item: List) => {
                         <Paper
                             w={"fit-content"}
                             mt={"0.5vw"}
-                            mx={'auto'}
+                            mx={"auto"}
                             radius={"sm"}
                             py={"2px"}
                             px={"8px"}
@@ -136,7 +136,7 @@ const MainCard = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image src={"https://placehold.co/800x1200"} alt="skeleton"/>
                         </AspectRatio>
                     </Skeleton>
                 ) : (

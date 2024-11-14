@@ -17,7 +17,11 @@ import { useEffect, useState } from "react";
 import { genreAll, TrendingMovie } from "../types/types";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
-import { getDiscover, getSearch, imageOriginalUrl } from "../services/Api";
+import {
+    getDiscover,
+    getSearch,
+    imageUrl,
+} from "../services/Api";
 import moment from "moment";
 import GetCertification from "./GetCertification";
 
@@ -55,8 +59,9 @@ const Card = (item: TrendingMovie) => {
                 <Paper className={classes.poster}>
                     <AspectRatio ratio={2 / 3}>
                         <Image
-                            src={`${imageOriginalUrl}/${item.poster_path}`}
+                            src={`${imageUrl}/${item.poster_path}`}
                             radius={"md"}
+                            alt="poster"
                         />
                     </AspectRatio>
                     <Box className={classes.overlay_card} pb={"xl"}>
@@ -187,7 +192,6 @@ const MainGrid = ({
         }
     }, [type, page, sortBy, searchQuery]);
 
-    
     // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     type !== "multi" &&
         data?.results &&
@@ -210,7 +214,10 @@ const MainGrid = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (

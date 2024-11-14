@@ -11,7 +11,7 @@ import {
     Anchor,
 } from "@mantine/core";
 import { seasonList, Seasons } from "../types/types";
-import { imageOriginalUrl } from "../services/Api";
+import { imageUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { Link, useParams } from "react-router-dom";
 import moment from "moment";
@@ -31,10 +31,11 @@ const Card = (item: seasonList) => {
                         <Image
                             src={
                                 item.poster_path
-                                    ? `${imageOriginalUrl}/${item.poster_path}`
+                                    ? `${imageUrl}/${item.poster_path}`
                                     : "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_960_720.png"
                             }
                             radius={"md"}
+                            alt="poster"
                         />
                     </AspectRatio>
                 </Paper>
@@ -52,7 +53,7 @@ const Card = (item: seasonList) => {
                             size="sm"
                             fw={500}
                             style={{ textAlign: "center" }}
-                            c={'dimmed'}
+                            c={"dimmed"}
                         >
                             {moment(item.air_date).format("YYYY")} •{" "}
                             {item.episode_count} Episode{"(s) "} •{" "}
@@ -79,7 +80,10 @@ const GetSeason = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (

@@ -14,7 +14,12 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getDetail, getVideos, imageOriginalUrl } from "../services/Api";
+import {
+    getDetail,
+    getVideos,
+    imageOriginalUrl,
+    imageUrl,
+} from "../services/Api";
 import { Detail } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
@@ -161,6 +166,7 @@ const DetailsPage = () => {
                                         src={"https://placehold.co/800x1200"}
                                         h={"70vh"}
                                         radius={"md"}
+                                        alt="skeleton"
                                     />
                                 </Skeleton>
                             ) : (
@@ -168,6 +174,7 @@ const DetailsPage = () => {
                                     src={`${imageOriginalUrl}/${details?.poster_path}`}
                                     mah={"70vh"}
                                     radius={"md"}
+                                    alt="poster"
                                 />
                             )}
                         </AspectRatio>
@@ -389,8 +396,9 @@ const DetailsPage = () => {
                                                             }}
                                                         >
                                                             <Image
-                                                                src={`${imageOriginalUrl}/${netowrk.logo_path}`}
+                                                                src={`${imageUrl}/${netowrk.logo_path}`}
                                                                 h={"3vh"}
+                                                                alt="network logo"
                                                                 title={
                                                                     netowrk.name
                                                                 }
@@ -424,8 +432,9 @@ const DetailsPage = () => {
                                                         }}
                                                     >
                                                         <Image
-                                                            src={`${imageOriginalUrl}/${production.logo_path}`}
+                                                            src={`${imageUrl}/${production.logo_path}`}
                                                             h={"3vh"}
+                                                            alt="production logo"
                                                             title={
                                                                 production.name
                                                             }

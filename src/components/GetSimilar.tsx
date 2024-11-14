@@ -11,7 +11,7 @@ import {
     Title,
 } from "@mantine/core";
 import { useEffect, useState } from "react";
-import { getSimilar, imageOriginalUrl } from "../services/Api";
+import { getSimilar, imageUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { genreAll, List } from "../types/types";
 import moment from "moment";
@@ -48,8 +48,9 @@ const Card = (item: List) => {
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
-                        src={`${imageOriginalUrl}/${item.poster_path}`}
+                        src={`${imageUrl}/${item.poster_path}`}
                         radius={"md"}
+                        alt="similar"
                     />
                 </AspectRatio>
             </Paper>
@@ -98,7 +99,7 @@ const GetSimilar = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image src={"https://placehold.co/800x1200"} alt="skeleton"/>
                         </AspectRatio>
                     </Skeleton>
                 ) : (

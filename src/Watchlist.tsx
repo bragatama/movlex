@@ -14,7 +14,7 @@ import {
 import { useFirestore } from "./services/firestore";
 import { useAuth } from "./context/UseAuth";
 import { useEffect, useState } from "react";
-import { imageOriginalUrl } from "./services/Api";
+import { imageUrl } from "./services/Api";
 import classes from "./css/CarouselCard.module.css";
 import { Link } from "react-router-dom";
 import moment from "moment";
@@ -88,9 +88,10 @@ const Watchlist = () => {
                                         mih={"fit-content"}
                                     >
                                         <Image
-                                            src={`${imageOriginalUrl}/${item.poster_path}`}
+                                            src={`${imageUrl}/${item.poster_path}`}
                                             h={"50vh"}
                                             radius={"md"}
+                                            alt="poster"
                                         />
                                     </AspectRatio>
                                     <Flex direction={"column"} gap={"md"}>
@@ -145,7 +146,11 @@ const Watchlist = () => {
                                                 </Text>
                                             </Grid.Col>
                                         </Grid>
-                                        <Text fw={500} c={"white"} lineClamp={4}>
+                                        <Text
+                                            fw={500}
+                                            c={"white"}
+                                            lineClamp={4}
+                                        >
                                             {item.overview}
                                         </Text>
                                     </Flex>

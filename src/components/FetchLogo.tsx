@@ -35,7 +35,7 @@ const FetchLogo = ({
         <Image
             style={style}
             src={`${imageOriginalUrl}/${logo}`}
-            alt=" "
+            alt="logo"
             mih={mih}
             mah={mah}
             maw={maw}

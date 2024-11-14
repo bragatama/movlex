@@ -24,7 +24,7 @@ import Watchlist from "./Watchlist.tsx";
 import Protected from "./components/routes/Protected.tsx";
 import GetPerson from "./components/GetPerson.tsx";
 import { Notifications } from "@mantine/notifications";
-import '@mantine/notifications/styles.css';
+import "@mantine/notifications/styles.css";
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),

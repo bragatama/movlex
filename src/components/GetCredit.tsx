@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { castOrCrew, Credits } from "../types/types";
-import { getCredit, imageOriginalUrl } from "../services/Api";
+import { getCredit, imageUrl } from "../services/Api";
 import {
     Anchor,
     AspectRatio,
@@ -24,9 +24,10 @@ const Card = (item: castOrCrew) => {
                     <Image
                         src={
                             item.profile_path
-                                ? `${imageOriginalUrl}/${item.profile_path}`
+                                ? `${imageUrl}/${item.profile_path}`
                                 : "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_960_720.png"
                         }
+                        alt="photo"
                         radius={"md"}
                     />
                 </AspectRatio>
@@ -97,7 +98,10 @@ const GetCredit = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -112,7 +116,10 @@ const GetCredit = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -127,7 +134,10 @@ const GetCredit = ({
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
                         <AspectRatio ratio={2 / 3}>
-                            <Image src={"https://placehold.co/800x1200"} />
+                            <Image
+                                src={"https://placehold.co/800x1200"}
+                                alt="skeleton"
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
