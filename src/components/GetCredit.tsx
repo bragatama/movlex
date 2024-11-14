@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { castOrCrew, Credits } from "../types/types";
 import { getCredit, imageOriginalUrl } from "../services/Api";
 import {
+    Anchor,
     AspectRatio,
     Box,
     Flex,
@@ -13,10 +14,11 @@ import {
 } from "@mantine/core";
 import { Carousel } from "@mantine/carousel";
 import classes from "../css/CarouselCard.module.css";
+import { Link } from "react-router-dom";
 
 const Card = (item: castOrCrew) => {
     return (
-        <>
+        <Anchor component={Link} to={`/person/${item.id}`} underline="never">
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
@@ -45,11 +47,12 @@ const Card = (item: castOrCrew) => {
                         style={{ textAlign: "center" }}
                         c={"dimmed"}
                     >
-                        as {item.character}
+                        as {item?.character && item?.character}
+                        {item.roles && item.roles[0]?.character}
                     </Text>
                 </Flex>
             </Box>
-        </>
+        </Anchor>
     );
 };
 
@@ -86,9 +89,6 @@ const GetCredit = ({
             setLoading(false);
         }
     }, [type, id, isGuestStar, guestStars]);
-
-    console.log(guestStars, "dari click");
-    console.log(guestStar, "usestate");
 
     const slidesCrew =
         credits &&
@@ -144,8 +144,7 @@ const GetCredit = ({
                 style={{ margin: "0px" }}
                 tt={"capitalize"}
             >
-                {label === "cast" && "Main Cast"}
-                {label === "crew" && "Crew"}
+                {label === "cast" && "Main Cast & Crew"}
                 {label === "guest star" && "Guest Stars on this Episode"}
             </Title>
             <Box h={"100%"} display={"flex"}>
@@ -154,8 +153,6 @@ const GetCredit = ({
                     slideGap={"sm"}
                     includeGapInSize={false}
                     style={{
-                        // marginLeft: "calc((-100vw + 100%) / 2)",
-                        // marginRight: "calc((-100vw + 100%) / 2)",
                         flex: 1,
                         width: "100%",
                     }}

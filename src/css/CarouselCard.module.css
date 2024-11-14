@@ -106,16 +106,9 @@
     -o-border-radius: var(--mantine-radius-xs);
 }
 
-.episode_card{
-    transform: all .1s ease;
-    -webkit-transform: all .1s ease;
-    -moz-transform: all .1s ease;
-    -ms-transform: all .1s ease;
-    -o-transform: all .1s ease;
-}
 
-.episode_card:hover{
-    background-color: rgba(255, 255, 255, 0.2);
+.episode_card:hover {
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .child:first-child {
@@ -179,6 +172,15 @@
     margin-bottom: 20px;
     height: fit-content;
     width: 50%;
+}
+
+.watchlist_poster:hover {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 10px;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    -ms-border-radius: 10px;
+    -o-border-radius: 10px;
 }
 
 /* phone */

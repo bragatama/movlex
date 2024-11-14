@@ -6,6 +6,7 @@ import {
     signInWithPopup,
     signOut,
 } from "firebase/auth";
+import { notifications } from "@mantine/notifications";
 
 export const AuthContext = createContext();
 
@@ -19,6 +20,11 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     }
 
     function logout() {
+        notifications.show({
+            message: "You have been logged out",
+            color: "red",
+            autoClose: 5000,
+        });
         return signOut(auth);
     }
     useEffect(() => {

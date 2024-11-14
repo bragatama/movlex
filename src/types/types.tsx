@@ -180,6 +180,13 @@ export interface castOrCrew {
     credit_id: string;
     order: number;
     job?: string;
+    roles: [
+        {
+            credit_id: string;
+            character: string;
+            episode_count: number;
+        }
+    ];
 }
 
 export interface Videos {
@@ -277,6 +284,23 @@ export interface Seasons {
     poster_path: string;
     season_number: number;
     vote_average: number;
+}
+
+export interface Person {
+    adult: boolean;
+    also_known_as: [];
+    gender:number;
+    biography: string;
+    birthday: string;
+    death_day: string;
+    homepage: string;
+    id: number;
+    imdb_id: string;
+    know_for_departement: string;
+    name: string;
+    place_of_birth: string;
+    popularity: number;
+    profile_path: string;
 }
 
 export interface Episodes {

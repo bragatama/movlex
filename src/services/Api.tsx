@@ -110,11 +110,19 @@ export const getCredit = async (
     id: number | string | undefined,
     params = {}
 ) => {
-    const res = await axios.get(
-        `${baseUrl}/${type}/${id}/credits?language=en-US`,
-        config(params)
-    );
-    return res?.data;
+    if (type === "tv") {
+        const res = await axios.get(
+            `${baseUrl}/tv/${id}/aggregate_credits?language=en-US`,
+            config(params)
+        );
+        return res?.data;
+    } else {
+        const res = await axios.get(
+            `${baseUrl}/${type}/${id}/credits?language=en-US`,
+            config(params)
+        );
+        return res?.data;
+    }
 };
 
 // Get videos
@@ -164,7 +172,7 @@ export const getSimilar = async (
     params = {}
 ) => {
     const res = await axios.get(
-        `${baseUrl}/${type}/${id}/similar?language=en-US`,
+        `${baseUrl}/${type}/${id}/recommendations?language=en-US`,
         config(params)
     );
     return res?.data;
@@ -182,4 +190,26 @@ export const getSearch = async (
         config(params)
     );
     return res;
+};
+
+// People Detail
+export const getPerson = async (
+    id: string | number | undefined,
+    params = {}
+) => {
+    const res = await axios.get(`${baseUrl}/person/${id}`, config(params));
+    return res?.data;
+};
+
+// People Detail Credits
+export const getPersonCredits = async (
+    id: string | number | undefined,
+    type: string | number | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/person/${id}/${type}`,
+        config(params)
+    );
+    return res?.data;
 };

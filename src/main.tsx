@@ -22,6 +22,9 @@ import { AuthProvider } from "./context/AuthProvider.tsx";
 import Search from "./Search.tsx";
 import Watchlist from "./Watchlist.tsx";
 import Protected from "./components/routes/Protected.tsx";
+import GetPerson from "./components/GetPerson.tsx";
+import { Notifications } from "@mantine/notifications";
+import '@mantine/notifications/styles.css';
 
 const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
@@ -93,6 +96,7 @@ const router = createBrowserRouter([
                 path: "/:type/:id/season/:season/episode/:episode",
                 element: <DetailsPage />,
             },
+            { path: "/person/:id", element: <GetPerson /> },
             {
                 path: "/watchlist",
                 element: (
@@ -109,6 +113,7 @@ createRoot(document.getElementById("root")!).render(
     <StrictMode>
         <ColorSchemeScript />
         <MantineProvider theme={theme} defaultColorScheme="dark">
+            <Notifications />
             <NavigationProgress />
             <AuthProvider>
                 <RouterProvider router={router} />

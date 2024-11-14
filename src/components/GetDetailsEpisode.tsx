@@ -80,7 +80,7 @@ const GetDetailsEpisode = ({
             </Flex>
             <Title order={1} c={"white"}>
                 <Title order={1} c={"dimmed"} component={"span"}>
-                    {episodes?.episode_number} &mdash; {' '}
+                    {episodes?.episode_number} &mdash;{" "}
                 </Title>
                 {episodes?.name}
             </Title>
@@ -119,6 +119,7 @@ const GetDetailsEpisode = ({
                     radius={"md"}
                 />
             </AspectRatio>
+            <GetCredit type={"tv"} id={id} label="cast" />
             <GetCredit
                 label="guest star"
                 isGuestStar={true}

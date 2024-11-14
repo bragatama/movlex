@@ -14,7 +14,7 @@ import {
 } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
-import { getDetail, getDetailEpisode, getVideos, imageOriginalUrl } from "../services/Api";
+import { getDetail, getVideos, imageOriginalUrl } from "../services/Api";
 import { Detail } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
@@ -26,6 +26,10 @@ import GetSeason from "../components/GetSeason";
 import GetDetailsSeason from "../components/GetDetailsSeason";
 import GetSimilar from "../components/GetSimilar";
 import GetDetailsEpisode from "../components/GetDetailsEpisode";
+import { useAuth } from "../context/UseAuth";
+import { notifications } from "@mantine/notifications";
+import { useFirestore } from "../services/firestore";
+import classes from "../css/CarouselCard.module.css";
 
 const DetailsPage = () => {
     const router = useParams();
@@ -33,6 +37,9 @@ const DetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
     const [video, setVideo] = useState();
+    const { addToWatchlist, checkWatchlist, removeFromWatchlist } =
+        useFirestore();
+    const [isInWatchlist, setIsInWatchlist] = useState(false);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -72,16 +79,55 @@ const DetailsPage = () => {
                   moment(details?.last_air_date).format("YYYY")
             : moment(details?.first_air_date).format("YYYY") + " - Present";
 
-    const handleAddToWatchlist = () => {
+    const { user } = useAuth();
+
+    const handleAddToWatchlist = async () => {
+        if (!user) {
+            notifications.show({
+                title: "Error while adding to Watchlist",
+                message: "You have to login in order to add to watchlist",
+                position: "bottom-right",
+                autoClose: 5000,
+                color: "red",
+                style: { backgroundColor: "rgba(50,0,0,1)" },
+            });
+            return;
+        }
         const data = {
             id: details?.id,
             title: details?.title || details?.name,
-            overview: details?.overview,
-            certification: null,
             type: type,
+            poster_path: details?.poster_path,
+            release_date: details?.release_date || details?.first_air_date,
+            overview: details?.overview,
+            vote_average: details?.vote_average,
         };
-    };
+        await addToWatchlist(user?.uid, data?.id?.toString(), data);
 
+        const isSetToWatchlist = await checkWatchlist(
+            user?.uid,
+            data.id?.toString()
+        );
+        setIsInWatchlist(isSetToWatchlist);
+    };
+    useEffect(() => {
+        if (!user) {
+            setIsInWatchlist(false);
+            return;
+        }
+        checkWatchlist(user?.uid, id?.toString()).then((res) => {
+            setIsInWatchlist(res);
+        });
+    }, [user, checkWatchlist, id]);
+
+    const handleRemoveFromWathclist = async () => {
+        await removeFromWatchlist(user?.uid, id?.toString());
+        const isSetToWatchlist = await checkWatchlist(
+            user?.uid,
+            id?.toString()
+        );
+        setIsInWatchlist(isSetToWatchlist);
+    };
     return (
         <Box>
             <Box
@@ -225,29 +271,49 @@ const DetailsPage = () => {
                                     </Text>
                                 </Grid.Col>
                                 <Grid.Col span={"content"}>
-                                    <Button variant="outline">
+                                    <Button
+                                        variant="filled"
+                                        color="rgba(200,200,200) "
+                                        h={"100%"}
+                                        py={"2px"}
+                                        px={"8px"}
+                                    >
                                         <Anchor
                                             component={Link}
                                             to={details?.homepage}
                                             underline="never"
                                         >
-                                            Website
+                                            <Text fw={600} c={"black"}>
+                                                Website
+                                            </Text>
                                         </Anchor>
                                     </Button>
                                 </Grid.Col>
                                 <Grid.Col span={"content"}>
-                                    <Button
-                                        variant="outline"
-                                        color="green"
-                                        display={"none"}
-                                    >
-                                        <IconCircleCheck size={20} />
-                                        &nbsp; In watchlist
-                                    </Button>
-                                    <Button variant="outline" color="blue">
-                                        <IconPlus size={20} />
-                                        &nbsp; Add to watchlist
-                                    </Button>
+                                    {isInWatchlist ? (
+                                        <Button
+                                            variant="outline"
+                                            color="green"
+                                            w={200}
+                                            onClick={handleRemoveFromWathclist}
+                                        >
+                                            <IconCircleCheck size={20} />
+                                            <Text fw={600}>
+                                                &nbsp; In watchlist
+                                            </Text>
+                                        </Button>
+                                    ) : (
+                                        <Button
+                                            variant="outline"
+                                            color="blue"
+                                            onClick={handleAddToWatchlist}
+                                        >
+                                            <IconPlus size={20} />
+                                            <Text fw={600}>
+                                                &nbsp; Add to watchlist
+                                            </Text>
+                                        </Button>
+                                    )}
                                 </Grid.Col>
                             </Grid>
                             {details?.tagline ? (
@@ -376,7 +442,7 @@ const DetailsPage = () => {
             </Box>
             {/* Not main */}
             <Container size={"mainXl"} py={"2vh"}>
-                <Flex direction={"column"} gap={"md"}>
+                <Flex direction={"column"} gap={"lg"}>
                     {episode ? (
                         <GetDetailsEpisode
                             name={details?.name}
@@ -402,7 +468,7 @@ const DetailsPage = () => {
                             </AspectRatio>
                         </>
                     )}
-                    <GetCredit type={type} id={id} label="cast" />
+                    {!episode && <GetCredit type={type} id={id} label="cast" />}
                     <GetSimilar type={type} id={id} />
                 </Flex>
             </Container>

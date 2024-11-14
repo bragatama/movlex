@@ -22,6 +22,7 @@ import { Link } from "react-router-dom";
 import classes from "../css/Navbar.module.css";
 import { useAuth } from "../context/UseAuth";
 import { IconSearch } from "@tabler/icons-react";
+import { notifications } from "@mantine/notifications";
 
 // Second Iteration
 
@@ -70,6 +71,11 @@ const Navbar = () => {
         try {
             await signInWithGoogle();
             console.log("success");
+            notifications.show({
+                message: "Successfully Log In",
+                color: "green",
+                autoClose: 5000,
+            });
         } catch (error) {
             console.log(error, "error");
         }
@@ -106,7 +112,13 @@ const Navbar = () => {
                                 </Anchor>
                             )}
                             {user && (
-                                <Flex direction={"row"} gap={'md'} align={'center'} pb={'md'} px={6}>
+                                <Flex
+                                    direction={"row"}
+                                    gap={"md"}
+                                    align={"center"}
+                                    pb={"md"}
+                                    px={6}
+                                >
                                     <Avatar src={user?.photoURL} />
                                     <Title fz={"h3"}>{user?.displayName}</Title>
                                 </Flex>
@@ -133,6 +145,33 @@ const Navbar = () => {
                             >
                                 TV Series
                             </Anchor>
+                            {user && (
+                                <>
+                                    <Anchor
+                                        component={Link}
+                                        to={"/watchlist"}
+                                        p={"6px"}
+                                        fw={"bolder"}
+                                        td={"none"}
+                                        fz={"h3"}
+                                        c={"white"}
+                                    >
+                                        Watchlist
+                                    </Anchor>
+                                    <Anchor
+                                        // component={Link}
+                                        // to={"/watchlist"}
+                                        p={"6px"}
+                                        fw={"bolder"}
+                                        td={"none"}
+                                        fz={"h3"}
+                                        c={"red"}
+                                        onClick={logout}
+                                    >
+                                        Logout
+                                    </Anchor>
+                                </>
+                            )}
                         </Flex>
                         <TextInput
                             placeholder="Search Movie or TV Series"
