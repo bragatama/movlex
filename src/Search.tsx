@@ -1,10 +1,10 @@
-import { Box, Container, Flex, Input, TextInput, Title } from "@mantine/core";
+import { Box, Container, Flex, TextInput, Title } from "@mantine/core";
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import MainGrid from "./components/MainGrid";
 
 const Search = () => {
-    const [searchURL, setSearchURL] = useSearchParams();
+    const [searchURL] = useSearchParams();
     const search = searchURL.get("query");
     const [searchQuery, setSearchQuery] = useState(search || "");
     useEffect(() => {
