@@ -135,6 +135,14 @@ const DetailsPage = () => {
     };
     return (
         <Box>
+            <meta
+                name="description"
+                content="show detail information about movie or tv show, from their description, name, runtime, logo, cast, guest star, how many season, how many episode, and similar movie or tv show to that movie or tv show"
+            />
+            <meta
+                name="keyword"
+                content={`${details?.name} ${details?.title} ${details?.overview} ${details?.name} ${details?.tagline} ${details?.type}`}
+            />
             <Box
                 // Background Images
                 style={{

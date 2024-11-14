@@ -23,6 +23,10 @@ const Series = () => {
     }, []);
     return (
         <>
+            <meta
+                name="description"
+                content="shows list of Tv series or TV shows in order of popularity and top rated."
+            />
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
                     <Flex direction={"row"} justify={"space-between"}>

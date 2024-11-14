@@ -56,6 +56,7 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
             align={{ base: "center", lg: "flex-start" }}
             gap={"xl"}
         >
+            <meta name="keyword" content={`${name}, tv series, tv shows`} />
             <Flex direction={"column"} gap={"md"}>
                 <Flex direction={"row"} gap={"sm"}>
                     <Anchor component={Link} to={`/tv/${id}/`}>
@@ -68,9 +69,9 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                         /
                     </Title>
                 </Flex>
-                    <Title order={1} c={"white"}>
-                        {seasons?.name}
-                    </Title>
+                <Title order={1} c={"white"}>
+                    {seasons?.name}
+                </Title>
                 <Text fw={500}>{seasons?.overview}</Text>
                 <Title order={3} c={"white"} pt={"1vh"}>
                     Episodes
@@ -175,7 +176,7 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                             radius={"md"}
                             alt="skeleton"
                             loading="lazy"
-                            />
+                        />
                     </Skeleton>
                 ) : (
                     <Image
@@ -184,7 +185,7 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                         maw={{ xs: "40vw", md: "100vw", lg: "100%" }}
                         radius={"md"}
                         loading="lazy"
-                        />
+                    />
                 )}
             </AspectRatio>
         </Flex>

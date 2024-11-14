@@ -5,10 +5,14 @@ import { Box, Container, Flex } from "@mantine/core";
 
 const Home = () => {
     useEffect(() => {
-        document.title = 'Movlex'
+        document.title = "Movlex";
     }, []);
     return (
         <>
+            <meta
+                name="description"
+                content="homepage about movies and tv shows information, all information from title, release date, logo, backdrop, rating can be found here"
+            />
             <MainCarousel type="all" time_window="week" />
             <Box pt={"xl"}>
                 <Container

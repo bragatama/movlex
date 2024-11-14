@@ -35,6 +35,7 @@ const GetPerson = () => {
 
     return (
         <Container size={"mainXl"} style={{ zIndex: 1000 }} py={"4vh"}>
+            <meta name="keyword" content={`${personData.name}, celebrity, celebrities, actor, actress`} />
             <Flex direction={"column"} gap={"lg"}>
                 <Flex
                     gap={"5vw"}

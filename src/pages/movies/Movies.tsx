@@ -23,6 +23,10 @@ const Movies = () => {
     }, []);
     return (
         <>
+            <meta
+                name="description"
+                content="shows list of movies in order of popularity and top rated."
+            />
             <Box pt={"xl"}>
                 <Container size={"mainXl"}>
                     <Flex direction={"row"} justify={"space-between"}>

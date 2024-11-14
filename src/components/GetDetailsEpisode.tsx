@@ -58,6 +58,7 @@ const GetDetailsEpisode = ({
     }
     return (
         <Flex direction={"column"} gap={"md"}>
+            <meta name='keyword' content={`${name}, ${episodes?.name}`}/>
             <Flex direction={"row"} gap={"sm"}>
                 <Anchor component={Link} to={`/tv/${id}/`}>
                     <Title order={4} c={"white"}>
