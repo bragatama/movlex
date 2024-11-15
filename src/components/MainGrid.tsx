@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-expressions */
 import {
     Anchor,
     AspectRatio,
@@ -27,7 +28,11 @@ const Card = (item: TrendingMovie) => {
     ).format("YYYY");
     const matchGenres = (
         genres: { id: number; name: string }[],
-        genreList: { id: number; name: string }
+        genreList: {
+            includes(id: number): unknown;
+            id: number;
+            name: string;
+        }
     ) =>
         genres
             .filter((genre) => genreList.includes(genre.id))
@@ -41,7 +46,7 @@ const Card = (item: TrendingMovie) => {
                         c={"rgba(255,255,255,0.4)"}
                     >
                         {genre.name} • {releaseDate} •{" "}
-                        {item.vote_average.toFixed(1)}★
+                        {item.vote_average && item.vote_average.toFixed(1)}★
                     </Text>
                 </div>
             ));
@@ -55,11 +60,19 @@ const Card = (item: TrendingMovie) => {
                 <Paper className={classes.poster}>
                     <AspectRatio ratio={2 / 3}>
                         <Image
-                            src={`${imageUrl}/${item.poster_path}`}
+                            src={
+                                item?.poster_path
+                                    ? `${imageUrl}/${item.poster_path}`
+                                    : item?.profile_path
+                                    ? `${imageUrl}/${item.profile_path}`
+                                    : `https://placehold.co/800x1200?text=${
+                                          item.name || item.title
+                                      }`
+                            }
                             radius={"md"}
                             alt="poster"
                             loading="lazy"
-                            />
+                        />
                     </AspectRatio>
                     <Box className={classes.overlay_card} pb={"xl"}>
                         <Flex
@@ -102,34 +115,43 @@ const Card = (item: TrendingMovie) => {
                                             className={classes.category}
                                             style={{ textAlign: "center" }}
                                         >
-                                            {item?.media_type}
+                                            {item?.media_type === "person"
+                                                ? item?.gender === 1
+                                                    ? "Female"
+                                                    : item.gender === 2
+                                                    ? "Male"
+                                                    : "Non-Binary"
+                                                : item?.media_type}
                                         </Text>
                                     </Paper>
                                 )}
-                                <Paper
-                                    w={"fit-content"}
-                                    mt={"0.5vw"}
-                                    radius={"sm"}
-                                    py={"2px"}
-                                    px={"8px"}
-                                    style={{
-                                        backgroundColor: "rgba(200,200,200)",
-                                    }}
-                                >
-                                    <Text
-                                        c={"black"}
-                                        fw={600}
-                                        fz={"sm"}
-                                        className={classes.category}
-                                        style={{ textAlign: "center" }}
+                                {item.media_type !== "person" && (
+                                    <Paper
+                                        w={"fit-content"}
+                                        mt={"0.5vw"}
+                                        radius={"sm"}
+                                        py={"2px"}
+                                        px={"8px"}
+                                        style={{
+                                            backgroundColor:
+                                                "rgba(200,200,200)",
+                                        }}
                                     >
-                                        <GetCertification
-                                            type={item.media_type}
-                                            id={item.id}
-                                            isOn={false}
-                                        />
-                                    </Text>
-                                </Paper>
+                                        <Text
+                                            c={"black"}
+                                            fw={600}
+                                            fz={"sm"}
+                                            className={classes.category}
+                                            style={{ textAlign: "center" }}
+                                        >
+                                            <GetCertification
+                                                type={item.media_type}
+                                                id={item.id}
+                                                isOn={false}
+                                            />
+                                        </Text>
+                                    </Paper>
+                                )}
                             </Flex>
                             <Text
                                 size="xs"
@@ -154,7 +176,7 @@ const MainGrid = ({
     searchQuery,
 }: {
     type: string;
-    sortBy: string;
+    sortBy?: string;
     searchQuery: string;
 }) => {
     const router = useParams();
@@ -189,7 +211,6 @@ const MainGrid = ({
         }
     }, [type, page, sortBy, searchQuery]);
 
-    // eslint-disable-next-line @typescript-eslint/no-unused-expressions
     type !== "multi" &&
         data?.results &&
         data?.results.map((element: { [x: string]: string }) => {
@@ -215,7 +236,7 @@ const MainGrid = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (

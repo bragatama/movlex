@@ -4,6 +4,14 @@ export const imageUrl = "https://image.tmdb.org/t/p/w500";
 export const imageOriginalUrl = "https://image.tmdb.org/t/p/original";
 export const genreUrl = "https://api.themoviedb.org/3/genre";
 const appKey = import.meta.env.VITE_APP_TOKEN;
+
+export const instagram = "https://www.instagram.com";
+export const facebook = "https://www.facebook.com";
+export const twitter = "https://x.com";
+export const imdbPerson = "https://www.imdb.com/name";
+export const tiktok = "https://www.tiktok.com/@";
+export const youtube = "https://www.youtube.com/@";
+export const wikidata = "https://www.wikidata.org/wiki/";
 // Header
 
 const config = ({ ...params }) => {
@@ -203,8 +211,8 @@ export const getPerson = async (
 
 // People Detail Credits
 export const getPersonCredits = async (
-    id?: string | number | undefined,
-    type?: string | number | undefined,
+    id: string | number | undefined,
+    type: string | number | undefined,
     params = {}
 ) => {
     const res = await axios.get(
@@ -218,4 +226,16 @@ export const getPersonCredits = async (
         config(params)
     );
     return res?.data.cast;
+};
+
+// Social Media Person
+export const getSocialMedia = async (
+    id: string | number | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/person/${id}/external_ids`,
+        config(params)
+    );
+    return res?.data;
 };

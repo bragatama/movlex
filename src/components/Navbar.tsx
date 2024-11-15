@@ -223,7 +223,7 @@ const Navbar = () => {
                 <Group gap={20} visibleFrom="xs" className={classes.menu}>
                     {items}
                     <TextInput
-                        placeholder="Search Movie or TV Series"
+                        placeholder="Search Movie or TV Series or Person"
                         w={"15vw"}
                         classNames={classes}
                         onChange={(e) => setSearchQuery(e.currentTarget.value)}

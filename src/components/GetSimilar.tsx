@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Carousel } from "@mantine/carousel";
 import {
     Anchor,
@@ -25,10 +26,14 @@ const Card = (item: List) => {
     ).format("YYYY");
     const matchGenres = (
         genres: { id: number; name: string }[],
-        genreList: { id: number; name: string }
+        genreList: {
+            includes(id: any): unknown;
+            id: number;
+            name: string;
+        }
     ) =>
         genres
-            .filter((genre) => genreList.includes(genre.id))
+            .filter((genre: { id: any }) => genreList.includes(genre.id))
             .slice(0, 1)
             .map((genre) => (
                 <div key={genre.id}>
@@ -39,7 +44,7 @@ const Card = (item: List) => {
                         c={"dimmed"}
                     >
                         {genre.name} • {releaseDate} •{" "}
-                        {item.vote_average.toFixed(1)}★
+                        {item.vote_average && item.vote_average.toFixed(1)}★
                     </Text>
                 </div>
             ));
@@ -48,11 +53,15 @@ const Card = (item: List) => {
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
-                        src={`${imageUrl}/${item.poster_path}`}
+                        src={
+                            item.poster_path
+                                ? `${imageUrl}/${item.poster_path}`
+                                : `https://placehold.co/800x1200?text=${item.name}`
+                        }
                         radius={"md"}
                         alt="similar"
                         loading="lazy"
-                        />
+                    />
                 </AspectRatio>
             </Paper>
             <Box>
@@ -95,7 +104,7 @@ const GetSimilar = ({
 
     const slides =
         data &&
-        data?.map((item, i) => (
+        data?.map((item: { id: number; genre_ids: [] }, i) => (
             <Carousel.Slide key={item.id}>
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
@@ -108,7 +117,11 @@ const GetSimilar = ({
                         </AspectRatio>
                     </Skeleton>
                 ) : (
-                    <Card {...item} isLoading={loading} />
+                    <Card
+                        {...item}
+                        is_loading={loading}
+                        genre_ids={item.genre_ids}
+                    />
                 )}
             </Carousel.Slide>
         ));

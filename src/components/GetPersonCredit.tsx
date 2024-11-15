@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Carousel } from "@mantine/carousel";
 import {
     Anchor,
@@ -15,20 +16,22 @@ import { getPersonCredits, imageUrl } from "../services/Api";
 import classes from "../css/CarouselCard.module.css";
 import { genreAll, List } from "../types/types";
 import moment from "moment";
-import { Link, useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const Card = (item: List) => {
-    const router = useParams();
-    const { type } = router;
     const releaseDate = moment(
         item?.release_date || item?.first_air_date
     ).format("YYYY");
     const matchGenres = (
         genres: { id: number; name: string }[],
-        genreList: { id: number; name: string }
+        genreList: {
+            includes(id: any): unknown;
+            id: number;
+            name: string;
+        }
     ) =>
         genres
-            .filter((genre) => genreList.includes(genre.id))
+            .filter((genre: { id: any }) => genreList.includes(genre.id))
             .slice(0, 1)
             .map((genre) => (
                 <div key={genre.id}>
@@ -39,12 +42,16 @@ const Card = (item: List) => {
                         c={"dimmed"}
                     >
                         {genre.name} • {releaseDate} •{" "}
-                        {item.vote_average.toFixed(1)}★
+                        {item.vote_average && item.vote_average.toFixed(1)}★
                     </Text>
                 </div>
             ));
     return (
-        <Anchor component={Link} to={`/${item.media_type}/${item.id}`} underline="never">
+        <Anchor
+            component={Link}
+            to={`/${item.media_type}/${item.id}`}
+            underline="never"
+        >
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
@@ -52,7 +59,7 @@ const Card = (item: List) => {
                         radius={"md"}
                         alt="poster"
                         loading="lazy"
-                        />
+                    />
                 </AspectRatio>
             </Paper>
             <Box>
@@ -112,13 +119,13 @@ const GetPersonCredit = ({
         return () => {};
     }, [type, id]);
 
-    data.map((element: string) => {
+    data.map((element: any) => {
         element["media_type"] = type;
         return element;
     });
     const slides =
         data &&
-        data?.map((item, i) => (
+        data?.map((item: { id: number; genre_ids: [] }, i) => (
             <Carousel.Slide key={item.id}>
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
@@ -127,11 +134,11 @@ const GetPersonCredit = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
-                    <Card {...item} isLoading={loading} />
+                    <Card {...item} genre_ids={item.genre_ids} />
                 )}
             </Carousel.Slide>
         ));

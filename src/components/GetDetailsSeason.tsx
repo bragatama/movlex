@@ -98,7 +98,9 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                                         maw={{ sm: "80vw", lg: "30%" }}
                                     >
                                         <Image
-                                            src={`${imageUrl}/${item?.still_path}`}
+                                            src={item?.still_path
+                                                ? `${imageUrl}/${item?.still_path}`
+                                                : `https://placehold.co/800x1200?text=${item.name}`}
                                             h={"100%"}
                                             alt="still image"
                                             radius={"md"}
@@ -180,7 +182,9 @@ const GetDetailsSeason = ({ name }: { name: string }) => {
                     </Skeleton>
                 ) : (
                     <Image
-                        src={`${imageOriginalUrl}/${seasons?.poster_path}`}
+                        src={seasons?.poster_path
+                            ? `${imageOriginalUrl}/${seasons?.poster_path}`
+                            : `https://placehold.co/800x1200?text=${seasons?.name}`}
                         mah={{ xs: "100vh", md: "70vh", lg: "60vh" }}
                         maw={{ xs: "40vw", md: "100vw", lg: "100%" }}
                         radius={"md"}

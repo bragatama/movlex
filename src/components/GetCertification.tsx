@@ -12,12 +12,13 @@ const GetCertification = ({
     isOn: boolean;
 }) => {
     const [certificate, setCertificate] = useState<Certification>();
-    const [tvCertificate, setTvCertificate] = useState<Certification>([]);
+    const [tvCertificate, setTvCertificate] = useState<Certification>();
     useEffect(() => {
         getCertification(type, id)
             .then((res) => {
                 const region = res.find(
-                    (region: string) => region.iso_3166_1 === "US"
+                    (region: { iso_3166_1: string }) =>
+                        region.iso_3166_1 === "US"
                 );
                 if (type === "movie") {
                     setCertificate(region);
@@ -29,6 +30,7 @@ const GetCertification = ({
                 console.log(err, "err");
             });
     }, [type, id]);
+    
 
     if (type === "movie" && certificate !== undefined) {
         for (let i = 0; i < certificate?.release_dates.length; i++) {

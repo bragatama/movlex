@@ -13,12 +13,12 @@ const FetchLogo = ({
 }: {
     id: number | string | undefined;
     type: string | undefined;
-    style: object;
-    className: string;
-    miw: object;
-    maw: object;
-    mih: object;
-    mah: object;
+    style?: object;
+    className?: string;
+    miw?: object;
+    maw?: object;
+    mih?: object;
+    mah?: object;
 }) => {
     const [logo, setLogo] = useState("");
     useEffect(() => {
@@ -32,17 +32,23 @@ const FetchLogo = ({
     }, [id, type]);
 
     return (
-        <Image
-            style={style}
-            src={`${imageOriginalUrl}/${logo}`}
-            alt="logo"
-            mih={mih}
-            mah={mah}
-            maw={maw}
-            miw={miw}
-            loading="lazy"
-            className={className}
-        />
+        <>
+            {logo ? (
+                <Image
+                    style={style}
+                    src={`${imageOriginalUrl}/${logo}`}
+                    alt="logo"
+                    mih={mih}
+                    mah={mah}
+                    maw={maw}
+                    miw={miw}
+                    loading="lazy"
+                    className={className}
+                />
+            ) : (
+                ""
+            )}
+        </>
     );
 };
 

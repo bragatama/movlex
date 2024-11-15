@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface TrendingAll {
     id: number;
     genre_ids: Genre;
@@ -8,32 +9,35 @@ export interface TrendingAll {
     release_date?: string;
     first_air_date?: string;
     overview: string;
-    vote_average: number;
+    vote_average?: number;
 }
 
 export interface TrendingMovie {
     backdrop_path: string;
-    condition: string;
-    first_air_date: string;
-    genres_id: [];
+    condition?: string;
+    first_air_date?: string;
+    genres_id: Genre;
     media_type: string;
     name: string;
-    results: [];
+    results?: [];
+    gender: number;
+    profile_path?: string;
     id: number;
     title: string;
-    poster_path: string;
+    poster_path?: string;
     original_language: string;
-    genre_ids: Genre;
-    popularity: number;
-    release_date: string;
-    vote_average: number;
-    vote_count: number;
-    overview: string;
+    genre_ids?: Genre;
+    popularity?: number;
+    release_date?: string;
+    vote_average?: number;
+    vote_count?: number;
+    overview?: string;
 }
 
 interface Genre {
     id: number;
     name: string;
+    includes(id: any): unknown;
 }
 
 export const genreAll = [
@@ -148,42 +152,57 @@ export const genreAll = [
 ];
 
 export interface Certification {
-    iso_3166_1: string;
-    release_dates?: [movieCertification] | [];
+    iso_3166_1?: string;
+    release_dates: movieCertification;
     descriptors?: [];
     rating?: string;
 }
 
 interface movieCertification {
-    certification: string;
-    descriptors: [];
+    length: number;
+    [key: number]: movieCertification;
+    certification?: string;
+    descriptors?: [];
     iso_639_1: string;
 }
 
 export interface Credits {
-    id: number;
-    cast: castOrCrew;
-    crew: castOrCrew;
+    map(
+        arg0: (
+            item: { id: number },
+            i: number
+        ) => import("react/jsx-runtime").JSX.Element
+    ): unknown;
+    id?: number;
+    cast?: castOrCrew;
+    crew?: castOrCrew;
 }
 
 export interface castOrCrew {
-    adult: boolean;
-    gender: number;
+    map(
+        arg0: (
+            item: { id: number },
+            i: number
+        ) => import("react/jsx-runtime").JSX.Element
+    ): unknown;
+    adult?: boolean;
+    gender?: number;
     id: number;
-    know_for_departement: string;
-    name: string;
-    original_name: string;
-    popularity: number;
-    profile_path: string;
-    cast_id: number;
-    character: string;
-    credit_id: string;
-    order: number;
+    isLoading?: boolean;
+    know_for_departement?: string;
+    name?: string;
+    original_name?: string;
+    popularity?: number;
+    profile_path?: string;
+    cast_id?: number;
+    character?: string;
+    credit_id?: string;
+    order?: number;
     job?: string;
-    roles: [
+    roles?: [
         {
             credit_id: string;
-            character: string;
+            character?: string;
             episode_count: number;
         }
     ];
@@ -191,51 +210,52 @@ export interface castOrCrew {
 
 export interface Videos {
     id: number;
-    results: {
-        site: string;
-        type: string;
+    results?: {
+        site?: string;
+        type?: string;
         id: string;
     };
 }
 
 export interface seasonList {
-    air_date: string;
+    air_date?: string;
     id: number;
-    name: string;
-    episode_count: number;
-    poster_path: string;
-    vote_average: number;
+    name?: string;
+    episode_count?: number;
+    poster_path?: string;
+    vote_average?: number;
+    season_number?: number;
 }
 
 export interface Detail {
-    adult: boolean;
-    backdrop_path: string;
+    adult?: boolean;
+    backdrop_path?: string;
     budget?: number;
-    genres: {
+    genres?: {
         id: number;
         name: string;
     };
-    homepage: string;
+    homepage?: string;
     imdb_id?: string;
-    origin_country: [];
+    origin_country?: [];
     id: number;
-    original_language: string;
+    original_language?: string;
     original_title?: string;
     overview: string;
-    popularity: number;
-    production_companies: [];
-    production_countries: [];
-    poster_path: string;
+    popularity?: number;
+    production_companies?: [];
+    production_countries?: [];
+    poster_path?: string;
     release_date?: string;
     revenue?: number;
     runtime?: number;
     spoken_language: [];
-    status: string;
-    tagline: string;
+    status?: string;
+    tagline?: string;
     title?: string;
     video?: boolean;
-    vote_average: number;
-    vote_count: number;
+    vote_average?: number;
+    vote_count?: number;
     created_by?: [];
     first_air_date?: string;
     in_production?: boolean;
@@ -249,73 +269,98 @@ export interface Detail {
     number_of_seasons?: number;
     original_name?: string;
     seasons?: Seasons;
-    type: string;
+    type?: string;
 }
 
 export interface List {
-    adult: boolean;
-    character: string;
-    backdrop_path: string;
-    genre_ids: Genre;
+    adult?: boolean;
+    character?: string;
+    backdrop_path?: string;
+    genre_ids: Genre | any;
     id: number;
-    original_language: string;
-    original_title: string;
+    original_language?: string;
+    original_title?: string;
     origin_country?: string;
-    overview: string;
-    media_type: string;
-    popularity: number;
-    poster_path: string;
-    is_loading: boolean;
+    overview?: string;
+    media_type?: string;
+    popularity?: number;
+    poster_path?: string;
+    is_loading?: boolean;
     release_date?: string;
     first_air_date?: string;
     title?: string;
     name?: string;
-    video: boolean;
-    vote_average: number;
-    vote_count: number;
+    video?: boolean;
+    vote_average?: number;
+    vote_count?: number;
 }
 
 export interface Seasons {
-    _id: string;
-    air_date: string;
-    episodes: Episodes;
+    map(
+        arg0: (item: any, i: any) => import("react/jsx-runtime").JSX.Element
+    ): unknown;
+    _id?: string;
+    air_date?: string;
+    episodes?: Episodes;
     name: string;
     overview: string;
     id: number;
-    poster_path: string;
-    season_number: number;
-    vote_average: number;
+    poster_path?: string;
+    season_number?: number;
+    vote_average?: number;
 }
 
 export interface Person {
-    adult: boolean;
-    also_known_as: [];
-    gender: number;
-    biography: string;
-    birthday: string;
-    death_day: string;
-    homepage: string;
+    adult?: boolean;
+    also_known_as?: [];
+    gender?: number;
+    biography?: string;
+    birthday?: string;
+    death_day?: string;
+    homepage?: string;
     id: number;
-    imdb_id: string;
-    know_for_departement: string;
+    imdb_id?: string;
+    know_for_departement?: string;
     name: string;
-    place_of_birth: string;
-    popularity: number;
-    profile_path: string;
+    place_of_birth?: string;
+    popularity?: number;
+    profile_path?: string;
+}
+
+export interface socialMedia {
+    imdb_id?: string;
+    wikidata_id?: string;
+    facebook_id?: string;
+    instagram_id?: string;
+    tiktok_id?: string;
+    twitter_id?: string;
+    youtube_id?: string;
 }
 
 export interface Episodes {
-    air_date: string;
+    map(
+        arg0: (item: {
+            id: number;
+            still_path: string;
+            episode_number: number;
+            name: string;
+            air_date: string;
+            runtime: number;
+            vote_average: number;
+            overview: string;
+        }) => import("react/jsx-runtime").JSX.Element
+    ): import("react").ReactNode;
+    air_date?: string;
     crew: castOrCrew;
-    episode_number: number;
+    episode_number?: number;
     guest_stars: castOrCrew;
     name: string;
-    overview: string;
+    overview?: string;
     id: number;
-    production_code: string;
+    production_code?: string;
     runtime: number;
-    season_number: number;
-    still_path: string;
-    vote_average: number;
-    vote_count: number;
+    season_number?: number;
+    still_path?: string;
+    vote_average?: number;
+    vote_count?: number;
 }

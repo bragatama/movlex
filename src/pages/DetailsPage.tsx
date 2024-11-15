@@ -66,7 +66,8 @@ const DetailsPage = () => {
             }
         };
         fetchData();
-        document.title = details?.name || details?.title;
+        document.title =
+            (details?.name || details?.title) + ` - ` + type?.toUpperCase();
         window.scrollTo(0, 0);
     }, [type, id, details?.name, details?.title]);
 
@@ -180,7 +181,14 @@ const DetailsPage = () => {
                                 </Skeleton>
                             ) : (
                                 <Image
-                                    src={`${imageOriginalUrl}/${details?.poster_path}`}
+                                    src={
+                                        details?.poster_path
+                                            ? `${imageOriginalUrl}/${details?.poster_path}`
+                                            : `https://placehold.co/800x1200?text=${
+                                                  details?.name ||
+                                                  details?.title
+                                              }`
+                                    }
                                     mah={"70vh"}
                                     radius={"md"}
                                     alt="poster"
@@ -388,14 +396,14 @@ const DetailsPage = () => {
                                         {details?.networks
                                             .slice(0, 4)
                                             .map(
-                                                (netowrk: {
+                                                (network: {
                                                     id: number;
                                                     name: string;
                                                     logo_path: string;
                                                 }) => (
                                                     <Grid.Col
                                                         span={"content"}
-                                                        key={netowrk.id}
+                                                        key={network.id}
                                                     >
                                                         <Paper
                                                             radius={"sm"}
@@ -406,11 +414,15 @@ const DetailsPage = () => {
                                                             }}
                                                         >
                                                             <Image
-                                                                src={`${imageUrl}/${netowrk.logo_path}`}
+                                                                src={
+                                                                    network.logo_path
+                                                                        ? `${imageUrl}/${network.logo_path}`
+                                                                        : `https://placehold.co/800x300?text=${network.name}`
+                                                                }
                                                                 h={"3vh"}
                                                                 alt="network logo"
                                                                 title={
-                                                                    netowrk.name
+                                                                    network.name
                                                                 }
                                                                 loading="lazy"
                                                             />
@@ -422,39 +434,44 @@ const DetailsPage = () => {
                                 </>
                             ) : (
                                 <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                    {details?.production_companies
-                                        .slice(0, 1)
-                                        .map(
-                                            (production: {
-                                                id: number;
-                                                name: string;
-                                                logo_path: string;
-                                            }) => (
-                                                <Grid.Col
-                                                    span={"content"}
-                                                    key={production.id}
-                                                >
-                                                    <Paper
-                                                        radius={"sm"}
-                                                        p={"1vh"}
-                                                        style={{
-                                                            backgroundColor:
-                                                                "rgba(200,200,200)",
-                                                        }}
+                                    {details?.production_companies &&
+                                        details?.production_companies
+                                            .slice(0, 1)
+                                            .map(
+                                                (production: {
+                                                    id: number;
+                                                    name: string;
+                                                    logo_path: string;
+                                                }) => (
+                                                    <Grid.Col
+                                                        span={"content"}
+                                                        key={production.id}
                                                     >
-                                                        <Image
-                                                            src={`${imageUrl}/${production.logo_path}`}
-                                                            h={"3vh"}
-                                                            alt="production logo"
-                                                            title={
-                                                                production.name
-                                                            }
-                                                            loading="lazy"
-                                                        />
-                                                    </Paper>
-                                                </Grid.Col>
-                                            )
-                                        )}
+                                                        <Paper
+                                                            radius={"sm"}
+                                                            p={"1vh"}
+                                                            style={{
+                                                                backgroundColor:
+                                                                    "rgba(200,200,200)",
+                                                            }}
+                                                        >
+                                                            <Image
+                                                                src={
+                                                                    production.logo_path
+                                                                        ? `${imageUrl}/${production.logo_path}`
+                                                                        : `https://placehold.co/800x300?text=${production.name}`
+                                                                }
+                                                                h={"3vh"}
+                                                                alt="production logo"
+                                                                title={
+                                                                    production.name
+                                                                }
+                                                                loading="lazy"
+                                                            />
+                                                        </Paper>
+                                                    </Grid.Col>
+                                                )
+                                            )}
                                 </Grid>
                             )}
                         </Flex>

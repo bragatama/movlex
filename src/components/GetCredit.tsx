@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { castOrCrew, Credits } from "../types/types";
 import { getCredit, imageUrl } from "../services/Api";
 import {
@@ -30,7 +30,7 @@ const Card = (item: castOrCrew) => {
                         alt="photo"
                         radius={"md"}
                         loading="lazy"
-                        />
+                    />
                 </AspectRatio>
             </Paper>
             <Box>
@@ -69,7 +69,7 @@ const GetCredit = ({
     id?: string | undefined;
     label: string;
     isGuestStar?: boolean;
-    guestStars?: [];
+    guestStars?: Credits;
 }) => {
     const [credits, setCredits] = useState<Credits>();
     const [guestStar, setGuestStar] = useState<Credits>();
@@ -94,7 +94,8 @@ const GetCredit = ({
 
     const slidesCrew =
         credits &&
-        credits.crew.map((item, i) => (
+        credits.crew &&
+        credits.crew.map((item: { id: number }, i: number) => (
             <Carousel.Slide key={item.id}>
                 {loading ? (
                     <Skeleton key={i} height={"auto"}>
@@ -103,16 +104,23 @@ const GetCredit = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
-                    <Card {...item} isLoading={loading} />
+                    <Card
+                        map={function (): unknown {
+                            throw new Error("Function not implemented.");
+                        }}
+                        {...item}
+                        isLoading={loading}
+                    />
                 )}
             </Carousel.Slide>
         ));
     const slidesCast =
         credits &&
+        credits.cast &&
         credits.cast.map((item, i) => (
             <Carousel.Slide key={item.id}>
                 {loading ? (
@@ -122,11 +130,17 @@ const GetCredit = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
-                    <Card {...item} isLoading={loading} />
+                    <Card
+                        map={function (): unknown {
+                            throw new Error("Function not implemented.");
+                        }}
+                        {...item}
+                        isLoading={loading}
+                    />
                 )}
             </Carousel.Slide>
         ));
@@ -141,11 +155,17 @@ const GetCredit = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
-                    <Card {...item} isLoading={loading} />
+                    <Card
+                        map={function (): unknown {
+                            throw new Error("Function not implemented.");
+                        }}
+                        {...item}
+                        isLoading={loading}
+                    />
                 )}
             </Carousel.Slide>
         ));
@@ -174,9 +194,10 @@ const GetCredit = ({
                     slidesToScroll={"auto"}
                     align={"start"}
                 >
-                    {label === "cast" && slidesCast}
-                    {label === "crew" && slidesCrew}
-                    {label === "guest star" && slidesGuestStars}
+                    {label === "cast" && (slidesCast as React.ReactNode)}
+                    {label === "crew" && (slidesCrew as React.ReactNode)}
+                    {label === "guest star" &&
+                        (slidesGuestStars as React.ReactNode)}
                 </Carousel>
             </Box>
         </>

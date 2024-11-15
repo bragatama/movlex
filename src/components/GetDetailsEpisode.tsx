@@ -7,10 +7,8 @@ import {
     AspectRatio,
     Box,
     Flex,
-    Grid,
     Image,
     LoadingOverlay,
-    Text,
     Title,
 } from "@mantine/core";
 import moment from "moment";
@@ -58,7 +56,7 @@ const GetDetailsEpisode = ({
     }
     return (
         <Flex direction={"column"} gap={"md"}>
-            <meta name='keyword' content={`${name}, ${episodes?.name}`}/>
+            <meta name="keyword" content={`${name}, ${episodes?.name}`} />
             <Flex direction={"row"} gap={"sm"}>
                 <Anchor component={Link} to={`/tv/${id}/`}>
                     <Title order={4} c={"white"}>
@@ -94,16 +92,20 @@ const GetDetailsEpisode = ({
             <Title order={4} c={"dimmed"}>
                 Runtime: &emsp;
                 <Title order={4} c={"white"} component={"span"}>
-                    {Math.floor(episodes?.runtime / 60) === 0
+                    {episodes?.runtime &&
+                    Math.floor(episodes?.runtime / 60) === 0
                         ? ""
-                        : Math.floor(episodes?.runtime / 60) + " hour, "}
-                    {episodes?.runtime % 60} minutes
+                        : episodes?.runtime &&
+                          Math.floor(episodes?.runtime / 60) + " hour, "}
+                    {episodes?.runtime && episodes?.runtime % 60} minutes
                 </Title>
             </Title>
             <Title order={4} c={"dimmed"}>
                 Rating: &emsp;
                 <Title order={4} c={"white"} component={"span"}>
-                    {episodes?.vote_average.toFixed(1)} ★
+                    {episodes?.vote_average &&
+                        episodes?.vote_average.toFixed(1)}{" "}
+                    ★
                 </Title>
             </Title>
             <AspectRatio
@@ -114,13 +116,17 @@ const GetDetailsEpisode = ({
                 mih={"fit-content"}
             >
                 <Image
-                    src={`${imageOriginalUrl}/${episodes?.still_path}`}
+                    src={
+                        episodes?.still_path
+                            ? `${imageOriginalUrl}/${episodes?.still_path}`
+                            : `https://placehold.co/1920x1080?text=${name}`
+                    }
                     h={"100%"}
                     maw={"60vw"}
                     alt="still image"
                     radius={"md"}
                     loading="lazy"
-                    />
+                />
             </AspectRatio>
             <GetCredit type={"tv"} id={id} label="cast" />
             <GetCredit

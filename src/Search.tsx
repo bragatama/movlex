@@ -17,7 +17,7 @@ const Search = () => {
                 <Container size={"mainXl"}>
                     <Flex direction={"row"} justify={"space-between"}>
                         <Title order={1} c={"white"}>
-                            Search a Movie or TV Series
+                            Search Result:
                         </Title>
                         <Flex
                             direction={"column"}

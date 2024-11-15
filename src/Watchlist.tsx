@@ -37,7 +37,7 @@ const Watchlist = () => {
                     setLoading(false);
                 });
         }
-        return () => {};
+        document.title= `Watchlist of ${user.displayName}`
     }, [user, getWatchlist]);
     if (loading) {
         return (
@@ -66,98 +66,134 @@ const Watchlist = () => {
                     )}
                     {!loading &&
                         watchlist.length > 0 &&
-                        watchlist?.map((item) => (
-                            <Anchor
-                                key={item.id}
-                                component={Link}
-                                to={`/${item.type}/${item.id}`}
-                                underline="never"
-                            >
-                                <Flex
-                                    direction={{ base: "column", lg: "row" }}
-                                    align={"center"}
-                                    gap={"md"}
-                                    p={"md"}
-                                    className={classes.watchlist_poster}
-                                >
-                                    <AspectRatio
-                                        ratio={2 / 3}
-                                        maw={"40%"}
-                                        miw={"fit-content"}
-                                        mah={"100%"}
-                                        mih={"fit-content"}
+                        watchlist
+                            ?.sort(
+                                (
+                                    a: { title: string },
+                                    b: { title: string }
+                                ) => {
+                                    return a.title.localeCompare(b.title);
+                                }
+                            )
+                            .map(
+                                (item: {
+                                    id: number;
+                                    type: string;
+                                    poster_path: string;
+                                    title: string;
+                                    release_date: string;
+                                    vote_average: number;
+                                    overview: string;
+                                }) => (
+                                    <Anchor
+                                        key={item.id}
+                                        component={Link}
+                                        to={`/${item.type}/${item.id}`}
+                                        underline="never"
                                     >
-                                        <Image
-                                            src={`${imageUrl}/${item.poster_path}`}
-                                            h={"50vh"}
-                                            radius={"md"}
-                                            alt="poster"
-                                            loading="lazy"
-                                        />
-                                    </AspectRatio>
-                                    <Flex direction={"column"} gap={"md"}>
-                                        <Title order={2} c={"white"}>
-                                            {item.title}
-                                        </Title>
-                                        <Grid
-                                            columns={10}
-                                            gutter={"xs"}
-                                            justify="flex-start"
-                                            align="center"
+                                        <Flex
+                                            direction={{
+                                                base: "column",
+                                                lg: "row",
+                                            }}
+                                            align={"center"}
+                                            gap={"md"}
+                                            p={"md"}
+                                            className={classes.watchlist_poster}
                                         >
-                                            <Grid.Col span={"content"}>
-                                                <Text fw={600} c={"gray"}>
-                                                    {moment(
-                                                        item.release_date
-                                                    ).format("YYYY")}
-                                                </Text>
-                                            </Grid.Col>
-                                            <Grid.Col span={"content"}>
-                                                <Paper
-                                                    w={"fit-content"}
-                                                    radius={"sm"}
-                                                    py={"2px"}
-                                                    px={"8px"}
-                                                    style={{
-                                                        backgroundColor:
-                                                            "rgba(200,200,200)",
-                                                    }}
+                                            <AspectRatio
+                                                ratio={2 / 3}
+                                                maw={"40%"}
+                                                miw={"fit-content"}
+                                                mah={"100%"}
+                                                mih={"fit-content"}
+                                            >
+                                                <Image
+                                                    src={`${
+                                                        item.poster_path
+                                                            ? `${imageUrl}/${item.poster_path}`
+                                                            : `https://placehold.co/800x1200?text=Hello+World`
+                                                    }`}
+                                                    h={"50vh"}
+                                                    radius={"md"}
+                                                    alt="poster"
+                                                    loading="lazy"
+                                                />
+                                            </AspectRatio>
+                                            <Flex
+                                                direction={"column"}
+                                                gap={"md"}
+                                            >
+                                                <Title order={2} c={"white"}>
+                                                    {item.title}
+                                                </Title>
+                                                <Grid
+                                                    columns={10}
+                                                    gutter={"xs"}
+                                                    justify="flex-start"
+                                                    align="center"
                                                 >
-                                                    <Text
-                                                        c={"black"}
-                                                        fw={600}
-                                                        fz={"sm"}
-                                                        className={
-                                                            classes.category
-                                                        }
-                                                        style={{
-                                                            textAlign: "center",
-                                                        }}
-                                                    >
-                                                        {item.type}
-                                                    </Text>
-                                                </Paper>
-                                            </Grid.Col>
-                                            <Grid.Col span={"content"}>
-                                                <Text fw={600} c={"gray"}>
-                                                    {item.vote_average.toFixed(
-                                                        1
-                                                    )}{" "}
-                                                    ★
+                                                    <Grid.Col span={"content"}>
+                                                        <Text
+                                                            fw={600}
+                                                            c={"gray"}
+                                                        >
+                                                            {moment(
+                                                                item.release_date
+                                                            ).format("YYYY")}
+                                                        </Text>
+                                                    </Grid.Col>
+                                                    <Grid.Col span={"content"}>
+                                                        <Paper
+                                                            w={"fit-content"}
+                                                            radius={"sm"}
+                                                            py={"2px"}
+                                                            px={"8px"}
+                                                            style={{
+                                                                backgroundColor:
+                                                                    "rgba(200,200,200)",
+                                                            }}
+                                                        >
+                                                            <Text
+                                                                c={"black"}
+                                                                fw={600}
+                                                                fz={"sm"}
+                                                                className={
+                                                                    classes.category
+                                                                }
+                                                                style={{
+                                                                    textAlign:
+                                                                        "center",
+                                                                }}
+                                                            >
+                                                                {item.type}
+                                                            </Text>
+                                                        </Paper>
+                                                    </Grid.Col>
+                                                    <Grid.Col span={"content"}>
+                                                        <Text
+                                                            fw={600}
+                                                            c={"gray"}
+                                                        >
+                                                            {item.vote_average.toFixed(
+                                                                1
+                                                            )}{" "}
+                                                            ★
+                                                        </Text>
+                                                    </Grid.Col>
+                                                </Grid>
+                                                <Text
+                                                    fw={500}
+                                                    c={"white"}
+                                                    lineClamp={4}
+                                                >
+                                                    {item.overview}
                                                 </Text>
-                                            </Grid.Col>
-                                        </Grid>
-                                        <Text
-                                            fw={500}
-                                            c={"white"}
-                                            lineClamp={4}
-                                        >
-                                            {item.overview}
-                                        </Text>
-                                    </Flex>
-                                </Flex>
-                            </Anchor>
-                        ))}
+                                            </Flex>
+                                        </Flex>
+                                    </Anchor>
+                                )
+                            )}
                 </Flex>
             </Container>
         </Box>

@@ -32,12 +32,12 @@ const Card = (item: seasonList) => {
                             src={
                                 item.poster_path
                                     ? `${imageUrl}/${item.poster_path}`
-                                    : "https://cdn.pixabay.com/photo/2018/11/13/21/43/avatar-3814049_960_720.png"
+                                    : `https://placehold.co/800x1200?text=${item.name}`
                             }
                             radius={"md"}
                             alt="poster"
                             loading="lazy"
-                            />
+                        />
                     </AspectRatio>
                 </Paper>
                 <Box pb={"xl"}>
@@ -58,7 +58,7 @@ const Card = (item: seasonList) => {
                         >
                             {moment(item.air_date).format("YYYY")} •{" "}
                             {item.episode_count} Episode{"(s) "} •{" "}
-                            {item.vote_average.toFixed(1)}★
+                            {item.vote_average && item.vote_average.toFixed(1)}★
                         </Text>
                     </Flex>
                 </Box>
@@ -85,7 +85,7 @@ const GetSeason = ({
                                 src={"https://placehold.co/800x1200"}
                                 alt="skeleton"
                                 loading="lazy"
-                                />
+                            />
                         </AspectRatio>
                     </Skeleton>
                 ) : (
@@ -114,7 +114,7 @@ const GetSeason = ({
                     slidesToScroll={"auto"}
                     align={"start"}
                 >
-                    {slides}
+                    {slides as React.ReactNode}
                 </Carousel>
             </Box>
         </>

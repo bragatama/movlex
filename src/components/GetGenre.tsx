@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 const GetGenre = ({ genres, genreList, renderItem, single }: Props) => {
     if (single) {
         {
             genres
-                .filter((genre) => genreList.includes(genre.id))
+                .filter((genre: { id: any }) => genreList.includes(genre.id))
                 .slice(0, 1)
                 .map((genre) => {
                     return renderItem(genre);
@@ -12,7 +13,9 @@ const GetGenre = ({ genres, genreList, renderItem, single }: Props) => {
         return (
             <>
                 {genres
-                    .filter((genre) => genreList.includes(genre.id))
+                    .filter((genre: { id: any }) =>
+                        genreList.includes(genre.id)
+                    )
                     .map((genre) => {
                         return renderItem(genre);
                     })}

@@ -106,7 +106,9 @@ const Card = (item: TrendingAll) => {
                             </Grid.Col>
                             <Grid.Col span={"content"}>
                                 <Text className={classes.category} size="xs">
-                                    {item.vote_average.toFixed(1)} ★
+                                    {item.vote_average &&
+                                        item.vote_average.toFixed(1)}{" "}
+                                    ★
                                 </Text>
                             </Grid.Col>
                         </Grid>
