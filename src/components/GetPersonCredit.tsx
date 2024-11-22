@@ -55,7 +55,13 @@ const Card = (item: List) => {
             <Paper className={classes.poster}>
                 <AspectRatio ratio={2 / 3}>
                     <Image
-                        src={`${imageUrl}/${item.poster_path}`}
+                        src={
+                            item.poster_path
+                                ? `${imageUrl}/${item.poster_path}`
+                                : `https://placehold.co/400x600?text=${
+                                      item.name || item.title
+                                  }`
+                        }
                         radius={"md"}
                         alt="poster"
                         loading="lazy"

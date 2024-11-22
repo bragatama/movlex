@@ -59,7 +59,7 @@ const Navbar = () => {
                 fw={"bolder"}
                 td={"none"}
                 className={classes.link}
-                data-active={active === link.link || undefined}
+                data-active={undefined}
                 onClick={() => setActive(link.link)}
             >
                 {link.label}

@@ -59,7 +59,7 @@ const Card = (item: List) => {
                         src={
                             item.poster_path
                                 ? `${imageUrl}/${item.poster_path}`
-                                : `https://placehold.co/800x1200?text=${
+                                : `https://placehold.co/400x600?text=${
                                       item?.name || item.title
                                   }`
                         }

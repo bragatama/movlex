@@ -32,7 +32,7 @@ const Card = (item: seasonList) => {
                             src={
                                 item.poster_path
                                     ? `${imageUrl}/${item.poster_path}`
-                                    : `https://placehold.co/800x1200?text=${item.name}`
+                                    : `https://placehold.co/400x600?text=${item.name}`
                             }
                             radius={"md"}
                             alt="poster"

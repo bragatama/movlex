@@ -65,7 +65,7 @@ const Card = (item: TrendingMovie) => {
                                     ? `${imageUrl}/${item.poster_path}`
                                     : item?.profile_path
                                     ? `${imageUrl}/${item.profile_path}`
-                                    : `https://placehold.co/800x1200?text=${
+                                    : `https://placehold.co/400x600?text=${
                                           item.name || item.title
                                       }`
                             }

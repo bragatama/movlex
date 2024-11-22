@@ -119,7 +119,7 @@ const GetDetailsEpisode = ({
                     src={
                         episodes?.still_path
                             ? `${imageOriginalUrl}/${episodes?.still_path}`
-                            : `https://placehold.co/1920x1080?text=${name}`
+                            : `https://placehold.co/1280x720?text=${name}`
                     }
                     h={"100%"}
                     maw={"60vw"}
