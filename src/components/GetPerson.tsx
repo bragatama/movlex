@@ -103,203 +103,209 @@ const GetPerson = () => {
                             />
                         )}
                     </AspectRatio>
-                    <Flex direction={"column"} gap={"lg"}>
-                        <Flex direction={"column"} gap={"2px"}>
-                            <Title order={1} c={"white"}>
-                                {personData.name}
-                            </Title>
-                            <Title order={4} c={"gray"} pb={"1vh"}>
-                                {personData.gender === 1
-                                    ? "Female"
-                                    : personData.gender === 2
-                                    ? "Male"
-                                    : "Non-Binary"}
-                                &nbsp; • &nbsp;
-                                {moment().diff(
-                                    `${personData.birthday}`,
-                                    "years"
-                                )}{" "}
-                                years old
-                            </Title>
-                            <Flex direction={"row"} gap={"md"}>
-                                {/* instagram */}
-                                {socialMedia?.instagram_id && (
-                                    <Anchor
-                                        component={Link}
-                                        to={`${instagram}/${socialMedia.instagram_id} `}
-                                        underline="never"
-                                    >
-                                        <Paper
-                                            radius={"sm"}
-                                            h={"100%"}
-                                            p={"8px"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200)",
-                                            }}
+                    {!loading && (
+                        <Flex direction={"column"} gap={"lg"}>
+                            <Flex direction={"column"} gap={"2px"}>
+                                <Title order={1} c={"white"}>
+                                    {personData.name}
+                                </Title>
+                                <Title order={4} c={"gray"} pb={"1vh"}>
+                                    {personData.gender === 1
+                                        ? "Female"
+                                        : personData.gender === 2
+                                        ? "Male"
+                                        : "Non-Binary"}
+                                    &nbsp; • &nbsp;
+                                    {moment().diff(
+                                        `${personData.birthday}`,
+                                        "years"
+                                    )}{" "}
+                                    years old
+                                </Title>
+                                <Flex direction={"row"} gap={"md"}>
+                                    {/* instagram */}
+                                    {socialMedia?.instagram_id && (
+                                        <Anchor
+                                            component={Link}
+                                            to={`${instagram}/${socialMedia.instagram_id} `}
+                                            underline="never"
                                         >
-                                            <IconBrandInstagram
-                                                color="black"
-                                                size={26}
+                                            <Paper
+                                                radius={"sm"}
+                                                h={"100%"}
+                                                p={"8px"}
                                                 style={{
-                                                    height: "100%",
-                                                    marginTop: "auto",
-                                                    marginBottom: "auto",
+                                                    backgroundColor:
+                                                        "rgba(200,200,200)",
                                                 }}
-                                            />
-                                        </Paper>
-                                    </Anchor>
-                                )}
-                                {/* twitter */}
-                                {socialMedia?.twitter_id && (
-                                    <Anchor
-                                        component={Link}
-                                        to={`${twitter}/${socialMedia.twitter_id} `}
-                                        underline="never"
-                                    >
-                                        <Paper
-                                            radius={"sm"}
-                                            p={"8px"}
-                                            h={"100%"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200)",
-                                            }}
+                                            >
+                                                <IconBrandInstagram
+                                                    color="black"
+                                                    size={26}
+                                                    style={{
+                                                        height: "100%",
+                                                        marginTop: "auto",
+                                                        marginBottom: "auto",
+                                                    }}
+                                                />
+                                            </Paper>
+                                        </Anchor>
+                                    )}
+                                    {/* twitter */}
+                                    {socialMedia?.twitter_id && (
+                                        <Anchor
+                                            component={Link}
+                                            to={`${twitter}/${socialMedia.twitter_id} `}
+                                            underline="never"
                                         >
-                                            <IconBrandTwitter
-                                                color="black"
-                                                size={26}
+                                            <Paper
+                                                radius={"sm"}
+                                                p={"8px"}
+                                                h={"100%"}
                                                 style={{
-                                                    height: "100%",
-                                                    marginTop: "auto",
-                                                    marginBottom: "auto",
+                                                    backgroundColor:
+                                                        "rgba(200,200,200)",
                                                 }}
-                                            />
-                                        </Paper>
-                                    </Anchor>
-                                )}
-                                {/* facebook */}
-                                {socialMedia?.facebook_id && (
-                                    <Anchor
-                                        component={Link}
-                                        to={`${facebook}/${socialMedia.facebook_id} `}
-                                        underline="never"
-                                    >
-                                        <Paper
-                                            radius={"sm"}
-                                            h={"100%"}
-                                            p={"8px"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200)",
-                                            }}
+                                            >
+                                                <IconBrandTwitter
+                                                    color="black"
+                                                    size={26}
+                                                    style={{
+                                                        height: "100%",
+                                                        marginTop: "auto",
+                                                        marginBottom: "auto",
+                                                    }}
+                                                />
+                                            </Paper>
+                                        </Anchor>
+                                    )}
+                                    {/* facebook */}
+                                    {socialMedia?.facebook_id && (
+                                        <Anchor
+                                            component={Link}
+                                            to={`${facebook}/${socialMedia.facebook_id} `}
+                                            underline="never"
                                         >
-                                            <IconBrandFacebook
-                                                color="black"
-                                                size={26}
+                                            <Paper
+                                                radius={"sm"}
+                                                h={"100%"}
+                                                p={"8px"}
                                                 style={{
-                                                    height: "100%",
-                                                    marginTop: "auto",
-                                                    marginBottom: "auto",
+                                                    backgroundColor:
+                                                        "rgba(200,200,200)",
                                                 }}
-                                            />
-                                        </Paper>
-                                    </Anchor>
-                                )}
-                                {/* youtube */}
-                                {socialMedia?.youtube_id && (
-                                    <Anchor
-                                        component={Link}
-                                        to={`${youtube}${socialMedia.youtube_id} `}
-                                        underline="never"
-                                    >
-                                        <Paper
-                                            radius={"sm"}
-                                            h={"100%"}
-                                            p={"8px"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200)",
-                                            }}
+                                            >
+                                                <IconBrandFacebook
+                                                    color="black"
+                                                    size={26}
+                                                    style={{
+                                                        height: "100%",
+                                                        marginTop: "auto",
+                                                        marginBottom: "auto",
+                                                    }}
+                                                />
+                                            </Paper>
+                                        </Anchor>
+                                    )}
+                                    {/* youtube */}
+                                    {socialMedia?.youtube_id && (
+                                        <Anchor
+                                            component={Link}
+                                            to={`${youtube}${socialMedia.youtube_id} `}
+                                            underline="never"
                                         >
-                                            <IconBrandYoutube
-                                                color="black"
-                                                size={26}
+                                            <Paper
+                                                radius={"sm"}
+                                                h={"100%"}
+                                                p={"8px"}
                                                 style={{
-                                                    height: "100%",
-                                                    marginTop: "auto",
-                                                    marginBottom: "auto",
+                                                    backgroundColor:
+                                                        "rgba(200,200,200)",
                                                 }}
-                                            />
-                                        </Paper>
-                                    </Anchor>
-                                )}
-                                {/* tiktok */}
-                                {socialMedia?.tiktok_id && (
-                                    <Anchor
-                                        component={Link}
-                                        to={`${tiktok}${socialMedia.tiktok_id} `}
-                                        underline="never"
-                                    >
-                                        <Paper
-                                            radius={"sm"}
-                                            h={"100%"}
-                                            p={"8px"}
-                                            style={{
-                                                backgroundColor:
-                                                    "rgba(200,200,200)",
-                                            }}
+                                            >
+                                                <IconBrandYoutube
+                                                    color="black"
+                                                    size={26}
+                                                    style={{
+                                                        height: "100%",
+                                                        marginTop: "auto",
+                                                        marginBottom: "auto",
+                                                    }}
+                                                />
+                                            </Paper>
+                                        </Anchor>
+                                    )}
+                                    {/* tiktok */}
+                                    {socialMedia?.tiktok_id && (
+                                        <Anchor
+                                            component={Link}
+                                            to={`${tiktok}${socialMedia.tiktok_id} `}
+                                            underline="never"
                                         >
-                                            <IconBrandTiktok
-                                                color="black"
-                                                size={26}
+                                            <Paper
+                                                radius={"sm"}
+                                                h={"100%"}
+                                                p={"8px"}
                                                 style={{
-                                                    height: "100%",
-                                                    marginTop: "auto",
-                                                    marginBottom: "auto",
+                                                    backgroundColor:
+                                                        "rgba(200,200,200)",
                                                 }}
-                                            />
-                                        </Paper>
-                                    </Anchor>
-                                )}
+                                            >
+                                                <IconBrandTiktok
+                                                    color="black"
+                                                    size={26}
+                                                    style={{
+                                                        height: "100%",
+                                                        marginTop: "auto",
+                                                        marginBottom: "auto",
+                                                    }}
+                                                />
+                                            </Paper>
+                                        </Anchor>
+                                    )}
+                                </Flex>
+                            </Flex>
+
+                            <Flex direction={"column"} gap={"2px"}>
+                                <Text c={"dimmed"}>also known as:</Text>
+                                {personData.also_known_as &&
+                                    personData.also_known_as.map(
+                                        (item: React.ReactNode, i: number) => (
+                                            <Text c={"white"} fw={500} key={i}>
+                                                {item}
+                                            </Text>
+                                        )
+                                    )}
+                            </Flex>
+                            <Text c={"dimmed"}>
+                                Birthday: &emsp;
+                                <Text c={"white"} component="span" fw={500}>
+                                    {moment(personData.birthday).format(
+                                        "dddd, D MMMM YYYY"
+                                    )}
+                                </Text>
+                            </Text>
+                            <Text c={"dimmed"}>
+                                Place of birth: &emsp;
+                                <Text c={"white"} component="span" fw={500}>
+                                    {personData.place_of_birth}
+                                </Text>
+                            </Text>
+                            <Flex direction={"column"} gap={"2px"}>
+                                <Text c={"dimmed"}>Biography: &emsp;</Text>
+                                <Text c={"white"} fw={500}>
+                                    {personData.biography}
+                                </Text>
                             </Flex>
                         </Flex>
-
-                        <Flex direction={"column"} gap={"2px"}>
-                            <Text c={"dimmed"}>also known as:</Text>
-                            {personData.also_known_as &&
-                                personData.also_known_as.map(
-                                    (item: React.ReactNode, i: number) => (
-                                        <Text c={"white"} fw={500} key={i}>
-                                            {item}
-                                        </Text>
-                                    )
-                                )}
-                        </Flex>
-                        <Text c={"dimmed"}>
-                            Birthday: &emsp;
-                            <Text c={"white"} component="span" fw={500}>
-                                {moment(personData.birthday).format(
-                                    "dddd, D MMMM YYYY"
-                                )}
-                            </Text>
-                        </Text>
-                        <Text c={"dimmed"}>
-                            Place of birth: &emsp;
-                            <Text c={"white"} component="span" fw={500}>
-                                {personData.place_of_birth}
-                            </Text>
-                        </Text>
-                        <Flex direction={"column"} gap={"2px"}>
-                            <Text c={"dimmed"}>Biography: &emsp;</Text>
-                            <Text c={"white"} fw={500}>
-                                {personData.biography}
-                            </Text>
-                        </Flex>
-                    </Flex>
+                    )}
                 </Flex>
-                <GetPersonCredit type="movie" id={id} />
-                <GetPersonCredit type="tv" id={id} />
+                {!loading && (
+                    <>
+                        <GetPersonCredit type="movie" id={id} />
+                        <GetPersonCredit type="tv" id={id} />
+                    </>
+                )}
             </Flex>
         </Container>
     );

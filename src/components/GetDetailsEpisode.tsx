@@ -108,6 +108,12 @@ const GetDetailsEpisode = ({
                     ★
                 </Title>
             </Title>
+            <Title order={4} c={"dimmed"}>
+                Overview: &emsp;
+                <Title order={4} c={"white"} component={"span"}>
+                    {episodes?.overview}
+                </Title>
+            </Title>
             <AspectRatio
                 ratio={16 / 9}
                 maw={"100%"}
