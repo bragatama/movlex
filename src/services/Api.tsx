@@ -239,3 +239,16 @@ export const getSocialMedia = async (
     );
     return res?.data;
 };
+
+// Get Movie or TV External IDs
+export const getExternalIDs = async (
+    id: string | number | undefined,
+    type: string | undefined,
+    params = {}
+) => {
+    const res = await axios.get(
+        `${baseUrl}/${type}/${id}/external_ids`,
+        config(params)
+    );
+    return res?.data;
+};

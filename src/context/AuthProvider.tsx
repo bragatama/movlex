@@ -8,7 +8,7 @@ import {
 } from "firebase/auth";
 import { notifications } from "@mantine/notifications";
 
-export const AuthContext = createContext();
+export const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
     const [user, setUser] = useState(null);

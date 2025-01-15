@@ -12,6 +12,17 @@ export interface TrendingAll {
     vote_average?: number;
 }
 
+export interface ExternalId {
+    imdb_id?: string;
+    freebase_id?: string;
+    freebase_mid?: string;
+    tvdb_id?: number;
+    tvrage_id?: number;
+    facebook_id?: string;
+    instagram_id?: string;
+    twitter_id?: string;
+    id: number;
+}
 export interface TrendingMovie {
     backdrop_path: string;
     condition?: string;

@@ -16,15 +16,22 @@ import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router-dom";
 import {
     getDetail,
+    getExternalIDs,
     getVideos,
     imageOriginalUrl,
     imageUrl,
 } from "../services/Api";
-import { Detail } from "../types/types";
+import { Detail, ExternalId } from "../types/types";
 import moment from "moment";
 import GetCertification from "../components/GetCertification";
 import FetchLogo from "../components/FetchLogo";
-import { IconCircleCheck, IconPlus } from "@tabler/icons-react";
+import {
+    IconBrandFacebook,
+    IconBrandInstagram,
+    IconBrandTwitter,
+    IconCircleCheck,
+    IconPlus,
+} from "@tabler/icons-react";
 import GetCredit from "../components/GetCredit";
 import GetTrailer from "../components/GetTrailer";
 import GetSeason from "../components/GetSeason";
@@ -34,7 +41,6 @@ import GetDetailsEpisode from "../components/GetDetailsEpisode";
 import { useAuth } from "../context/UseAuth";
 import { notifications } from "@mantine/notifications";
 import { useFirestore } from "../services/firestore";
-import classes from "../css/CarouselCard.module.css";
 
 const DetailsPage = () => {
     const router = useParams();
@@ -42,6 +48,7 @@ const DetailsPage = () => {
     const [loading, setLoading] = useState(true);
     const [details, setDetails] = useState<Detail>();
     const [video, setVideo] = useState();
+    const [externalId, setExternalId] = useState<ExternalId>();
     const { addToWatchlist, checkWatchlist, removeFromWatchlist } =
         useFirestore();
     const [isInWatchlist, setIsInWatchlist] = useState(false);
@@ -49,14 +56,17 @@ const DetailsPage = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const [detailsData, videosData] = await Promise.all([
-                    getDetail(type, id),
-                    getVideos(type, id),
-                ]);
+                const [detailsData, videosData, externalIdData] =
+                    await Promise.all([
+                        getDetail(type, id),
+                        getVideos(type, id),
+                        getExternalIDs(id, type),
+                    ]);
                 setDetails(detailsData);
+                setExternalId(externalIdData);
 
                 const trailer = videosData?.results.find(
-                    (video) => video.type === "Trailer"
+                    (video: { type: string }) => video.type === "Trailer"
                 );
                 setVideo(trailer);
             } catch (error) {
@@ -196,285 +206,454 @@ const DetailsPage = () => {
                                 />
                             )}
                         </AspectRatio>
-                        <Flex
-                            direction={"column"}
-                            align={{ base: "center", lg: "flex-start" }}
-                            h={"auto"}
-                        >
-                            {/* Logo */}
-                            <FetchLogo
-                                id={id}
-                                type={type}
-                                style={{
-                                    paddingBottom: "20px",
-                                    height: "25vh",
-                                    objectFit: "contain",
-                                }}
-                                maw={{ sm: "40vw", lg: "25vw" }}
-                            />
-                            <Title order={1} c={"white"} fw={1000}>
-                                {title}
-                            </Title>
-                            <Text size="md" fw={700}>
-                                {details?.original_name === details?.name
-                                    ? ""
-                                    : details?.original_name}
-                                {details?.original_title === details?.title
-                                    ? ""
-                                    : details?.original_title}
-                            </Text>
-                            <Grid
-                                columns={20}
-                                gutter={"lg"}
-                                justify="flex-start"
-                                align="center"
-                                pt={"2vh"}
+                        {!loading && (
+                            <Flex
+                                direction={"column"}
+                                align={{ base: "center", lg: "flex-start" }}
+                                h={"auto"}
                             >
-                                <Grid.Col span={"content"}>
-                                    <Text fw={600}>
-                                        {details?.release_date
-                                            ? releaseDateMovie
-                                            : releaseDateTv}
-                                    </Text>
-                                </Grid.Col>
-                                {details?.number_of_seasons && (
-                                    <>
-                                        <Grid.Col span={"content"}>
-                                            <Text fw={600}>
-                                                {details.number_of_seasons}{" "}
-                                                season
-                                                {"(s)"}
-                                            </Text>
-                                        </Grid.Col>
-                                        <Grid.Col span={"content"}>
-                                            <Text fw={600}>
-                                                {details.number_of_episodes}{" "}
-                                                episode
-                                                {"(s)"}
-                                            </Text>
-                                        </Grid.Col>
-                                    </>
-                                )}
-
-                                {details?.runtime && (
+                                {/* Logo */}
+                                <FetchLogo
+                                    id={id}
+                                    type={type}
+                                    style={{
+                                        paddingBottom: "20px",
+                                        height: "25vh",
+                                        objectFit: "contain",
+                                    }}
+                                    maw={{ sm: "40vw", lg: "25vw" }}
+                                />
+                                <Title order={1} c={"white"} fw={1000}>
+                                    {title}
+                                </Title>
+                                <Text size="md" fw={700}>
+                                    {details?.original_name === details?.name
+                                        ? ""
+                                        : details?.original_name}
+                                    {details?.original_title === details?.title
+                                        ? ""
+                                        : details?.original_title}
+                                </Text>
+                                <Grid
+                                    columns={20}
+                                    gutter={"lg"}
+                                    justify="flex-start"
+                                    align="center"
+                                    pt={"2vh"}
+                                >
                                     <Grid.Col span={"content"}>
                                         <Text fw={600}>
-                                            {Math.floor(
-                                                details?.runtime / 60
-                                            ) === 0
-                                                ? ""
-                                                : Math.floor(
-                                                      details?.runtime / 60
-                                                  ) + "h "}
-                                            {details?.runtime % 60}m
+                                            {details?.release_date
+                                                ? releaseDateMovie
+                                                : releaseDateTv}
                                         </Text>
                                     </Grid.Col>
-                                )}
+                                    {details?.number_of_seasons && (
+                                        <>
+                                            <Grid.Col span={"content"}>
+                                                <Text fw={600}>
+                                                    {details.number_of_seasons}{" "}
+                                                    season
+                                                    {"(s)"}
+                                                </Text>
+                                            </Grid.Col>
+                                            <Grid.Col span={"content"}>
+                                                <Text fw={600}>
+                                                    {details.number_of_episodes}{" "}
+                                                    episode
+                                                    {"(s)"}
+                                                </Text>
+                                            </Grid.Col>
+                                        </>
+                                    )}
 
-                                <Grid.Col span={"content"}>
-                                    <Paper
-                                        radius={"sm"}
-                                        py={"2px"}
-                                        px={"8px"}
-                                        style={{
-                                            backgroundColor:
-                                                "rgba(200,200,200)",
-                                        }}
-                                    >
-                                        <Text c={"black"} fw={600}>
-                                            <GetCertification
-                                                type={type}
-                                                id={id}
-                                                isOn={true}
-                                            />
-                                        </Text>
-                                    </Paper>
-                                </Grid.Col>
-                                <Grid.Col span={"content"}>
-                                    <Text fw={600}>
-                                        {details?.vote_average.toFixed(1)} ★
-                                    </Text>
-                                </Grid.Col>
-                                <Grid.Col span={"content"}>
-                                    <Button
-                                        variant="filled"
-                                        color="rgba(200,200,200) "
-                                        h={"100%"}
-                                        py={"2px"}
-                                        px={"8px"}
-                                    >
+                                    {details?.runtime && (
+                                        <Grid.Col span={"content"}>
+                                            <Text fw={600}>
+                                                {Math.floor(
+                                                    details?.runtime / 60
+                                                ) === 0
+                                                    ? ""
+                                                    : Math.floor(
+                                                          details?.runtime / 60
+                                                      ) + "h "}
+                                                {details?.runtime % 60}m
+                                            </Text>
+                                        </Grid.Col>
+                                    )}
+
+                                    <Grid.Col span={"content"}>
+                                        <Paper
+                                            radius={"sm"}
+                                            py={"2px"}
+                                            px={"8px"}
+                                            style={{
+                                                backgroundColor:
+                                                    "rgba(200,200,200)",
+                                            }}
+                                        >
+                                            <Text c={"black"} fw={600}>
+                                                <GetCertification
+                                                    type={type}
+                                                    id={id}
+                                                    isOn={true}
+                                                />
+                                            </Text>
+                                        </Paper>
+                                    </Grid.Col>
+                                    <Grid.Col span={"content"}>
                                         <Anchor
                                             component={Link}
-                                            to={details?.homepage}
+                                            to={`/${details?.id}`}
                                             underline="never"
-                                        >
-                                            <Text fw={600} c={"black"}>
-                                                Website
-                                            </Text>
-                                        </Anchor>
-                                    </Button>
-                                </Grid.Col>
-                                <Grid.Col span={"content"}>
-                                    {isInWatchlist ? (
-                                        <Button
-                                            variant="outline"
-                                            color="green"
-                                            w={200}
-                                            onClick={handleRemoveFromWathclist}
-                                        >
-                                            <IconCircleCheck size={20} />
-                                            <Text fw={600}>
-                                                &nbsp; In watchlist
-                                            </Text>
-                                        </Button>
-                                    ) : (
-                                        <Button
-                                            variant="outline"
-                                            color="blue"
-                                            onClick={handleAddToWatchlist}
-                                        >
-                                            <IconPlus size={20} />
-                                            <Text fw={600}>
-                                                &nbsp; Add to watchlist
-                                            </Text>
-                                        </Button>
-                                    )}
-                                </Grid.Col>
-                            </Grid>
-                            {details?.tagline ? (
-                                <Text
-                                    size="xl"
-                                    fw={600}
-                                    fs={"italic"}
-                                    c="white"
-                                    py={"5vh"}
-                                    pl={"3vw"}
+                                        ></Anchor>
+                                    </Grid.Col>
+                                    <Grid.Col span={"content"}>
+                                        <Text fw={600}>
+                                            {details?.vote_average.toFixed(1)} ★
+                                        </Text>
+                                    </Grid.Col>
+                                    <Grid.Col span={"content"}>
+                                        {isInWatchlist ? (
+                                            <Button
+                                                variant="outline"
+                                                color="green"
+                                                w={200}
+                                                onClick={
+                                                    handleRemoveFromWathclist
+                                                }
+                                            >
+                                                <IconCircleCheck size={20} />
+                                                <Text fw={600}>
+                                                    &nbsp; In watchlist
+                                                </Text>
+                                            </Button>
+                                        ) : (
+                                            <Button
+                                                variant="outline"
+                                                color="blue"
+                                                onClick={handleAddToWatchlist}
+                                            >
+                                                <IconPlus size={20} />
+                                                <Text fw={600}>
+                                                    &nbsp; Add to watchlist
+                                                </Text>
+                                            </Button>
+                                        )}
+                                    </Grid.Col>
+                                </Grid>
+
+                                <Grid
+                                    columns={20}
+                                    gutter={"lg"}
+                                    justify="flex-start"
+                                    align="center"
+                                    pt={"2vh"}
                                 >
-                                    {details?.tagline}
-                                </Text>
-                            ) : (
-                                ""
-                            )}
-                            <Text fw={500} py={details?.tagline ? "" : "5vh"}>
-                                {details?.overview}
-                            </Text>
-                            <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                {details?.genres.map(
-                                    (genre: { id: number; name: string }) => (
-                                        <Grid.Col
-                                            key={genre.id}
-                                            span={"content"}
+                                    <Grid.Col span={"content"}>
+                                        <Button
+                                            variant="filled"
+                                            color="rgba(200,200,200) "
+                                            h={"100%"}
+                                            py={"2px"}
+                                            px={"8px"}
                                         >
-                                            <Paper
-                                                radius={"sm"}
+                                            <Anchor
+                                                component={Link}
+                                                to={details?.homepage}
+                                                underline="never"
+                                                target="_blank"
+                                            >
+                                                <Text fw={600} c={"black"}>
+                                                    Website
+                                                </Text>
+                                            </Anchor>
+                                        </Button>
+                                    </Grid.Col>
+                                    {/* Imdb */}
+                                    {externalId?.imdb_id && (
+                                        <Grid.Col span={"content"}>
+                                            <Button
+                                                variant="filled"
+                                                color="#f3ce13"
+                                                h={"100%"}
                                                 py={"2px"}
                                                 px={"8px"}
-                                                style={{
-                                                    backgroundColor:
-                                                        "rgba(200,200,200, 0.5)",
-                                                }}
                                             >
-                                                <Text
-                                                    c={"black"}
-                                                    fw={600}
-                                                    size="sm"
+                                                <Anchor
+                                                    component={Link}
+                                                    to={
+                                                        "https://www.imdb.com/title/" +
+                                                        externalId?.imdb_id
+                                                    }
+                                                    underline="never"
+                                                    target="_blank"
                                                 >
-                                                    {genre.name}
-                                                </Text>
-                                            </Paper>
+                                                    <Text fw={600} c={"black"}>
+                                                        IMDB
+                                                    </Text>
+                                                </Anchor>
+                                            </Button>
                                         </Grid.Col>
-                                    )
+                                    )}
+                                    {/* Facebook */}
+                                    {externalId?.facebook_id && (
+                                        <Grid.Col span={"content"}>
+                                            <Anchor
+                                                component={Link}
+                                                to={
+                                                    "https://www.facebook.com/" +
+                                                    externalId?.facebook_id
+                                                }
+                                                underline="never"
+                                                target="_blank"
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    h={"100%"}
+                                                    py={"2px"}
+                                                    px={"8px"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200)",
+                                                    }}
+                                                    display={"flex"}
+                                                >
+                                                    <IconBrandFacebook
+                                                        color="black"
+                                                        size={26}
+                                                        style={{
+                                                            height: "100%",
+                                                            marginTop: "auto",
+                                                            marginBottom:
+                                                                "auto",
+                                                        }}
+                                                    />
+                                                </Paper>
+                                            </Anchor>
+                                        </Grid.Col>
+                                    )}
+                                    {/* Instagram */}
+                                    {externalId?.instagram_id && (
+                                        <Grid.Col span={"content"}>
+                                            <Anchor
+                                                component={Link}
+                                                to={
+                                                    "https://www.instagram.com/" +
+                                                    externalId?.instagram_id
+                                                }
+                                                underline="never"
+                                                target="_blank"
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    h={"100%"}
+                                                    py={"2px"}
+                                                    px={"8px"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200)",
+                                                    }}
+                                                    display={"flex"}
+                                                >
+                                                    <IconBrandInstagram
+                                                        color="black"
+                                                        size={26}
+                                                        style={{
+                                                            height: "100%",
+                                                            marginTop: "auto",
+                                                            marginBottom:
+                                                                "auto",
+                                                        }}
+                                                    />
+                                                </Paper>
+                                            </Anchor>
+                                        </Grid.Col>
+                                    )}
+                                    {/* Twitter */}
+                                    {externalId?.twitter_id && (
+                                        <Grid.Col span={"content"}>
+                                            <Anchor
+                                                component={Link}
+                                                to={
+                                                    "https://www.twitter.com/" +
+                                                    externalId?.twitter_id
+                                                }
+                                                underline="never"
+                                                target="_blank"
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    h={"100%"}
+                                                    py={"2px"}
+                                                    px={"8px"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200)",
+                                                    }}
+                                                    display={"flex"}
+                                                >
+                                                    <IconBrandTwitter
+                                                        color="black"
+                                                        size={26}
+                                                        style={{
+                                                            height: "100%",
+                                                            marginTop: "auto",
+                                                            marginBottom:
+                                                                "auto",
+                                                        }}
+                                                    />
+                                                </Paper>
+                                            </Anchor>
+                                        </Grid.Col>
+                                    )}
+                                </Grid>
+
+                                {details?.tagline ? (
+                                    <Text
+                                        size="xl"
+                                        fw={600}
+                                        fs={"italic"}
+                                        c="white"
+                                        py={"5vh"}
+                                        pl={"3vw"}
+                                    >
+                                        {details?.tagline}
+                                    </Text>
+                                ) : (
+                                    ""
                                 )}
-                            </Grid>
-                            {details?.networks ? (
-                                <>
+                                <Text
+                                    fw={500}
+                                    py={details?.tagline ? "" : "5vh"}
+                                >
+                                    {details?.overview}
+                                </Text>
+                                <Grid pt={"2vh"} align="center" gutter={"md"}>
+                                    {details?.genres.map(
+                                        (genre: {
+                                            id: number;
+                                            name: string;
+                                        }) => (
+                                            <Grid.Col
+                                                key={genre.id}
+                                                span={"content"}
+                                            >
+                                                <Paper
+                                                    radius={"sm"}
+                                                    py={"2px"}
+                                                    px={"8px"}
+                                                    style={{
+                                                        backgroundColor:
+                                                            "rgba(200,200,200, 0.5)",
+                                                    }}
+                                                >
+                                                    <Text
+                                                        c={"black"}
+                                                        fw={600}
+                                                        size="sm"
+                                                    >
+                                                        {genre.name}
+                                                    </Text>
+                                                </Paper>
+                                            </Grid.Col>
+                                        )
+                                    )}
+                                </Grid>
+                                {details?.networks ? (
+                                    <>
+                                        <Grid
+                                            pt={"2vh"}
+                                            align="center"
+                                            gutter={"md"}
+                                        >
+                                            {details?.networks
+                                                .slice(0, 4)
+                                                .map(
+                                                    (network: {
+                                                        id: number;
+                                                        name: string;
+                                                        logo_path: string;
+                                                    }) => (
+                                                        <Grid.Col
+                                                            span={"content"}
+                                                            key={network.id}
+                                                        >
+                                                            <Paper
+                                                                radius={"sm"}
+                                                                p={"1vh"}
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        "rgba(200,200,200)",
+                                                                }}
+                                                            >
+                                                                <Image
+                                                                    src={
+                                                                        network.logo_path
+                                                                            ? `${imageUrl}/${network.logo_path}`
+                                                                            : `https://placehold.co/800x300?text=${network.name}`
+                                                                    }
+                                                                    h={"3vh"}
+                                                                    alt="network logo"
+                                                                    title={
+                                                                        network.name
+                                                                    }
+                                                                    loading="lazy"
+                                                                />
+                                                            </Paper>
+                                                        </Grid.Col>
+                                                    )
+                                                )}
+                                        </Grid>
+                                    </>
+                                ) : (
                                     <Grid
                                         pt={"2vh"}
                                         align="center"
                                         gutter={"md"}
                                     >
-                                        {details?.networks
-                                            .slice(0, 4)
-                                            .map(
-                                                (network: {
-                                                    id: number;
-                                                    name: string;
-                                                    logo_path: string;
-                                                }) => (
-                                                    <Grid.Col
-                                                        span={"content"}
-                                                        key={network.id}
-                                                    >
-                                                        <Paper
-                                                            radius={"sm"}
-                                                            p={"1vh"}
-                                                            style={{
-                                                                backgroundColor:
-                                                                    "rgba(200,200,200)",
-                                                            }}
+                                        {details?.production_companies &&
+                                            details?.production_companies
+                                                .slice(0, 1)
+                                                .map(
+                                                    (production: {
+                                                        id: number;
+                                                        name: string;
+                                                        logo_path: string;
+                                                    }) => (
+                                                        <Grid.Col
+                                                            span={"content"}
+                                                            key={production.id}
                                                         >
-                                                            <Image
-                                                                src={
-                                                                    network.logo_path
-                                                                        ? `${imageUrl}/${network.logo_path}`
-                                                                        : `https://placehold.co/800x300?text=${network.name}`
-                                                                }
-                                                                h={"3vh"}
-                                                                alt="network logo"
-                                                                title={
-                                                                    network.name
-                                                                }
-                                                                loading="lazy"
-                                                            />
-                                                        </Paper>
-                                                    </Grid.Col>
-                                                )
-                                            )}
+                                                            <Paper
+                                                                radius={"sm"}
+                                                                p={"1vh"}
+                                                                style={{
+                                                                    backgroundColor:
+                                                                        "rgba(200,200,200)",
+                                                                }}
+                                                            >
+                                                                <Image
+                                                                    src={
+                                                                        production.logo_path
+                                                                            ? `${imageUrl}/${production.logo_path}`
+                                                                            : `https://placehold.co/800x300?text=${production.name}`
+                                                                    }
+                                                                    h={"3vh"}
+                                                                    alt="production logo"
+                                                                    title={
+                                                                        production.name
+                                                                    }
+                                                                    loading="lazy"
+                                                                />
+                                                            </Paper>
+                                                        </Grid.Col>
+                                                    )
+                                                )}
                                     </Grid>
-                                </>
-                            ) : (
-                                <Grid pt={"2vh"} align="center" gutter={"md"}>
-                                    {details?.production_companies &&
-                                        details?.production_companies
-                                            .slice(0, 1)
-                                            .map(
-                                                (production: {
-                                                    id: number;
-                                                    name: string;
-                                                    logo_path: string;
-                                                }) => (
-                                                    <Grid.Col
-                                                        span={"content"}
-                                                        key={production.id}
-                                                    >
-                                                        <Paper
-                                                            radius={"sm"}
-                                                            p={"1vh"}
-                                                            style={{
-                                                                backgroundColor:
-                                                                    "rgba(200,200,200)",
-                                                            }}
-                                                        >
-                                                            <Image
-                                                                src={
-                                                                    production.logo_path
-                                                                        ? `${imageUrl}/${production.logo_path}`
-                                                                        : `https://placehold.co/800x300?text=${production.name}`
-                                                                }
-                                                                h={"3vh"}
-                                                                alt="production logo"
-                                                                title={
-                                                                    production.name
-                                                                }
-                                                                loading="lazy"
-                                                            />
-                                                        </Paper>
-                                                    </Grid.Col>
-                                                )
-                                            )}
-                                </Grid>
-                            )}
-                        </Flex>
+                                )}
+                            </Flex>
+                        )}
                     </Flex>
                 </Container>
             </Box>
@@ -498,12 +677,24 @@ const DetailsPage = () => {
                                     loading={loading}
                                 />
                             )}
-                            <AspectRatio
-                                ratio={16 / 9}
-                                w={{ base: "100%", lg: "80%" }}
-                            >
-                                <GetTrailer id={video?.key} />
-                            </AspectRatio>
+                            {video?.key && (
+                                <>
+                                    <Title
+                                        c={"white"}
+                                        order={2}
+                                        style={{ margin: "0px" }}
+                                        tt={"capitalize"}
+                                    >
+                                        Trailer
+                                    </Title>
+                                    <AspectRatio
+                                        ratio={16 / 9}
+                                        w={{ base: "100%", lg: "80%" }}
+                                    >
+                                        <GetTrailer id={video?.key} />
+                                    </AspectRatio>
+                                </>
+                            )}
                         </>
                     )}
                     {!episode && <GetCredit type={type} id={id} label="cast" />}
